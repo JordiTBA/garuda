@@ -1148,27 +1148,6 @@
                     </p>
                 </div>
                 
-                <div class="forum-container">
-                    <!-- Forum Stats -->
-                    <div class="forum-stats">
-                        <div class="stat-card">
-                            <div class="stat-number">1,245</div>
-                            <p>Diskusi Aktif</p>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">5,678</div>
-                            <p>Anggota</p>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">23,456</div>
-                            <p>Komentar</p>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">12</div>
-                            <p>Kategori</p>
-                        </div>
-                    </div>
-                    
                     <!-- Forum Controls -->
                     <div class="forum-controls">
                         <div class="search-bar">
@@ -1437,6 +1416,7 @@
                 if (data.success) {
                     discussions = data.posts;
                     filteredDiscussions = [...discussions];
+                    console.log('Forum data loaded:', discussions); // Debug log
                     updateStats(data.stats);
                     displayDiscussions();
                 } else {
@@ -1487,14 +1467,13 @@
             const startIndex = (currentPage - 1) * 5;
             const endIndex = startIndex + 5;
             const pageDiscussions = filteredDiscussions.slice(startIndex, endIndex);
-            
             container.innerHTML = pageDiscussions.map(discussion => `
                 <div class="post-card" onclick="showPostDetail(${discussion.id})">
                     <div class="post-header">
                         <div class="post-meta">
                             <h3 class="post-title">${escapeHtml(discussion.title)}</h3>
                             <div class="post-author">👤 ${escapeHtml(discussion.author)}</div>
-                            <div class="post-date">📅 ${formatDate(discussion.date)}</div>
+                            <div class="post-date">📅 ${discussion.date}</div>
                         </div>
                         <div class="post-category">${getCategoryName(discussion.category)}</div>
                     </div>
@@ -1619,7 +1598,6 @@
                     showNotification('Diskusi berhasil dipublikasikan!', 'success');
                     hideCreatePostModal();
                     document.getElementById('createPostForm').reset();
-                    removeImage(); // Clear image preview
                     loadForumData(); // Reload discussions
                 } else {
                     showNotification(data.error || 'Gagal mempublikasikan diskusi', 'error');
@@ -1650,7 +1628,7 @@
             try {
                 const response = await fetch(`/api/forum/posts/${discussionId}/`);
                 const data = await response.json();
-                
+                console.log(data)
                 if (data.success) {
                     const post = data.post;
                     content.innerHTML = `
@@ -1660,7 +1638,7 @@
                                 <div class="post-meta">
                                     <span class="post-category">${getCategoryName(post.category)}</span>
                                     <span class="post-author">👤 ${escapeHtml(post.author)}</span>
-                                    <span class="post-date">📅 ${formatDate(post.created_at)}</span>
+                                    <span class="post-date">📅 ${post.date}</span>
                                 </div>
                             </div>
                             
@@ -1713,7 +1691,7 @@
                                             <div class="comment-item" style="background: var(--bg-secondary); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
                                                 <div class="comment-header" style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                                                     <span class="comment-author">👤 ${escapeHtml(comment.author)}</span>
-                                                    <span class="comment-date">📅 ${formatDate(comment.created_at)}</span>
+                                                    <span class="comment-date">📅 ${formatDate(comment.date)}</span>
                                                 </div>
                                                 <div class="comment-content">
                                                     ${escapeHtml(comment.content)}
@@ -1897,171 +1875,9 @@
             document.getElementById('contentCharCount').textContent = '0';
         }
         
-        function createPost(event) {
-            event.preventDefault();
-            
-            const title = document.getElementById('postTitle').value;
-            const category = document.getElementById('postCategory').value;
-            const content = document.getElementById('postContent').value;
-            const tags = document.getElementById('postTags').value;
-            
-            // Create new discussion object
-            const newDiscussion = {
-                id: discussions.length + 1,
-                title: title,
-                author: "Anda",
-                date: new Date().toISOString(),
-                category: category,
-                content: content,
-                tags: tags,
-                likes: 0,
-                comments: 0,
-                views: 0
-            };
-            
-            // Add to beginning of discussions array
-            discussions.unshift(newDiscussion);
-            filteredDiscussions = [...discussions];
-            
-            // Reset form and hide modal
-            hideCreatePostModal();
-            
-            // Show success notification
-            showNotification('Diskusi berhasil dipublikasikan!', 'success');
-            
-            // Reload discussions
-            currentPage = 1;
-            displayDiscussions();
-        }
-        
-        function showPostDetail(discussionId) {
-            const modal = document.getElementById('postDetailModal');
-            const content = document.getElementById('postDetailContent');
-            
-            // Find the discussion
-            const discussion = discussions.find(d => d.id === discussionId);
-            
-            if (!discussion) {
-                content.innerHTML = `
-                    <div class="empty-state">
-                        <span class="empty-icon">❌</span>
-                        <p>Diskusi tidak ditemukan</p>
-                    </div>
-                `;
-                modal.classList.add('show');
-                document.body.style.overflow = 'hidden';
-                return;
-            }
-            
-            // Simulate loading
-            content.innerHTML = `
-                <div class="loading-state">
-                    <div class="loading"></div>
-                    <p>Memuat detail diskusi...</p>
-                </div>
-            `;
-            
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden';
-            
-            // Simulate API delay
-            setTimeout(() => {
-                content.innerHTML = `
-                    <div class="post-detail">
-                        <div class="post-header">
-                            <h3>${escapeHtml(discussion.title)}</h3>
-                            <div class="post-meta">
-                                <span class="post-category">${getCategoryName(discussion.category)}</span>
-                                <span class="post-author">👤 ${escapeHtml(discussion.author)}</span>
-                                <span class="post-date">📅 ${formatDate(discussion.date)}</span>
-                            </div>
-                        </div>
-                        
-                        <div class="post-content">
-                            ${escapeHtml(discussion.content).replace(/\n/g, '<br>')}
-                        </div>
-                        
-                        <div class="post-tags">
-                            ${discussion.tags.split(',').map(tag => 
-                                `<span class="tag">#${tag.trim()}</span>`
-                            ).join('')}
-                        </div>
-                        
-                        <div class="post-actions" style="margin-top: 20px;">
-                            <button class="btn btn-primary" onclick="likePost(${discussion.id})">
-                                👍 Suka (${discussion.likes || 0})
-                            </button>
-                        </div>
-                        
-                        <div class="comments-section" style="margin-top: 30px;">
-                            <h3 style="margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--primary-color);">
-                                Komentar (${discussion.comments || 0})
-                            </h3>
-                            
-                            <div class="comment-form" style="background: var(--bg-secondary); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                                <textarea 
-                                    id="commentInput" 
-                                    placeholder="Tulis komentar Anda..." 
-                                    rows="3"
-                                    style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd; margin-bottom: 10px;"
-                                ></textarea>
-                                <button class="btn btn-primary" onclick="addComment(${discussion.id})">
-                                    Kirim Komentar
-                                </button>
-                            </div>
-                            
-                            <div class="comments-list">
-                                ${discussion.comments > 0 ? `
-                                    <div class="comment-item" style="background: var(--bg-secondary); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                                        <div class="comment-header" style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                            <span class="comment-author">👤 Budi Setiawan</span>
-                                            <span class="comment-date">📅 ${formatDate(new Date().toISOString())}</span>
-                                        </div>
-                                        <div class="comment-content">
-                                            Terima kasih sudah berbagi! Saya sangat tertarik dengan filosofi batik ini. Apakah ada referensi buku yang bisa saya pelajari lebih lanjut?
-                                        </div>
-                                    </div>
-                                ` : `
-                                    <p style="text-align: center; color: var(--text-secondary); padding: 20px;">
-                                        Belum ada komentar. Jadilah yang pertama berkomentar!
-                                    </p>
-                                `}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }, 1000);
-        }
-        
         function hidePostDetailModal() {
             document.getElementById('postDetailModal').classList.remove('show');
             document.body.style.overflow = 'auto';
-        }
-        
-        function likePost(discussionId) {
-            const discussion = discussions.find(d => d.id === discussionId);
-            if (discussion) {
-                discussion.likes = (discussion.likes || 0) + 1;
-                showNotification('Anda menyukai diskusi ini', 'success');
-                displayDiscussions();
-            }
-        }
-        
-        function addComment(discussionId) {
-            const commentInput = document.getElementById('commentInput');
-            const comment = commentInput.value.trim();
-            
-            if (!comment) {
-                showNotification('Silakan tulis komentar terlebih dahulu', 'warning');
-                return;
-            }
-            
-            const discussion = discussions.find(d => d.id === discussionId);
-            if (discussion) {
-                discussion.comments = (discussion.comments || 0) + 1;
-                commentInput.value = '';
-                showNotification('Komentar berhasil ditambahkan', 'success');
-            }
         }
         
         function getCategoryName(category) {
@@ -2077,7 +1893,26 @@
         }
         
         function formatDate(dateString) {
-            const date = new Date(dateString);
+            let date;
+            
+            // Handle different date formats
+            if (!dateString) {
+
+                return 'Tanggal tidak tersedia';
+            }
+            
+            // If it's just a date (YYYY-MM-DD), add time to make it valid
+            if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                date = new Date(dateString + ' 00:00:00');
+            } else {
+                date = new Date(dateString);
+            }
+            
+            // Check if date is valid
+            if (isNaN(date.getTime())) {
+                return 'Format tanggal tidak valid';
+            }
+            
             return date.toLocaleDateString('id-ID', {
                 year: 'numeric',
                 month: 'long',

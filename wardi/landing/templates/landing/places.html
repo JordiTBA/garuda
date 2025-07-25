@@ -1078,9 +1078,9 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar" id="navbar">
+  <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="/" class="nav-logo">
+            <a href="#" class="nav-logo">
                 <div class="logo-icon">W</div>
                 <span class="logo-text">WARDI</span>
             </a>
@@ -1092,17 +1092,20 @@
                 <span class="hamburger"></span>
             </button>
             
-            <!-- Navigation menu -->
             <ul class="nav-menu" id="navMenu">
-                <li><a href="/" class="nav-link">Beranda</a></li>
+                           <!-- Navigation menu -->
+                <li><a href="/" class="nav-link ">Beranda</a></li>
                 <li><a href="/analyze" class="nav-link">Analisis Budaya</a></li>
                 <li><a href="/translate" class="nav-link">Penerjemah</a></li>
-                <li><a href="/forum" class="nav-link">Forum</a></li>
+                <li><a href="/forum" class="nav-link ">Forum</a></li>
                 <li><a href="/places" class="nav-link active">Tempat Wisata</a></li>
-                
-                <!-- Authentication links -->
-                <li><a href="#" class="nav-link nav-auth">Login</a></li>
-                <li><a href="#" class="nav-link nav-auth nav-register">Daftar</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="#" class="nav-link">Hi, {{ user.username }}</a></li>
+                    <li><a href="{% url 'logout_view' %}" class="btn btn-secondary">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login_view' %}" class="nav-link nav-auth">Login</a></li>
+                    <li><a href="{% url 'register_page' %}" class="nav-link nav-auth nav-register">Daftar</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>

@@ -369,7 +369,7 @@ def get_forum_posts(request):
                 'title': post.title,
                 'content': post.content,
                 'author': post.author.username,
-                'date': post.created_at.strftime('%Y-%m-%d'),
+                'date': post.created_at.strftime('%Y-%m-%d %H:%M'),
                 'category': post.category,
                 'likes': post.like_count(),
                 'comments': post.comment_count()
