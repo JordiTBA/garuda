@@ -1,6 +1,6 @@
 # 🏛️ Wardi - Indonesia's Digital Heritage
 
-Wardi is an innovative digital platform dedicated to preserving, recognizing, and learning about Indonesia's rich cultural heritage using AI technology and the power of community.
+Wardi(warisan digital indonesia ) is an innovative non-profit digital platform dedicated to preserving, recognizing, and learning about Indonesia's rich cultural heritage using AI technology and the power of community.
 
 ## 🎯 Vision & Mission
 
@@ -43,7 +43,7 @@ Vision: To become the leading platform for digitizing and preserving Indonesia's
 
 ### Backend
 - **Framework**: Django 5.2.4
-- **Database**: SQLite (Development) / PostgreSQL (Production)
+- **Database**: SQLite
 - **Authentication**: Django Auth System
 - **API**: RESTful APIs for front-end interaction
 
@@ -158,3 +158,24 @@ GOOGLE_AI_API_KEY=your-google-ai-api-key
 ### 1. Home Page
 - Access the platform's main features
 - Intuitative navigation
+
+## 🙏 Special Credits
+
+We would like to extend our heartfelt gratitude to the following services and tools that made this project possible:
+
+### 🤖 **Gemini AI**
+- **Purpose**: Core AI API used throughout the website
+- **Application**: Powers cultural object recognition, image analysis, and intelligent translation features
+- **Impact**: Enables advanced computer vision capabilities for identifying Indonesian cultural artifacts and heritage items
+
+### 🛠️ **GitHub Copilot**
+- **Purpose**: AI-powered coding assistant 
+- **Application**: Helped accelerate development through intelligent code completion and suggestions in VS Code
+- **Impact**: Significantly improved development efficiency and code quality throughout the project lifecycle
+
+### 🔍 **DeepSeek**
+- **Purpose**: AI coding assistant and technical reference
+- **Application**: Provided guidance for both frontend and backend development challenges
+- **Impact**: Assisted in finding optimal solutions, best practices, and technical references for web development implementation
+
+These tools were instrumental in bringing Wardi to life, combining human creativity with AI assistance to preserve and celebrate Indonesia's rich cultural heritage.
