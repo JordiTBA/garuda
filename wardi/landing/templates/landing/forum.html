@@ -1079,9 +1079,9 @@
 </head>
 <body>
     <!-- NAVBAR -->
-    <nav class="navbar" id="navbar">
+  <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="/" class="nav-logo">
+            <a href="#" class="nav-logo">
                 <div class="logo-icon">W</div>
                 <span class="logo-text">WARDI</span>
             </a>
@@ -1094,17 +1094,22 @@
             </button>
             
             <ul class="nav-menu" id="navMenu">
-                <li><a href="/" class="nav-link">Beranda</a></li>
+                           <!-- Navigation menu -->
+                <li><a href="/" class="nav-link ">Beranda</a></li>
                 <li><a href="/analyze" class="nav-link">Analisis Budaya</a></li>
                 <li><a href="/translate" class="nav-link">Penerjemah</a></li>
                 <li><a href="/forum" class="nav-link active">Forum</a></li>
                 <li><a href="/places" class="nav-link">Tempat Wisata</a></li>
-                <li><a href="#" class="nav-link">Hi, Budi</a></li>
-                <li><a href="#" class="btn btn-secondary">Logout</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="#" class="nav-link">Hi, {{ user.username }}</a></li>
+                    <li><a href="{% url 'logout_view' %}" class="btn btn-secondary">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login_view' %}" class="nav-link nav-auth">Login</a></li>
+                    <li><a href="{% url 'register_page' %}" class="nav-link nav-auth nav-register">Daftar</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>
-
     <!-- MAIN CONTENT -->
     <main class="main-content">
         <!-- HERO SECTION -->
@@ -1117,11 +1122,19 @@
                     Bergabunglah dalam diskusi tentang kekayaan budaya Indonesia. 
                     Berbagi cerita, tradisi, dan pengalaman budaya dari seluruh nusantara.
                 </p>
-                <div class="cta-buttons">
-                    <button class="btn btn-primary btn-lg" onclick="showCreatePostModal()">
-                        ✍️ Buat Diskusi Baru
-                    </button>
-                </div>
+        <div class="cta-buttons">
+            {% if user.is_authenticated %}
+                <!-- If the user is logged in, show the "Create Discussion" button -->
+                <button class="btn btn-primary btn-lg" onclick="showCreatePostModal()">
+                    ✍️ Buat Diskusi Baru
+                </button>
+            {% else %}
+                <!-- If the user is not logged in, show a link to the login page -->
+                <a href="{% url 'login_view' %}" class="btn btn-primary btn-lg">
+                    🔒 Login untuk Berdiskusi
+                </a>
+            {% endif %}
+        </div>
             </div>
         </section>
         
@@ -1353,8 +1366,22 @@
 
     <!-- SCRIPT -->
     <script>
-        // Mobile menu functionality
+        // Global variables
+        let currentPage = 1;
+        let totalPages = 1;
+        let discussions = [];
+        let filteredDiscussions = [];
+        const USER_IS_AUTHENTICATED = {% if user.is_authenticated %}true{% else %}false{% endif %};
+        const USERNAME = "{{ user.username|escapejs }}";
+        
         document.addEventListener('DOMContentLoaded', function() {
+            setupMobileMenu();
+            setupNavbarScroll();
+            loadForumData();
+            setupFormHandlers();
+        });
+        
+        function setupMobileMenu() {
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const navMenu = document.getElementById('navMenu');
             
@@ -1371,8 +1398,9 @@
                     }
                 });
             }
-            
-            // Navbar scroll effect
+        }
+        
+        function setupNavbarScroll() {
             const navbar = document.getElementById('navbar');
             window.addEventListener('scroll', function() {
                 if (window.scrollY > 50) {
@@ -1381,52 +1409,55 @@
                     navbar.classList.remove('scrolled');
                 }
             });
-            
-            // Load forum data
-            loadForumData();
-            
-            // Setup form handlers
-            setupFormHandlers();
-        });
-        
-        let currentPage = 1;
-        let totalPages = 1;
-        let discussions = [];
-        let filteredDiscussions = [];
+        }
         
         function setupFormHandlers() {
             const postContent = document.getElementById('postContent');
             const charCount = document.getElementById('contentCharCount');
             
-            postContent.addEventListener('input', function() {
-                const count = this.value.length;
-                charCount.textContent = count;
-                
-                if (count >= 4900) {
-                    charCount.style.color = 'var(--primary-color)';
-                } else {
-                    charCount.style.color = 'var(--text-secondary)';
-                }
-            });
+            if (postContent) {
+                postContent.addEventListener('input', function() {
+                    const count = this.value.length;
+                    charCount.textContent = count;
+                    
+                    if (count >= 4900) {
+                        charCount.style.color = 'var(--primary-color)';
+                    } else {
+                        charCount.style.color = 'var(--text-secondary)';
+                    }
+                });
+            }
         }
         
         async function loadForumData() {
-        try {
-            const response = await fetch('/api/forum/discussions/');
-            const data = await response.json();
-            
-            if (data.success) {
-                discussions = data.posts; // Changed from data.discussions to data.posts
-                filteredDiscussions = [...discussions];
-                displayDiscussions();
-            } else {
-                showError('Gagal memuat diskusi forum');
+            try {
+                const response = await fetch('/api/forum/discussions/');
+                const data = await response.json();
+                
+                if (data.success) {
+                    discussions = data.posts;
+                    filteredDiscussions = [...discussions];
+                    updateStats(data.stats);
+                    displayDiscussions();
+                } else {
+                    showError('Gagal memuat diskusi forum');
+                }
+            } catch (error) {
+                console.error('Error loading forum data:', error);
+                showError('Terjadi kesalahan saat memuat forum');
             }
-        } catch (error) {
-            console.error('Error loading forum data:', error);
-            showError('Terjadi kesalahan saat memuat forum');
         }
-    }
+        
+        function updateStats(stats) {
+            // Update stats in the DOM
+            const statCards = document.querySelectorAll('.stat-card .stat-number');
+            if (statCards.length >= 4) {
+                statCards[0].textContent = stats.total_posts || 0;
+                statCards[1].textContent = stats.total_members || 0;
+                statCards[2].textContent = stats.total_comments || 0;
+                statCards[3].textContent = stats.categories || 0;
+            }
+        }
         
         function displayDiscussions() {
             const container = document.getElementById('forumPosts');
@@ -1437,9 +1468,16 @@
                         <span class="empty-icon">💬</span>
                         <h3>Belum Ada Diskusi</h3>
                         <p>Jadilah yang pertama memulai diskusi budaya!</p>
-                        <button class="btn btn-primary" onclick="showCreatePostModal()" style="margin-top: 20px;">
-                            ✍️ Buat Diskusi Baru
-                        </button>
+                        <div class="cta-buttons">
+                            ${USER_IS_AUTHENTICATED ? 
+                                `<button class="btn btn-primary btn-lg" onclick="showCreatePostModal()">
+                                    ✍️ Buat Diskusi Baru
+                                </button>` :
+                                `<a href="/login" class="btn btn-primary btn-lg">
+                                    🔒 Login untuk Berdiskusi
+                                </a>`
+                            }
+                        </div>
                     </div>
                 `;
                 document.getElementById('pagination').style.display = 'none';
@@ -1466,9 +1504,9 @@
                     </div>
                     
                     <div class="post-tags">
-                        ${discussion.tags.split(',').map(tag => 
+                        ${discussion.tags ? discussion.tags.split(',').map(tag => 
                             `<span class="tag">#${tag.trim()}</span>`
-                        ).join('')}
+                        ).join('') : ''}
                     </div>
                     
                     <div class="post-footer">
@@ -1487,9 +1525,14 @@
                             </div>
                         </div>
                         <div class="post-actions">
-                            <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); likePost(${discussion.id})">
-                                👍 Suka
-                            </button>
+                            ${USER_IS_AUTHENTICATED ?
+                                `<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); likePost(${discussion.id})">
+                                    👍 Suka
+                                </button>` :
+                                `<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); showLoginRequired()">
+                                    👍 Suka
+                                </button>`
+                            }
                         </div>
                     </div>
                 </div>
@@ -1518,14 +1561,14 @@
             
             let pagesHtml = '';
             for (let i = 1; i <= totalPages; i++) {
-                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
                     pagesHtml += `
                         <div class="page-number ${i === currentPage ? 'active' : ''}" 
                              onclick="loadPage(${i})">
                             ${i}
                         </div>
                     `;
-                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
                     pagesHtml += '<div class="page-number">...</div>';
                 }
             }
@@ -1538,6 +1581,251 @@
                 currentPage = page;
                 displayDiscussions();
             }
+        }
+        
+        async function createPost(event) {
+            event.preventDefault();
+            
+            if (!USER_IS_AUTHENTICATED) {
+                showLoginRequired();
+                return;
+            }
+            
+            const formData = {
+                title: document.getElementById('postTitle').value,
+                category: document.getElementById('postCategory').value,
+                content: document.getElementById('postContent').value,
+                tags: document.getElementById('postTags').value
+            };
+            
+            const submitBtn = document.getElementById('submitPostBtn');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="loading"></div> Mempublikasikan...';
+            
+            try {
+                const response = await fetch('/api/forum/create/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken()
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('Diskusi berhasil dipublikasikan!', 'success');
+                    hideCreatePostModal();
+                    document.getElementById('createPostForm').reset();
+                    removeImage(); // Clear image preview
+                    loadForumData(); // Reload discussions
+                } else {
+                    showNotification(data.error || 'Gagal mempublikasikan diskusi', 'error');
+                }
+            } catch (error) {
+                console.error('Error creating post:', error);
+                showNotification('Terjadi kesalahan saat mempublikasikan diskusi', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        }
+        
+        async function showPostDetail(discussionId) {
+            const modal = document.getElementById('postDetailModal');
+            const content = document.getElementById('postDetailContent');
+            
+            content.innerHTML = `
+                <div class="loading-state">
+                    <div class="loading"></div>
+                    <p>Memuat detail diskusi...</p>
+                </div>
+            `;
+            
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            try {
+                const response = await fetch(`/api/forum/posts/${discussionId}/`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const post = data.post;
+                    content.innerHTML = `
+                        <div class="post-detail">
+                            <div class="post-header">
+                                <h3>${escapeHtml(post.title)}</h3>
+                                <div class="post-meta">
+                                    <span class="post-category">${getCategoryName(post.category)}</span>
+                                    <span class="post-author">👤 ${escapeHtml(post.author)}</span>
+                                    <span class="post-date">📅 ${formatDate(post.created_at)}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="post-content">
+                                ${escapeHtml(post.content).replace(/\n/g, '<br>')}
+                            </div>
+                            
+                            <div class="post-tags">
+                                ${post.tags ? post.tags.split(',').map(tag => 
+                                    `<span class="tag">#${tag.trim()}</span>`
+                                ).join('') : ''}
+                            </div>
+                            
+                            <div class="post-actions" style="margin-top: 20px;">
+                                ${USER_IS_AUTHENTICATED ?
+                                    `<button class="btn btn-primary" onclick="likePost(${post.id})">
+                                        👍 Suka (${post.likes || 0})
+                                    </button>` :
+                                    `<button class="btn btn-primary" onclick="showLoginRequired()">
+                                        👍 Suka (${post.likes || 0})
+                                    </button>`
+                                }
+                            </div>
+                            
+                            <div class="comments-section" style="margin-top: 30px;">
+                                <h3 style="margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--primary-color);">
+                                    Komentar (${post.comments.length})
+                                </h3>
+                                
+                                ${USER_IS_AUTHENTICATED ?
+                                    `<div class="comment-form" style="background: var(--bg-secondary); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                                        <textarea 
+                                            id="commentInput" 
+                                            placeholder="Tulis komentar Anda..." 
+                                            rows="3"
+                                            style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd; margin-bottom: 10px;"
+                                        ></textarea>
+                                        <button class="btn btn-primary" onclick="addComment(${post.id})">
+                                            Kirim Komentar
+                                        </button>
+                                    </div>` :
+                                    `<div class="comment-form" style="background: var(--bg-secondary); padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
+                                        <p>Silakan <a href="/login">login</a> untuk memberikan komentar</p>
+                                    </div>`
+                                }
+                                
+                                <div class="comments-list">
+                                    ${post.comments.length > 0 ? 
+                                        post.comments.map(comment => `
+                                            <div class="comment-item" style="background: var(--bg-secondary); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                                                <div class="comment-header" style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                                    <span class="comment-author">👤 ${escapeHtml(comment.author)}</span>
+                                                    <span class="comment-date">📅 ${formatDate(comment.created_at)}</span>
+                                                </div>
+                                                <div class="comment-content">
+                                                    ${escapeHtml(comment.content)}
+                                                </div>
+                                            </div>
+                                        `).join('') :
+                                        `<p style="text-align: center; color: var(--text-secondary); padding: 20px;">
+                                            Belum ada komentar. Jadilah yang pertama berkomentar!
+                                        </p>`
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    content.innerHTML = `
+                        <div class="empty-state">
+                            <span class="empty-icon">❌</span>
+                            <p>Gagal memuat detail diskusi</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading post detail:', error);
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">❌</span>
+                        <p>Terjadi kesalahan saat memuat detail</p>
+                    </div>
+                `;
+            }
+        }
+        
+        async function likePost(postId) {
+            if (!USER_IS_AUTHENTICATED) {
+                showLoginRequired();
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/forum/posts/${postId}/like/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken()
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    loadForumData(); // Reload to update like counts
+                } else {
+                    showNotification(data.error || 'Gagal memberikan like', 'error');
+                }
+            } catch (error) {
+                console.error('Error liking post:', error);
+                showNotification('Terjadi kesalahan saat memberikan like', 'error');
+            }
+        }
+        
+        async function addComment(postId) {
+            if (!USER_IS_AUTHENTICATED) {
+                showLoginRequired();
+                return;
+            }
+            
+            const commentInput = document.getElementById('commentInput');
+            const content = commentInput.value.trim();
+            
+            if (!content) {
+                showNotification('Silakan tulis komentar terlebih dahulu', 'warning');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/forum/posts/${postId}/comment/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken()
+                    },
+                    body: JSON.stringify({ content })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('Komentar berhasil ditambahkan', 'success');
+                    commentInput.value = '';
+                    showPostDetail(postId); // Reload post details
+                } else {
+                    showNotification(data.error || 'Gagal menambahkan komentar', 'error');
+                }
+            } catch (error) {
+                console.error('Error adding comment:', error);
+                showNotification('Terjadi kesalahan saat menambahkan komentar', 'error');
+            }
+        }
+        
+        function getCSRFToken() {
+            const cookieValue = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('csrftoken='))
+                ?.split('=')[1];
+            
+            return cookieValue || '';
+        }
+        
+        function showLoginRequired() {
+            showNotification('Anda harus login untuk melakukan aksi ini', 'warning');
         }
         
         function searchDiscussions() {

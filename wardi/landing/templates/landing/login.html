@@ -1,776 +1,978 @@
-{% extends 'landing/base.html' %}
-{% load static %}
-
-{% block title %}Login - Wardi{% endblock %}
-
-{% block meta_description %}Masuk ke akun Wardi untuk mengakses fitur lengkap platform budaya digital Indonesia.{% endblock %}
-
-{% block body_class %}auth-page{% endblock %}
-
-{% block content %}
-    <section class="auth-section">
-        <div class="container">
-            <div class="auth-container">
-                <div class="auth-card">
-                    <div class="auth-header">
-                        <div class="auth-logo">
-                            <span class="logo-icon">🏛️</span>
-                            <h1>Wardi</h1>
-                        </div>
-                        <h2>Selamat Datang Kembali</h2>
-                        <p>Masuk ke akun Anda untuk melanjutkan menjelajahi warisan budaya Indonesia</p>
-                    </div>
-
-                    <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
-                        <div class="form-group">
-                            <label for="username">Username atau Email</label>
-                            <div class="input-wrapper">
-                                <span class="input-icon">👤</span>
-                                <input 
-                                    type="text" 
-                                    id="username" 
-                                    name="username" 
-                                    required
-                                    placeholder="Masukkan username atau email"
-                                >
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <div class="input-wrapper">
-                                <span class="input-icon">🔒</span>
-                                <input 
-                                    type="password" 
-                                    id="password" 
-                                    name="password" 
-                                    required
-                                    placeholder="Masukkan password"
-                                >
-                                <button type="button" class="toggle-password" onclick="togglePassword('password')">
-                                    👁️
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="form-options">
-                            <label class="checkbox-wrapper">
-                                <input type="checkbox" id="remember" name="remember">
-                                <span class="checkmark"></span>
-                                <span class="checkbox-text">Ingat saya</span>
-                            </label>
-                            <a href="#" class="forgot-password" onclick="showForgotPassword()">
-                                Lupa password?
-                            </a>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-auth" id="loginBtn">
-                            🚀 Masuk
-                        </button>
-
-                        <div class="auth-divider">
-                            <span>atau</span>
-                        </div>
-
-                        <div class="social-login">
-                            <button type="button" class="btn btn-social btn-google" onclick="loginWithGoogle()">
-                                <span class="social-icon">🌐</span>
-                                Masuk dengan Google
-                            </button>
-                        </div>
-
-                        <div class="auth-footer">
-                            <p>Belum memiliki akun? 
-                                <a href="{% url 'register_page' %}" class="auth-link">
-                                    Daftar sekarang
-                                </a>
-                            </p>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="auth-sidebar">
-                    <div class="sidebar-content">
-                        <h3>🌟 Fitur Terbaru</h3>
-                        <div class="feature-list">
-                            <div class="feature-item">
-                                <span class="feature-icon">🤖</span>
-                                <div class="feature-text">
-                                    <h4>AI Analysis</h4>
-                                    <p>Analisis gambar dengan teknologi AI</p>
-                                </div>
-                            </div>
-                            <div class="feature-item">
-                                <span class="feature-icon">💬</span>
-                                <div class="feature-text">
-                                    <h4>Forum Budaya</h4>
-                                    <p>Diskusi dan berbagi pengalaman</p>
-                                </div>
-                            </div>
-                            <div class="feature-item">
-                                <span class="feature-icon">🗣️</span>
-                                <div class="feature-text">
-                                    <h4>Penerjemah</h4>
-                                    <p>Terjemahan bahasa daerah real-time</p>
-                                </div>
-                            </div>
-                            <div class="feature-item">
-                                <span class="feature-icon">⭐</span>
-                                <div class="feature-text">
-                                    <h4>Rating Wisata</h4>
-                                    <p>Review tempat wisata budaya</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Forgot Password Modal -->
-    <div class="modal" id="forgotPasswordModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Reset Password</h3>
-                <button class="modal-close" onclick="hideForgotPassword()">×</button>
-            </div>
-            
-            <form id="forgotPasswordForm" onsubmit="handleForgotPassword(event)">
-                <div class="modal-body">
-                    <p class="modal-description">
-                        Masukkan email Anda dan kami akan mengirimkan link untuk reset password.
-                    </p>
-                    
-                    <div class="form-group">
-                        <label for="resetEmail">Email</label>
-                        <div class="input-wrapper">
-                            <span class="input-icon">📧</span>
-                            <input 
-                                type="email" 
-                                id="resetEmail" 
-                                required
-                                placeholder="Masukkan alamat email"
-                            >
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" onclick="hideForgotPassword()">
-                        Batal
-                    </button>
-                    <button type="submit" class="btn btn-primary" id="resetBtn">
-                        📧 Kirim Link Reset
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-{% endblock %}
-
-{% block extra_css %}
-<style>
-    .auth-section {
-        min-height: 100vh;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login ke akun Wardi untuk mengakses fitur lengkap platform budaya digital Indonesia.">
+    <title>Login - Wardi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ==========================================================================
+           WARDI - CSS VARIABLES & RESET
+           ========================================================================== */
+             .auth-container {
         display: flex;
-        align-items: center;
-        padding: var(--spacing-xl) 0;
-    }
-    
-    .auth-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: var(--spacing-xl);
-        max-width: 1000px;
-        margin: 0 auto;
-        background: var(--bg-card);
-        border-radius: var(--border-radius-xl);
-        overflow: hidden;
-        box-shadow: var(--shadow-xl);
-    }
-    
-    .auth-card {
-        padding: var(--spacing-xl);
-    }
-    
-    .auth-sidebar {
-        background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-        color: white;
-        padding: var(--spacing-xl);
-        display: flex;
-        align-items: center;
-    }
-    
-    .auth-header {
-        text-align: center;
-        margin-bottom: var(--spacing-xl);
-    }
-    
-    .auth-logo {
-        display: flex;
-        align-items: center;
         justify-content: center;
-        gap: var(--spacing-md);
-        margin-bottom: var(--spacing-lg);
+        align-items: center;
+        min-height: 80vh;
+        padding: 40px 20px;
     }
-    
-    .logo-icon {
-        font-size: 2.5rem;
-    }
-    
-    .auth-logo h1 {
-        font-size: 2rem;
-        color: var(--primary-color);
-        margin: 0;
-    }
-    
-    .auth-header h2 {
-        font-size: var(--font-size-xl);
-        color: var(--text-primary);
-        margin-bottom: var(--spacing-sm);
-    }
-    
-    .auth-header p {
-        color: var(--text-secondary);
-        font-size: var(--font-size-base);
-    }
-    
-    .auth-form {
+    .auth-card {
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        width: 100%;
         max-width: 400px;
-        margin: 0 auto;
     }
-    
+    .auth-card h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: var(--primary-dark);
+    }
     .form-group {
-        margin-bottom: var(--spacing-lg);
+        margin-bottom: 20px;
     }
-    
     .form-group label {
         display: block;
-        margin-bottom: var(--spacing-sm);
+        margin-bottom: 8px;
         font-weight: 600;
-        color: var(--text-primary);
+        color: #555;
     }
-    
-    .input-wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
-    
-    .input-icon {
-        position: absolute;
-        left: var(--spacing-md);
-        z-index: 1;
-        font-size: var(--font-size-lg);
-        opacity: 0.7;
-    }
-    
-    .input-wrapper input {
+    .form-control {
         width: 100%;
-        padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 3rem;
-        border: 2px solid rgba(0, 0, 0, 0.1);
-        border-radius: var(--border-radius-md);
-        font-size: var(--font-size-base);
-        transition: border-color var(--transition-normal);
-        background: var(--bg-card);
+        padding: 12px 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 1rem;
     }
-    
-    .input-wrapper input:focus {
-        outline: none;
-        border-color: var(--primary-color);
-    }
-    
-    .toggle-password {
-        position: absolute;
-        right: var(--spacing-md);
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: var(--font-size-lg);
-        opacity: 0.7;
-        transition: opacity var(--transition-normal);
-    }
-    
-    .toggle-password:hover {
-        opacity: 1;
-    }
-    
     .form-options {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: var(--spacing-xl);
+        margin-bottom: 25px;
+        font-size: 0.9rem;
     }
-    
-    .checkbox-wrapper {
+    .checkbox-container {
         display: flex;
         align-items: center;
-        cursor: pointer;
-        user-select: none;
+        gap: 8px;
+        color: #555;
     }
-    
-    .checkbox-wrapper input[type="checkbox"] {
-        display: none;
-    }
-    
-    .checkmark {
-        width: 20px;
-        height: 20px;
-        border: 2px solid rgba(0, 0, 0, 0.3);
-        border-radius: var(--border-radius-sm);
-        margin-right: var(--spacing-sm);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all var(--transition-normal);
-    }
-    
-    .checkbox-wrapper input[type="checkbox"]:checked + .checkmark {
-        background: var(--primary-color);
-        border-color: var(--primary-color);
-    }
-    
-    .checkbox-wrapper input[type="checkbox"]:checked + .checkmark::after {
-        content: '✓';
-        color: white;
-        font-size: var(--font-size-sm);
-        font-weight: bold;
-    }
-    
-    .checkbox-text {
-        color: var(--text-secondary);
-        font-size: var(--font-size-sm);
-    }
-    
     .forgot-password {
         color: var(--primary-color);
         text-decoration: none;
-        font-size: var(--font-size-sm);
-        transition: color var(--transition-normal);
     }
-    
-    .forgot-password:hover {
-        color: var(--primary-dark);
-        text-decoration: underline;
-    }
-    
     .btn-auth {
         width: 100%;
-        padding: var(--spacing-md);
-        font-size: var(--font-size-base);
-        font-weight: 600;
-        margin-bottom: var(--spacing-lg);
+        padding: 15px;
+        font-size: 1.1rem;
     }
-    
-    .auth-divider {
-        text-align: center;
-        margin: var(--spacing-lg) 0;
-        position: relative;
-    }
-    
-    .auth-divider::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: rgba(0, 0, 0, 0.1);
-    }
-    
-    .auth-divider span {
-        background: var(--bg-card);
-        padding: 0 var(--spacing-md);
-        color: var(--text-secondary);
-        font-size: var(--font-size-sm);
-    }
-    
-    .social-login {
-        margin-bottom: var(--spacing-lg);
-    }
-    
-    .btn-social {
-        width: 100%;
-        padding: var(--spacing-md);
-        border: 2px solid rgba(0, 0, 0, 0.1);
-        background: var(--bg-card);
-        color: var(--text-primary);
-        border-radius: var(--border-radius-md);
-        cursor: pointer;
-        transition: all var(--transition-normal);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: var(--spacing-sm);
-        font-weight: 500;
-    }
-    
-    .btn-social:hover {
-        border-color: var(--primary-color);
-        background: var(--bg-secondary);
-    }
-    
-    .social-icon {
-        font-size: var(--font-size-lg);
-    }
-    
     .auth-footer {
         text-align: center;
-        color: var(--text-secondary);
-        font-size: var(--font-size-sm);
+        margin-top: 25px;
+        font-size: 0.9rem;
     }
-    
-    .auth-link {
-        color: var(--primary-color);
-        text-decoration: none;
-        font-weight: 600;
-        transition: color var(--transition-normal);
+    .messages .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        color: #721c24;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
     }
-    
-    .auth-link:hover {
-        color: var(--primary-dark);
-        text-decoration: underline;
-    }
-    
-    .sidebar-content h3 {
-        font-size: var(--font-size-xl);
-        margin-bottom: var(--spacing-lg);
-        text-align: center;
-    }
-    
-    .feature-list {
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing-lg);
-    }
-    
-    .feature-item {
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-md);
-        padding: var(--spacing-md);
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: var(--border-radius-lg);
-        backdrop-filter: blur(10px);
-    }
-    
-    .feature-icon {
-        font-size: 2rem;
-        flex-shrink: 0;
-    }
-    
-    .feature-text h4 {
-        font-size: var(--font-size-base);
-        margin-bottom: var(--spacing-xs);
-    }
-    
-    .feature-text p {
-        font-size: var(--font-size-sm);
-        opacity: 0.9;
-    }
-    
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 1000;
-        align-items: center;
-        justify-content: center;
-        padding: var(--spacing-lg);
-    }
-    
-    .modal.show {
-        display: flex;
-    }
-    
-    .modal-content {
-        background: var(--bg-card);
-        border-radius: var(--border-radius-xl);
-        width: 100%;
-        max-width: 500px;
-        max-height: 90vh;
-        overflow-y: auto;
-        box-shadow: var(--shadow-xl);
-    }
-    
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: var(--spacing-lg);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    }
-    
-    .modal-header h3 {
-        font-size: var(--font-size-xl);
-        color: var(--text-primary);
-    }
-    
-    .modal-close {
-        background: none;
-        border: none;
-        font-size: 2rem;
-        cursor: pointer;
-        color: var(--text-secondary);
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        transition: background var(--transition-normal);
-    }
-    
-    .modal-close:hover {
-        background: var(--bg-secondary);
-    }
-    
-    .modal-body {
-        padding: var(--spacing-lg);
-    }
-    
-    .modal-description {
-        color: var(--text-secondary);
-        margin-bottom: var(--spacing-lg);
-        line-height: 1.6;
-    }
-    
-    .modal-actions {
-        display: flex;
-        gap: var(--spacing-md);
-        justify-content: flex-end;
-        padding: var(--spacing-lg);
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
-    }
-    
-    @media (max-width: 768px) {
-        .auth-container {
-            grid-template-columns: 1fr;
+        :root {
+            /* Colors */
+            --primary-color: #8B4513; /* Rich brown for tradition */
+            --primary-dark: #5D2E0F;
+            --primary-light: #A86A3D;
+            --secondary-color: #2c3e50;
+            --secondary-light: #34495e;
+            --accent-color: #DAA520; /* Gold accent */
+            --accent-secondary: #5F9EA0; /* Cultural blue-green */
+            
+            /* Text Colors */
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --text-light: #bdc3c7;
+            --text-white: #ffffff;
+            
+            /* Background Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-dark: #2c3e50;
+            --bg-card: #ffffff;
+            --bg-overlay: rgba(44, 62, 80, 0.9);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            
+            /* Spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            --spacing-3xl: 4rem;
+            
+            /* Typography */
+            --font-family-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-family-secondary: 'Georgia', serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-size-4xl: 2.25rem;
+            --font-size-5xl: 3rem;
+            
+            /* Borders */
+            --border-radius-sm: 0.25rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            --border-radius-full: 9999px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+            --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
         }
-        
-        .auth-sidebar {
-            order: -1;
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        .auth-card,
-        .auth-sidebar {
-            padding: var(--spacing-lg);
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
         }
-        
-        .form-options {
-            flex-direction: column;
-            gap: var(--spacing-md);
-            align-items: flex-start;
-        }
-        
-        .modal-content {
-            margin: var(--spacing-md);
-            max-width: none;
-        }
-        
-        .modal-actions {
+
+        body {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--gradient-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
             flex-direction: column;
         }
-        
-        .modal-actions .btn {
+
+        /* ==========================================================================
+           UTILITY CLASSES
+           ========================================================================== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            text-decoration: none;
+            border: 2px solid transparent;
+            border-radius: var(--border-radius-full);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .btn:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--text-white);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: var(--text-white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-lg {
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: var(--font-size-lg);
+        }
+
+        .btn-sm {
+            padding: var(--spacing-xs) var(--spacing-md);
+            font-size: var(--font-size-sm);
+        }
+
+        /* Text Utilities */
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+
+        .text-primary { color: var(--primary-color); }
+        .text-secondary { color: var(--text-secondary); }
+        .text-white { color: var(--text-white); }
+        .text-accent { color: var(--accent-color); }
+
+        /* ==========================================================================
+           NAVIGATION
+           ========================================================================== */
+        .navbar {
+            background: var(--secondary-color);
+            padding: var(--spacing-md) 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: var(--z-fixed);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+
+        .navbar.scrolled {
+            padding: var(--spacing-sm) 0;
+            background: var(--bg-overlay);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--accent-color);
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            text-decoration: none;
+            transition: all var(--transition-normal);
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            color: var(--text-white);
+            font-weight: bold;
+            font-size: var(--font-size-xl);
+        }
+
+        .logo-text {
+            font-family: var(--font-family-secondary);
+            position: relative;
+        }
+
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-sm);
+        }
+
+        .hamburger {
+            width: 24px;
+            height: 3px;
+            background: var(--text-white);
+            border-radius: 2px;
+            transition: all var(--transition-normal);
+        }
+
+        /* ==========================================================================
+           LOGIN SECTION
+           ========================================================================== */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding: var(--spacing-3xl) var(--spacing-md);
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-xl);
+            box-shadow: var(--shadow-2xl);
+            width: 100%;
+            max-width: 1000px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+            min-height: 600px;
+        }
+
+        .login-form-container {
+            padding: var(--spacing-3xl);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-form-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .login-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .login-logo-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-white);
+            font-size: var(--font-size-2xl);
+            font-weight: bold;
+        }
+
+        .login-logo-text {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            color: var(--primary-color);
+            font-family: var(--font-family-secondary);
+        }
+
+        .login-form-header h2 {
+            font-size: var(--font-size-2xl);
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .login-form-header p {
+            color: var(--text-secondary);
+            font-size: var(--font-size-base);
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
             width: 100%;
         }
-    }
-    
-    @media (max-width: 480px) {
-        .auth-section {
-            padding: var(--spacing-md) 0;
+
+        .form-group {
+            margin-bottom: var(--spacing-xl);
         }
-        
-        .auth-container {
-            margin: var(--spacing-md);
+
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: var(--spacing-md);
+            z-index: 1;
+            font-size: var(--font-size-lg);
+            color: var(--primary-color);
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 3rem;
+            border: 2px solid rgba(0, 0, 0, 0.1);
             border-radius: var(--border-radius-lg);
+            font-size: var(--font-size-base);
+            transition: all var(--transition-normal);
+            background: var(--bg-card);
         }
-    }
-</style>
-{% endblock %}
 
-{% block extra_js %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Focus on username field
-        document.getElementById('username').focus();
-        
-        // Check for URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('registered') === 'true') {
-            WardiApp.showNotification('Registrasi berhasil! Silakan login dengan akun Anda.', 'success');
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.2);
         }
-        if (urlParams.get('reset') === 'true') {
-            WardiApp.showNotification('Password berhasil direset! Silakan login dengan password baru.', 'success');
-        }
-    });
-    
-    function togglePassword(inputId) {
-        const input = document.getElementById(inputId);
-        const button = input.nextElementSibling;
-        
-        if (input.type === 'password') {
-            input.type = 'text';
-            button.textContent = '🙈';
-        } else {
-            input.type = 'password';
-            button.textContent = '👁️';
-        }
-    }
-    
-    async function handleLogin(event) {
-        event.preventDefault();
-        
-        const formData = {
-            username: document.getElementById('username').value,
-            password: document.getElementById('password').value,
-            remember: document.getElementById('remember').checked
-        };
-        
-        const loginBtn = document.getElementById('loginBtn');
-        const originalText = loginBtn.textContent;
-        loginBtn.disabled = true;
-        loginBtn.innerHTML = '<div class="loading"></div> Masuk...';
-        
-        try {
-            const response = await fetch('/api/auth/login/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                },
-                body: JSON.stringify(formData)
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                WardiApp.showNotification('Login berhasil! Selamat datang kembali.', 'success');
-                
-                // Redirect to dashboard or intended page
-                const redirectUrl = new URLSearchParams(window.location.search).get('next') || '/';
-                setTimeout(() => {
-                    window.location.href = redirectUrl;
-                }, 1000);
-            } else {
-                WardiApp.showNotification(data.error || 'Login gagal. Periksa username dan password Anda.', 'error');
-            }
-        } catch (error) {
-            console.error('Login error:', error);
-            WardiApp.showNotification('Terjadi kesalahan saat login. Silakan coba lagi.', 'error');
-        } finally {
-            loginBtn.disabled = false;
-            loginBtn.textContent = originalText;
-        }
-    }
-    
-    function loginWithGoogle() {
-        WardiApp.showNotification('Fitur login dengan Google akan segera tersedia.', 'info');
-        // TODO: Implement Google OAuth
-    }
-    
-    function showForgotPassword() {
-        document.getElementById('forgotPasswordModal').classList.add('show');
-        document.body.style.overflow = 'hidden';
-        document.getElementById('resetEmail').focus();
-    }
-    
-    function hideForgotPassword() {
-        document.getElementById('forgotPasswordModal').classList.remove('show');
-        document.body.style.overflow = 'auto';
-        document.getElementById('forgotPasswordForm').reset();
-    }
-    
-    async function handleForgotPassword(event) {
-        event.preventDefault();
-        
-        const email = document.getElementById('resetEmail').value;
-        
-        const resetBtn = document.getElementById('resetBtn');
-        const originalText = resetBtn.textContent;
-        resetBtn.disabled = true;
-        resetBtn.innerHTML = '<div class="loading"></div> Mengirim...';
-        
-        try {
-            const response = await fetch('/api/auth/forgot-password/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                },
-                body: JSON.stringify({ email: email })
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                WardiApp.showNotification('Link reset password telah dikirim ke email Anda.', 'success');
-                hideForgotPassword();
-            } else {
-                WardiApp.showNotification(data.error || 'Gagal mengirim link reset password.', 'error');
-            }
-        } catch (error) {
-            console.error('Forgot password error:', error);
-            WardiApp.showNotification('Terjadi kesalahan. Silakan coba lagi.', 'error');
-        } finally {
-            resetBtn.disabled = false;
-            resetBtn.textContent = originalText;
-        }
-    }
-    
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-    
-    // Close modal when clicking outside
-    document.addEventListener('click', function(event) {
-        const modal = document.getElementById('forgotPasswordModal');
-        if (event.target === modal) {
-            hideForgotPassword();
-        }
-    });
-    
-    // Enter key handling
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            const activeElement = document.activeElement;
-            
-            if (activeElement.closest('#loginForm')) {
-                event.preventDefault();
-                handleLogin(event);
-            } else if (activeElement.closest('#forgotPasswordForm')) {
-                event.preventDefault();
-                handleForgotPassword(event);
-            }
-        }
-    });
-</script>
-{% endblock %}
 
-            <button type="submit" class="login-btn">Masuk</button>
-        </form>
+        .toggle-password {
+            position: absolute;
+            right: var(--spacing-md);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: var(--font-size-lg);
+            color: var(--text-secondary);
+            transition: color var(--transition-normal);
+        }
 
-        <div class="form-links">
-            <p>Belum punya akun? <a href="{% url 'register_page' %}">Daftar di sini</a></p>
+        .toggle-password:hover {
+            color: var(--primary-color);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkmark {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(0, 0, 0, 0.3);
+            border-radius: var(--border-radius-sm);
+            margin-right: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-normal);
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:checked + .checkmark {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:checked + .checkmark::after {
+            content: '✓';
+            color: white;
+            font-size: var(--font-size-sm);
+            font-weight: bold;
+        }
+
+        .checkbox-text {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: var(--font-size-sm);
+            transition: color var(--transition-normal);
+        }
+
+        .forgot-password:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .btn-auth {
+            width: 100%;
+            padding: var(--spacing-md);
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .auth-divider {
+            text-align: center;
+            margin: var(--spacing-lg) 0;
+            position: relative;
+        }
+
+        .auth-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-divider span {
+            background: var(--bg-card);
+            padding: 0 var(--spacing-md);
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+
+        .social-login {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .btn-social {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            font-weight: 500;
+        }
+
+        .btn-social:hover {
+            border-color: var(--primary-color);
+            background: var(--bg-secondary);
+        }
+
+        .social-icon {
+            font-size: var(--font-size-lg);
+        }
+
+        .auth-footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .auth-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color var(--transition-normal);
+        }
+
+        .auth-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        /* Sidebar */
+        .login-sidebar {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-light) 100%);
+            color: white;
+            padding: var(--spacing-3xl);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><pattern id="pattern" width="0.05" height="0.05"><path d="M0,0 L100,100" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern><rect width="100" height="100" fill="url(%23pattern)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .sidebar-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar-content h3 {
+            font-size: var(--font-size-2xl);
+            margin-bottom: var(--spacing-2xl);
+            text-align: center;
+            color: var(--accent-color);
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xl);
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-lg);
+            backdrop-filter: blur(5px);
+            transition: transform var(--transition-normal);
+        }
+
+        .feature-item:hover {
+            transform: translateX(5px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+            color: var(--accent-color);
+        }
+
+        .feature-text h4 {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .feature-text p {
+            font-size: var(--font-size-sm);
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-dark);
+            color: var(--text-white);
+            padding: var(--spacing-xl) 0;
+            text-align: center;
+        }
+
+        .footer p {
+            color: var(--text-light);
+            font-size: var(--font-size-sm);
+        }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN
+           ========================================================================== */
+        /* Tablet */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 var(--spacing-lg);
+            }
+            
+            .login-card {
+                min-height: 500px;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            :root {
+                --font-size-5xl: 2.5rem;
+                --font-size-4xl: 2rem;
+                --font-size-3xl: 1.75rem;
+                --spacing-3xl: 2rem;
+            }
+            
+            .container {
+                padding: 0 var(--spacing-md);
+            }
+            
+            .login-card {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+            
+            .login-sidebar {
+                order: -1;
+                padding: var(--spacing-2xl);
+            }
+            
+            .login-form-container {
+                padding: var(--spacing-2xl);
+            }
+            
+            .form-options {
+                flex-direction: column;
+                gap: var(--spacing-md);
+                align-items: flex-start;
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: var(--spacing-xl) var(--spacing-sm);
+            }
+            
+            .login-card {
+                min-height: auto;
+            }
+            
+            .login-form-container {
+                padding: var(--spacing-xl);
+            }
+            
+            .login-sidebar {
+                padding: var(--spacing-xl);
+            }
+            
+            .login-logo {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <div class="logo-icon">W</div>
+                <span class="logo-text">WARDI</span>
+            </a>
+            
+            <!-- Mobile menu button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/" class="nav-link">Beranda</a></li>
+                <li><a href="/analyze" class="nav-link">Analisis Budaya</a></li>
+                <li><a href="/translate" class="nav-link">Penerjemah</a></li>
+                <li><a href="/forum" class="nav-link">Forum</a></li>
+                <li><a href="/places" class="nav-link">Tempat Wisata</a></li>
+                <li><a href="{% url 'register_page' %}" class="nav-link">Daftar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-form-container">
+            <div class="login-form-header">
+                <div class="login-logo">
+                    <div class="login-logo-icon">W</div>
+                    <div class="login-logo-text">WARDI</div>
+                </div>
+                <h2>Selamat Datang Kembali</h2>
+                <p>Masuk ke akun Anda untuk melanjutkan.</p>
+            </div>
+
+            <form class="login-form" method="post" action="{% url 'login_view' %}">
+                {% csrf_token %}
+
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="alert alert-danger">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">Username</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon"><i class="fas fa-user"></i></span>
+                        {{ form.username }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.password.id_for_label }}">Password</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon"><i class="fas fa-lock"></i></span>
+                        {{ form.password }}
+                        <button type="button" class="toggle-password" aria-label="Show password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" name="remember_me">
+                        <span class="checkmark"></span>
+                        <span class="checkbox-text">Ingat saya</span>
+                    </label>
+                    <a href="#" class="forgot-password">Lupa password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-auth">
+                    <i class="fas fa-sign-in-alt"></i> Masuk
+                </button>
+
+                <div class="auth-divider">
+                    <span>atau</span>
+                </div>
+
+                <div class="social-login">
+                    <button type="button" class="btn btn-social">
+                        <span class="social-icon"><i class="fab fa-google"></i></span>
+                        Masuk dengan Google
+                    </button>
+                </div>
+
+                <div class="auth-footer">
+                    <p>Belum memiliki akun? <a href="{% url 'register_page' %}" class="auth-link">Daftar sekarang</a></p>
+                </div>
+            </form>
+        </div>
+        
+        <div class="login-sidebar">
+            <div class="sidebar-content">
+                <h3>🌟 Fitur Unggulan</h3>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span class="feature-icon"><i class="fas fa-robot"></i></span>
+                        <div class="feature-text">
+                            <h4>Analisis Budaya</h4>
+                            <p>Identifikasi artefak budaya dengan teknologi AI</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon"><i class="fas fa-comments"></i></span>
+                        <div class="feature-text">
+                            <h4>Forum Budaya</h4>
+                            <p>Diskusi dan berbagi pengalaman budaya</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon"><i class="fas fa-language"></i></span>
+                        <div class="feature-text">
+                            <h4>Penerjemah Daerah</h4>
+                            <p>Terjemahan bahasa daerah secara real-time</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Wardi - Warisan Digital Indonesia. Dibuat dengan ❤️ untuk Indonesia</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Focus on username field
+            document.getElementById('username').focus();
+            
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (mobileMenuBtn && navMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    const isOpen = navMenu.classList.contains('open');
+                    
+                    if (isOpen) {
+                        navMenu.classList.remove('open');
+                        mobileMenuBtn.classList.remove('active');
+                    } else {
+                        navMenu.classList.add('open');
+                        mobileMenuBtn.classList.add('active');
+                    }
+                });
+            }
+            
+            // Navbar scroll effect
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+            
+            // Password visibility toggle
+            const togglePassword = document.querySelector('.toggle-password');
+            const passwordInput = document.getElementById('password');
+            
+            togglePassword.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    togglePassword.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                } else {
+                    passwordInput.type = 'password';
+                    togglePassword.innerHTML = '<i class="fas fa-eye"></i>';
+                }
+            });
+            
+            // Google login
+            document.querySelector('.btn-social').addEventListener('click', function() {
+                alert('Fitur login dengan Google akan segera tersedia!');
+            });
+        });
+    </script>
 </body>
 </html>

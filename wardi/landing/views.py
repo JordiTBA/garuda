@@ -1,13 +1,16 @@
-from django.shortcuts import render, redirect, get_object_or_404
+﻿from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.conf import settings
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django import forms
 import json
 from google import genai
 from PIL import Image
@@ -33,51 +36,85 @@ def places_page(request):
     places = Place.objects.all()
     return render(request, 'landing/places.html', {'places': places})
 
-def login_page(request):
+
+class IconInput(forms.TextInput):
+    template_name = 'landing/widgets/icon_input.html'
+
+    def __init__(self, attrs=None, icon_class=None):
+        super().__init__(attrs)
+        self.icon_class = icon_class
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['widget']['icon_class'] = self.icon_class
+        return context
+
+class IconPasswordInput(IconInput, forms.PasswordInput):
+    pass
+class CustomRegisterForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = UserCreationForm.Meta.fields + ('email',)
+
+    def __init__(self, *args, **kwargs):
+        super(CustomRegisterForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.help_text = '' # Remove default help text
+class CustomLoginForm(AuthenticationForm):
+    username = forms.CharField(
+        label="Username atau Email",
+        widget=IconInput(attrs={
+            'placeholder': 'Masukkan username atau email',
+            'autocomplete': 'username'
+        }, icon_class='fa-user')
+    )
+    password = forms.CharField(
+        label="Password",
+        widget=IconPasswordInput(attrs={
+            'placeholder': 'Masukkan password',
+            'autocomplete': 'current-password'
+        }, icon_class='fa-lock')
+    )
+
+
+def login_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            messages.success(request, f'Selamat datang, {user.username}!')
-            next_url = request.GET.get('next', '/')
-            return redirect(next_url)
+        form = CustomLoginForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                # Redirect to the 'next' page if it exists, otherwise to the landing page
+                next_url = request.POST.get('next', 'landing_page')
+                return redirect(next_url)
         else:
-            messages.error(request, 'Username atau password salah!')
+            # If form is not valid, the error is automatically added to form.non_field_errors
+            # which will be displayed in your template.
+            messages.error(request, "Username atau password salah. Silakan coba lagi.")
+    else:
+        form = CustomLoginForm()
     
-    return render(request, 'landing/login.html')
+    return render(request, 'landing/login.html', {'form': form})
 
 def register_page(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        password_confirm = request.POST.get('password_confirm')
+        form = CustomRegisterForm(request.POST)
+        print(form.is_valid())
+        if form.is_valid():
+            user = form.save()
+            # Optional: Log the user in directly after registration
+            # login(request, user)
+            messages.success(request, 'Registrasi berhasil! Silakan login dengan akun baru Anda.')
+            return redirect('login_view')
+    else:
+        form = CustomRegisterForm()
         
-        # Validasi
-        if password != password_confirm:
-            messages.error(request, 'Password tidak sama!')
-            return render(request, 'landing/register.html')
-        
-        if User.objects.filter(username=username).exists():
-            messages.error(request, 'Username sudah digunakan!')
-            return render(request, 'landing/register.html')
-        
-        if User.objects.filter(email=email).exists():
-            messages.error(request, 'Email sudah digunakan!')
-            return render(request, 'landing/register.html')
-        
-        # Buat user baru
-        user = User.objects.create_user(username=username, email=email, password=password)
-        UserProfile.objects.create(user=user)
-        
-        messages.success(request, 'Akun berhasil dibuat! Silakahn login.')
-        return redirect('login_page')
-    
-    return render(request, 'landing/register.html')
-
+    return render(request, 'landing/register.html', {'form': form})
 def logout_view(request):
     logout(request)
     messages.success(request, 'Anda telah logout.')
@@ -349,12 +386,14 @@ def create_forum_post(request):
         if not request.user.is_authenticated:
             return JsonResponse({
                 'success': False,
-                'error': 'Anda harus login terlebih dahulu untuk menyukai diskusi'
+                'error': 'Anda harus login terlebih dahulu untuk membuat diskusi'
             })
         try:
-            title = request.POST.get('title')
-            content = request.POST.get('content')
-            category = request.POST.get('category')
+            # Handle JSON data
+            data = json.loads(request.body)
+            title = data.get('title')
+            content = data.get('content')
+            category = data.get('category')
             
             post = ForumPost.objects.create(
                 title=title,
@@ -365,7 +404,7 @@ def create_forum_post(request):
             
             return JsonResponse({
                 'success': True,
-                'message': 'Post berhasil dibuat!',
+                'message': 'Diskusi berhasil dibuat!',
                 'post_id': post.id
             })
         except Exception as e:
@@ -755,6 +794,18 @@ def get_place_detail(request, place_id):
     try:
         place = get_object_or_404(Place, id=place_id)
         
+        # Get reviews for this place
+        reviews = PlaceRating.objects.filter(place=place).order_by('-created_at')
+        reviews_data = []
+        for review in reviews:
+            reviews_data.append({
+                'id': review.id,
+                'author': review.user.username,
+                'rating': review.rating,
+                'content': review.comment,
+                'created_at': review.created_at.strftime('%Y-%m-%d %H:%M')
+            })
+        
         place_data = {
             "id": place.id,
             "name": place.name,
@@ -765,7 +816,8 @@ def get_place_detail(request, place_id):
             "image_url": place.get_image_url(),
             "average_rating": place.average_rating(),
             "rating_count": place.rating_count(),
-            "created_at": place.created_at.strftime("%Y-%m-%d %H:%M")
+            "created_at": place.created_at.strftime("%Y-%m-%d %H:%M"),
+            "reviews": reviews_data
         }
         
         return JsonResponse({
@@ -905,3 +957,65 @@ def update_place(request, place_id):
         
     except Exception as e:
         return JsonResponse({"success": False, "error": str(e)})
+
+@csrf_exempt
+@login_required
+def submit_place_review(request):
+    """API endpoint for submitting place reviews"""
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return JsonResponse({
+                'success': False,
+                'error': 'Anda harus login terlebih dahulu untuk memberikan rating'
+            })
+        try:
+            data = json.loads(request.body)
+            place_id = data.get('place_id')
+            rating = int(data.get('rating', 0))
+            comment = data.get('content', '')  # Changed from 'comment' to 'content' to match frontend
+            
+            print(f"DEBUG: Raw request body: {request.body}")  # Debug
+            print(f"DEBUG: Parsed data: {data}")  # Debug
+            print(f"DEBUG: Received data - place_id: {place_id}, rating: {rating}, comment: '{comment}' (length: {len(comment)})")  # Debug
+            
+            if not place_id or not rating:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Place ID and rating are required'
+                })
+            
+            if rating < 1 or rating > 5:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Rating must be between 1 and 5'
+                })
+            
+            place = get_object_or_404(Place, id=place_id)
+            place_rating, created = PlaceRating.objects.update_or_create(
+                place=place,
+                user=request.user,
+                defaults={
+                    'rating': rating,
+                    'comment': comment
+                }
+            )
+            
+            print(f"DEBUG: PlaceRating created/updated - created: {created}, id: {place_rating.id}")  # Debug
+            print(f"DEBUG: Saved PlaceRating - rating: {place_rating.rating}, comment: '{place_rating.comment}' (length: {len(place_rating.comment)})")  # Debug
+            
+            action = 'dibuat' if created else 'diperbarui'
+            return JsonResponse({
+                'success': True,
+                'message': f'Rating berhasil {action}!',
+                'place_id': place_id,
+                'rating': rating,
+                'average_rating': place.average_rating(),
+                'rating_count': place.rating_count()
+            })
+        except Exception as e:
+            print(f"DEBUG: Error in submit_place_review - {str(e)}")  # Debug
+            import traceback
+            traceback.print_exc()
+            return JsonResponse({'success': False, 'error': str(e)})
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})

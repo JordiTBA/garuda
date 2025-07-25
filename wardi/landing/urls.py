@@ -8,7 +8,7 @@ urlpatterns = [
     path('forum/', views.forum_page, name='forum_page'),
     path('places/', views.places_page, name='places_page'),
     
-    path('login/', views.login_page, name='login_page'),
+    path('login/', views.login_view, name='login_view'),
     path('register/', views.register_page, name='register_page'),
     path('logout/', views.logout_view, name='logout_view'),
     
@@ -19,16 +19,23 @@ urlpatterns = [
     
     path('upload/', views.upload_cultural_item, name='upload_cultural_item'),
     path('api/translate/', views.translate_audio, name='translate_audio'),
+    # Forum API endpoints
     path('api/forum/posts/', views.get_forum_posts, name='get_forum_posts'),
     path('api/forum/create/', views.create_forum_post, name='create_forum_post'),
-    # Forum discussions endpoints (aliases for posts)
     path('api/forum/discussions/', views.forum_discussions_api, name='forum_discussions_api'),
+    path('api/forum/posts/<int:post_id>/', views.get_forum_post_detail, name='get_forum_post_detail'),
+    path('api/forum/posts/<int:post_id>/like/', views.like_post, name='like_forum_post'),
+    path('api/forum/posts/<int:post_id>/comment/', views.add_comment, name='add_forum_comment'),
     path('api/forum/discussions/<int:post_id>/', views.get_forum_post_detail, name='get_forum_discussion_detail'),
     path('api/forum/discussions/<int:post_id>/like/', views.like_post, name='like_forum_discussion'),
     path('api/forum/discussions/<int:post_id>/comment/', views.add_comment, name='add_comment'),
     path('api/forum/comments/<int:comment_id>/like/', views.like_comment, name='like_comment'),
     path('api/places/', views.get_places_api, name='get_places_api'),
+    path('api/places/<int:place_id>/', views.get_place_detail, name='get_place_detail'),
+    path('api/places/create/', views.create_place, name='create_place'),
+    path('api/places/<int:place_id>/update/', views.update_place, name='update_place'),
     path('api/places/rate/', views.rate_place, name='rate_place'),
+    path('api/places/reviews/', views.submit_place_review, name='submit_place_review'),
     path('api/places/ratings/<int:place_id>/', views.get_place_ratings, name='get_place_ratings'),
     path('api/posts/like/<int:post_id>/', views.like_post, name='like_post'),
 ]

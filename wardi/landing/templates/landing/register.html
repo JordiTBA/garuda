@@ -1,292 +1,999 @@
-{% extends 'landing/base.html' %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Bergabunglah dengan Wardi untuk mengeksplorasi dan melestarikan warisan budaya Indonesia.">
+    <title>Daftar - Wardi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ==========================================================================
+           WARDI - CSS VARIABLES & RESET
+           ========================================================================== */
+        :root {
+            /* Colors */
+            --primary-color: #8B4513; /* Rich brown for tradition */
+            --primary-dark: #5D2E0F;
+            --primary-light: #A86A3D;
+            --secondary-color: #2c3e50;
+            --secondary-light: #34495e;
+            --accent-color: #DAA520; /* Gold accent */
+            --accent-secondary: #5F9EA0; /* Cultural blue-green */
+            
+            /* Text Colors */
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --text-light: #bdc3c7;
+            --text-white: #ffffff;
+            
+            /* Background Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-dark: #2c3e50;
+            --bg-card: #ffffff;
+            --bg-overlay: rgba(44, 62, 80, 0.9);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            
+            /* Spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            --spacing-3xl: 4rem;
+            
+            /* Typography */
+            --font-family-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-family-secondary: 'Georgia', serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-size-4xl: 2.25rem;
+            --font-size-5xl: 3rem;
+            
+            /* Borders */
+            --border-radius-sm: 0.25rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            --border-radius-full: 9999px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+            --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
 
-{% block title %}Daftar - Wardi{% endblock %}
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-{% block meta_description %}Bergabunglah dengan Wardi untuk mengeksplorasi dan melestarikan warisan budaya Indonesia.{% endblock %}
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
 
-{% block body_class %}auth-page{% endblock %}
+        body {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--gradient-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-{% block content %}
-    <section class="auth-section">
-        <div class="container">
-            <div class="auth-container">
-                <div class="auth-card">
-                    <div class="auth-header">
-                        <div class="auth-logo">
-                            <span class="logo-icon">🏛️</span>
-                            <h1>Wardi</h1>
-                        </div>
-                        <h2>Bergabung dengan Wardi</h2>
-                        <p>Daftarkan akun Anda dan mulai menjelajahi kekayaan budaya Indonesia</p>
+        /* ==========================================================================
+           UTILITY CLASSES
+           ========================================================================== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            text-decoration: none;
+            border: 2px solid transparent;
+            border-radius: var(--border-radius-full);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .btn:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--text-white);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: var(--text-white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-lg {
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: var(--font-size-lg);
+        }
+
+        .btn-sm {
+            padding: var(--spacing-xs) var(--spacing-md);
+            font-size: var(--font-size-sm);
+        }
+
+        /* Text Utilities */
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+
+        .text-primary { color: var(--primary-color); }
+        .text-secondary { color: var(--text-secondary); }
+        .text-white { color: var(--text-white); }
+        .text-accent { color: var(--accent-color); }
+
+        /* ==========================================================================
+           NAVIGATION
+           ========================================================================== */
+        .navbar {
+            background: var(--secondary-color);
+            padding: var(--spacing-md) 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: var(--z-fixed);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+
+        .navbar.scrolled {
+            padding: var(--spacing-sm) 0;
+            background: var(--bg-overlay);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--accent-color);
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            text-decoration: none;
+            transition: all var(--transition-normal);
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            color: var(--text-white);
+            font-weight: bold;
+            font-size: var(--font-size-xl);
+        }
+
+        .logo-text {
+            font-family: var(--font-family-secondary);
+            position: relative;
+        }
+
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-sm);
+        }
+
+        .hamburger {
+            width: 24px;
+            height: 3px;
+            background: var(--text-white);
+            border-radius: 2px;
+            transition: all var(--transition-normal);
+        }
+
+        /* ==========================================================================
+           REGISTRATION SECTION
+           ========================================================================== */
+        .register-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding: var(--spacing-3xl) var(--spacing-md);
+        }
+
+        .register-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-xl);
+            box-shadow: var(--shadow-2xl);
+            width: 100%;
+            max-width: 1000px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+            min-height: 600px;
+        }
+
+        .register-form-container {
+            padding: var(--spacing-3xl);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .register-form-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .register-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .register-logo-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-white);
+            font-size: var(--font-size-2xl);
+            font-weight: bold;
+        }
+
+        .register-logo-text {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            color: var(--primary-color);
+            font-family: var(--font-family-secondary);
+        }
+
+        .register-form-header h2 {
+            font-size: var(--font-size-2xl);
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .register-form-header p {
+            color: var(--text-secondary);
+            font-size: var(--font-size-base);
+        }
+
+        .register-form {
+            max-width: 400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: var(--spacing-md);
+            z-index: 1;
+            font-size: var(--font-size-lg);
+            color: var(--primary-color);
+        }
+
+        .input-wrapper input,
+        .input-wrapper select {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 3rem;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius-lg);
+            font-size: var(--font-size-base);
+            transition: all var(--transition-normal);
+            background: var(--bg-card);
+        }
+
+        .input-wrapper input:focus,
+        .input-wrapper select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.2);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: var(--spacing-md);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: var(--font-size-lg);
+            color: var(--text-secondary);
+            transition: color var(--transition-normal);
+        }
+
+        .toggle-password:hover {
+            color: var(--primary-color);
+        }
+
+        .field-help {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+            margin-top: var(--spacing-xs);
+        }
+
+        .password-strength {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .strength-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .strength-fill {
+            height: 100%;
+            transition: all var(--transition-normal);
+            border-radius: 2px;
+        }
+
+        .strength-text {
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+        }
+
+        .form-agreement {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+            user-select: none;
+            line-height: 1.5;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkmark {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(0, 0, 0, 0.3);
+            border-radius: var(--border-radius-sm);
+            margin-right: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-normal);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:checked + .checkmark {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:checked + .checkmark::after {
+            content: '✓';
+            color: white;
+            font-size: var(--font-size-sm);
+            font-weight: bold;
+        }
+
+        .checkbox-text {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+
+        .auth-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color var(--transition-normal);
+        }
+
+        .auth-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .btn-auth {
+            width: 100%;
+            padding: var(--spacing-md);
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .auth-divider {
+            text-align: center;
+            margin: var(--spacing-lg) 0;
+            position: relative;
+        }
+
+        .auth-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-divider span {
+            background: var(--bg-card);
+            padding: 0 var(--spacing-md);
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+
+        .social-login {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .btn-social {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            font-weight: 500;
+        }
+
+        .btn-social:hover {
+            border-color: var(--primary-color);
+            background: var(--bg-secondary);
+        }
+
+        .social-icon {
+            font-size: var(--font-size-lg);
+        }
+
+        .auth-footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        /* Sidebar */
+        .register-sidebar {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-light) 100%);
+            color: white;
+            padding: var(--spacing-3xl);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><pattern id="pattern" width="0.05" height="0.05"><path d="M0,0 L100,100" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern><rect width="100" height="100" fill="url(%23pattern)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .sidebar-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar-content h3 {
+            font-size: var(--font-size-2xl);
+            margin-bottom: var(--spacing-2xl);
+            text-align: center;
+            color: var(--accent-color);
+        }
+
+        .benefit-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xl);
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-lg);
+            backdrop-filter: blur(5px);
+            transition: transform var(--transition-normal);
+        }
+
+        .benefit-item:hover {
+            transform: translateX(5px);
+        }
+
+        .benefit-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            color: var(--accent-color);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .benefit-text h4 {
+            font-size: var(--font-size-base);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .benefit-text p {
+            font-size: var(--font-size-sm);
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-dark);
+            color: var(--text-white);
+            padding: var(--spacing-xl) 0;
+            text-align: center;
+        }
+
+        .footer p {
+            color: var(--text-light);
+            font-size: var(--font-size-sm);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-lg);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-xl);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header h3 {
+            font-size: var(--font-size-xl);
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background var(--transition-normal);
+        }
+
+        .modal-close:hover {
+            background: var(--bg-secondary);
+        }
+
+        .modal-body {
+            padding: var(--spacing-xl);
+        }
+
+        .modal-body h4 {
+            margin-bottom: var(--spacing-md);
+            color: var(--primary-color);
+        }
+
+        .modal-body p {
+            margin-bottom: var(--spacing-md);
+            line-height: 1.6;
+        }
+
+        .modal-body ul {
+            padding-left: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .modal-body li {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            padding: var(--spacing-lg);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN
+           ========================================================================== */
+        /* Tablet */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 var(--spacing-lg);
+            }
+            
+            .register-card {
+                min-height: 500px;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            :root {
+                --font-size-5xl: 2.5rem;
+                --font-size-4xl: 2rem;
+                --font-size-3xl: 1.75rem;
+                --spacing-3xl: 2rem;
+            }
+            
+            .container {
+                padding: 0 var(--spacing-md);
+            }
+            
+            .register-card {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+            
+            .register-sidebar {
+                order: -1;
+                padding: var(--spacing-2xl);
+            }
+            
+            .register-form-container {
+                padding: var(--spacing-2xl);
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-agreement .checkbox-text {
+                font-size: var(--font-size-xs);
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .register-container {
+                padding: var(--spacing-xl) var(--spacing-sm);
+            }
+            
+            .register-card {
+                min-height: auto;
+            }
+            
+            .register-form-container {
+                padding: var(--spacing-xl);
+            }
+            
+            .register-sidebar {
+                padding: var(--spacing-xl);
+            }
+            
+            .register-logo {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <div class="logo-icon">W</div>
+                <span class="logo-text">WARDI</span>
+            </a>
+            
+            <!-- Mobile menu button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/" class="nav-link">Beranda</a></li>
+                <li><a href="/analyze" class="nav-link">Analisis Budaya</a></li>
+                <li><a href="/translate" class="nav-link">Penerjemah</a></li>
+                <li><a href="/forum" class="nav-link">Forum</a></li>
+                <li><a href="/places" class="nav-link">Tempat Wisata</a></li>
+                <li><a href="{% url 'login_view' %}" class="nav-link">Masuk</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Registration Section -->
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-form-container">
+            <div class="register-form-header">
+                <div class="register-logo">
+                    <div class="register-logo-icon">W</div>
+                    <div class="register-logo-text">WARDI</div>
+                </div>
+                <h2>Bergabung dengan Wardi</h2>
+                <p>Daftarkan akun Anda dan mulai menjelajahi kekayaan budaya Indonesia</p>
+            </div>
+
+            <form class="register-form" method="post" action="{% url 'register_page' %}">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <p><strong>Terjadi kesalahan:</strong></p>
+                        <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ field.label }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                        </ul>
                     </div>
+                {% endif %}
 
-                    <form class="auth-form" id="registerForm" onsubmit="handleRegister(event)">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="firstName">Nama Depan</label>
-                                <div class="input-wrapper">
-                                    <span class="input-icon">👤</span>
-                                    <input 
-                                        type="text" 
-                                        id="firstName" 
-                                        name="firstName" 
-                                        required
-                                        placeholder="Nama depan"
-                                    >
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="lastName">Nama Belakang</label>
-                                <div class="input-wrapper">
-                                    <span class="input-icon">👤</span>
-                                    <input 
-                                        type="text" 
-                                        id="lastName" 
-                                        name="lastName" 
-                                        required
-                                        placeholder="Nama belakang"
-                                    >
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <div class="input-wrapper">
-                                <span class="input-icon">@</span>
-                                <input 
-                                    type="text" 
-                                    id="username" 
-                                    name="username" 
-                                    required
-                                    placeholder="Pilih username unik"
-                                    pattern="[a-zA-Z0-9_]+"
-                                    minlength="3"
-                                    maxlength="20"
-                                >
-                            </div>
-                            <div class="field-help">
-                                Username hanya boleh mengandung huruf, angka, dan underscore (_)
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <div class="input-wrapper">
-                                <span class="input-icon">📧</span>
-                                <input 
-                                    type="email" 
-                                    id="email" 
-                                    name="email" 
-                                    required
-                                    placeholder="alamat@email.com"
-                                >
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <div class="input-wrapper">
-                                    <span class="input-icon">🔒</span>
-                                    <input 
-                                        type="password" 
-                                        id="password" 
-                                        name="password" 
-                                        required
-                                        placeholder="Minimal 8 karakter"
-                                        minlength="8"
-                                    >
-                                    <button type="button" class="toggle-password" onclick="togglePassword('password')">
-                                        👁️
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="password_confirm">Konfirmasi Password</label>
-                                <div class="input-wrapper">
-                                    <span class="input-icon">🔒</span>
-                                    <input 
-                                        type="password" 
-                                        id="password_confirm" 
-                                        name="password_confirm" 
-                                        required
-                                        placeholder="Ulangi password"
-                                        minlength="8"
-                                    >
-                                    <button type="button" class="toggle-password" onclick="togglePassword('password_confirm')">
-                                        👁️
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="password-strength" id="passwordStrength" style="display: none;">
-                            <div class="strength-bar">
-                                <div class="strength-fill" id="strengthFill"></div>
-                            </div>
-                            <div class="strength-text" id="strengthText">Lemah</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="region">Asal Daerah (opsional)</label>
-                            <div class="input-wrapper">
-                                <span class="input-icon">🌍</span>
-                                <select id="region" name="region">
-                                    <option value="">Pilih provinsi asal</option>
-                                    <option value="aceh">Aceh</option>
-                                    <option value="sumatra-utara">Sumatra Utara</option>
-                                    <option value="sumatra-barat">Sumatra Barat</option>
-                                    <option value="riau">Riau</option>
-                                    <option value="kepulauan-riau">Kepulauan Riau</option>
-                                    <option value="jambi">Jambi</option>
-                                    <option value="sumatra-selatan">Sumatra Selatan</option>
-                                    <option value="bengkulu">Bengkulu</option>
-                                    <option value="lampung">Lampung</option>
-                                    <option value="kepulauan-bangka-belitung">Kepulauan Bangka Belitung</option>
-                                    <option value="dki-jakarta">DKI Jakarta</option>
-                                    <option value="jawa-barat">Jawa Barat</option>
-                                    <option value="jawa-tengah">Jawa Tengah</option>
-                                    <option value="yogyakarta">D.I. Yogyakarta</option>
-                                    <option value="jawa-timur">Jawa Timur</option>
-                                    <option value="banten">Banten</option>
-                                    <option value="bali">Bali</option>
-                                    <option value="nusa-tenggara-barat">Nusa Tenggara Barat</option>
-                                    <option value="nusa-tenggara-timur">Nusa Tenggara Timur</option>
-                                    <option value="kalimantan-barat">Kalimantan Barat</option>
-                                    <option value="kalimantan-tengah">Kalimantan Tengah</option>
-                                    <option value="kalimantan-selatan">Kalimantan Selatan</option>
-                                    <option value="kalimantan-timur">Kalimantan Timur</option>
-                                    <option value="kalimantan-utara">Kalimantan Utara</option>
-                                    <option value="sulawesi-utara">Sulawesi Utara</option>
-                                    <option value="sulawesi-tengah">Sulawesi Tengah</option>
-                                    <option value="sulawesi-selatan">Sulawesi Selatan</option>
-                                    <option value="sulawesi-tenggara">Sulawesi Tenggara</option>
-                                    <option value="gorontalo">Gorontalo</option>
-                                    <option value="sulawesi-barat">Sulawesi Barat</option>
-                                    <option value="maluku">Maluku</option>
-                                    <option value="maluku-utara">Maluku Utara</option>
-                                    <option value="papua-barat">Papua Barat</option>
-                                    <option value="papua">Papua</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-agreement">
-                            <label class="checkbox-wrapper">
-                                <input type="checkbox" id="agreement" name="agreement" required>
-                                <span class="checkmark"></span>
-                                <span class="checkbox-text">
-                                    Saya setuju dengan 
-                                    <a href="#" onclick="showTerms()" class="auth-link">Syarat & Ketentuan</a>
-                                    dan 
-                                    <a href="#" onclick="showPrivacy()" class="auth-link">Kebijakan Privasi</a>
-                                </span>
-                            </label>
-                        </div>
-
-                        <div class="form-agreement">
-                            <label class="checkbox-wrapper">
-                                <input type="checkbox" id="newsletter" name="newsletter">
-                                <span class="checkmark"></span>
-                                <span class="checkbox-text">
-                                    Terima update dan newsletter tentang budaya Indonesia
-                                </span>
-                            </label>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-auth" id="registerBtn">
-                            🚀 Daftar Sekarang
-                        </button>
-
-                        <div class="auth-divider">
-                            <span>atau</span>
-                        </div>
-
-                        <div class="social-login">
-                            <button type="button" class="btn btn-social btn-google" onclick="registerWithGoogle()">
-                                <span class="social-icon">🌐</span>
-                                Daftar dengan Google
-                            </button>
-                        </div>
-
-                        <div class="auth-footer">
-                            <p>Sudah memiliki akun? 
-                                <a href="{% url 'login_page' %}" class="auth-link">
-                                    Masuk di sini
-                                </a>
-                            </p>
-                        </div>
-                    </form>
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">Username</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon"><i class="fas fa-at"></i></span>
+                        {{ form.username }}
+                    </div>
                 </div>
 
-                <div class="auth-sidebar">
-                    <div class="sidebar-content">
-                        <h3>🎯 Mengapa Bergabung?</h3>
-                        <div class="benefit-list">
-                            <div class="benefit-item">
-                                <span class="benefit-icon">🤖</span>
-                                <div class="benefit-text">
-                                    <h4>AI Canggih</h4>
-                                    <p>Analisis gambar budaya dengan teknologi AI terdepan</p>
-                                </div>
-                            </div>
-                            <div class="benefit-item">
-                                <span class="benefit-icon">🌍</span>
-                                <div class="benefit-text">
-                                    <h4>Komunitas Budaya</h4>
-                                    <p>Bergabung dengan pecinta budaya dari seluruh Indonesia</p>
-                                </div>
-                            </div>
-                            <div class="benefit-item">
-                                <span class="benefit-icon">📚</span>
-                                <div class="benefit-text">
-                                    <h4>Edukasi Gratis</h4>
-                                    <p>Akses konten edukatif tentang budaya nusantara</p>
-                                </div>
-                            </div>
-                            <div class="benefit-item">
-                                <span class="benefit-icon">🎨</span>
-                                <div class="benefit-text">
-                                    <h4>Lestarikan Budaya</h4>
-                                    <p>Berkontribusi dalam pelestarian warisan budaya</p>
-                                </div>
-                            </div>
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Email</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                        {{ form.email }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.password1.id_for_label }}">Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon"><i class="fas fa-lock"></i></span>
+                            {{ form.password1 }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.password2.id_for_label }}">Konfirmasi Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon"><i class="fas fa-lock"></i></span>
+                            {{ form.password2 }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-agreement">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="agreement" name="agreement" required>
+                        <span class="checkmark"></span>
+                        <span class="checkbox-text">
+                            Saya setuju dengan <a href="#" class="auth-link">Syarat & Ketentuan</a>
+                        </span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-auth">
+                    <i class="fas fa-rocket"></i> Daftar Sekarang
+                </button>
+
+                <div class="auth-footer">
+                    <p>Sudah memiliki akun? 
+                        <a href="{% url 'login_view' %}" class="auth-link">
+                            Masuk di sini
+                        </a>
+                    </p>
+                </div>
+            </form>
+        </div>
+        
+        <div class="register-sidebar">
+            <div class="sidebar-content">
+                <h3>🎯 Mengapa Bergabung?</h3>
+                <div class="benefit-list">
+                    <div class="benefit-item">
+                        <span class="benefit-icon"><i class="fas fa-robot"></i></span>
+                        <div class="benefit-text">
+                            <h4>AI Canggih</h4>
+                            <p>Analisis gambar budaya dengan teknologi AI terdepan</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon"><i class="fas fa-users"></i></span>
+                        <div class="benefit-text">
+                            <h4>Komunitas Budaya</h4>
+                            <p>Bergabung dengan pecinta budaya dari seluruh Indonesia</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</div>
 
     <!-- Terms Modal -->
     <div class="modal" id="termsModal">
-        <div class="modal-content modal-large">
+        <div class="modal-content">
             <div class="modal-header">
                 <h3>Syarat & Ketentuan</h3>
                 <button class="modal-close" onclick="hideTerms()">×</button>
             </div>
             
             <div class="modal-body">
-                <div class="terms-content">
-                    <h4>1. Penerimaan Syarat</h4>
-                    <p>Dengan mendaftar dan menggunakan layanan Wardi, Anda menyetujui untuk terikat dengan syarat dan ketentuan ini.</p>
-                    
-                    <h4>2. Penggunaan Layanan</h4>
-                    <p>Layanan Wardi ditujukan untuk tujuan edukasi dan pelestarian budaya Indonesia. Pengguna diharapkan menggunakan platform ini dengan bertanggung jawab.</p>
-                    
-                    <h4>3. Konten Pengguna</h4>
-                    <p>Pengguna bertanggung jawab atas konten yang mereka unggah. Konten harus relevan dengan budaya Indonesia dan tidak melanggar hak cipta.</p>
-                    
-                    <h4>4. Privasi</h4>
-                    <p>Kami menghormati privasi pengguna dan berkomitmen untuk melindungi data pribadi sesuai dengan kebijakan privasi kami.</p>
-                    
-                    <h4>5. Batasan Tanggung Jawab</h4>
-                    <p>Wardi tidak bertanggung jawab atas kerugian yang timbul dari penggunaan layanan ini, termasuk namun tidak terbatas pada kehilangan data atau gangguan layanan.</p>
-                </div>
+                <h4>1. Penerimaan Syarat</h4>
+                <p>Dengan mendaftar dan menggunakan layanan Wardi, Anda menyetujui untuk terikat dengan syarat dan ketentuan ini.</p>
+                
+                <h4>2. Penggunaan Layanan</h4>
+                <p>Layanan Wardi ditujukan untuk tujuan edukasi dan pelestarian budaya Indonesia. Pengguna diharapkan menggunakan platform ini dengan bertanggung jawab.</p>
+                
+                <h4>3. Konten Pengguna</h4>
+                <p>Pengguna bertanggung jawab atas konten yang mereka unggah. Konten harus relevan dengan budaya Indonesia dan tidak melanggar hak cipta.</p>
+                
+                <h4>4. Privasi</h4>
+                <p>Kami menghormati privasi pengguna dan berkomitmen untuk melindungi data pribadi sesuai dengan kebijakan privasi kami.</p>
+                
+                <h4>5. Batasan Tanggung Jawab</h4>
+                <p>Wardi tidak bertanggung jawab atas kerugian yang timbul dari penggunaan layanan ini, termasuk namun tidak terbatas pada kehilangan data atau gangguan layanan.</p>
             </div>
             
             <div class="modal-actions">
@@ -299,32 +1006,30 @@
 
     <!-- Privacy Modal -->
     <div class="modal" id="privacyModal">
-        <div class="modal-content modal-large">
+        <div class="modal-content">
             <div class="modal-header">
                 <h3>Kebijakan Privasi</h3>
                 <button class="modal-close" onclick="hidePrivacy()">×</button>
             </div>
             
             <div class="modal-body">
-                <div class="privacy-content">
-                    <h4>Informasi yang Kami Kumpulkan</h4>
-                    <p>Kami mengumpulkan informasi yang Anda berikan saat mendaftar, seperti nama, email, dan asal daerah untuk memberikan layanan yang lebih personal.</p>
-                    
-                    <h4>Penggunaan Informasi</h4>
-                    <p>Informasi yang dikumpulkan digunakan untuk:</p>
-                    <ul>
-                        <li>Menyediakan dan meningkatkan layanan</li>
-                        <li>Personalisasi pengalaman pengguna</li>
-                        <li>Komunikasi terkait layanan</li>
-                        <li>Analisis penggunaan platform</li>
-                    </ul>
-                    
-                    <h4>Keamanan Data</h4>
-                    <p>Kami menggunakan langkah-langkah keamanan yang sesuai untuk melindungi informasi pribadi Anda dari akses yang tidak sah.</p>
-                    
-                    <h4>Berbagi Informasi</h4>
-                    <p>Kami tidak akan menjual, menyewakan, atau membagikan informasi pribadi Anda kepada pihak ketiga tanpa persetujuan Anda, kecuali yang diperlukan oleh hukum.</p>
-                </div>
+                <h4>Informasi yang Kami Kumpulkan</h4>
+                <p>Kami mengumpulkan informasi yang Anda berikan saat mendaftar, seperti nama, email, dan asal daerah untuk memberikan layanan yang lebih personal.</p>
+                
+                <h4>Penggunaan Informasi</h4>
+                <p>Informasi yang dikumpulkan digunakan untuk:</p>
+                <ul>
+                    <li>Menyediakan dan meningkatkan layanan</li>
+                    <li>Personalisasi pengalaman pengguna</li>
+                    <li>Komunikasi terkait layanan</li>
+                    <li>Analisis penggunaan platform</li>
+                </ul>
+                
+                <h4>Keamanan Data</h4>
+                <p>Kami menggunakan langkah-langkah keamanan yang sesuai untuk melindungi informasi pribadi Anda dari akses yang tidak sah.</p>
+                
+                <h4>Berbagi Informasi</h4>
+                <p>Kami tidak akan menjual, menyewakan, atau membagikan informasi pribadi Anda kepada pihak ketiga tanpa persetujuan Anda, kecuali yang diperlukan oleh hukum.</p>
             </div>
             
             <div class="modal-actions">
@@ -334,720 +1039,215 @@
             </div>
         </div>
     </div>
-{% endblock %}
 
-{% block extra_css %}
-<style>
-    .auth-section {
-        min-height: 100vh;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        display: flex;
-        align-items: center;
-        padding: var(--spacing-xl) 0;
-    }
-    
-    .auth-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: var(--spacing-xl);
-        max-width: 1200px;
-        margin: 0 auto;
-        background: var(--bg-card);
-        border-radius: var(--border-radius-xl);
-        overflow: hidden;
-        box-shadow: var(--shadow-xl);
-    }
-    
-    .auth-card {
-        padding: var(--spacing-xl);
-        max-height: 90vh;
-        overflow-y: auto;
-    }
-    
-    .auth-sidebar {
-        background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-        color: white;
-        padding: var(--spacing-xl);
-        display: flex;
-        align-items: center;
-    }
-    
-    .auth-header {
-        text-align: center;
-        margin-bottom: var(--spacing-xl);
-    }
-    
-    .auth-logo {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: var(--spacing-md);
-        margin-bottom: var(--spacing-lg);
-    }
-    
-    .logo-icon {
-        font-size: 2.5rem;
-    }
-    
-    .auth-logo h1 {
-        font-size: 2rem;
-        color: var(--primary-color);
-        margin: 0;
-    }
-    
-    .auth-header h2 {
-        font-size: var(--font-size-xl);
-        color: var(--text-primary);
-        margin-bottom: var(--spacing-sm);
-    }
-    
-    .auth-header p {
-        color: var(--text-secondary);
-        font-size: var(--font-size-base);
-    }
-    
-    .auth-form {
-        max-width: 500px;
-        margin: 0 auto;
-    }
-    
-    .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: var(--spacing-md);
-    }
-    
-    .form-group {
-        margin-bottom: var(--spacing-lg);
-    }
-    
-    .form-group label {
-        display: block;
-        margin-bottom: var(--spacing-sm);
-        font-weight: 600;
-        color: var(--text-primary);
-    }
-    
-    .input-wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
-    
-    .input-icon {
-        position: absolute;
-        left: var(--spacing-md);
-        z-index: 1;
-        font-size: var(--font-size-lg);
-        opacity: 0.7;
-    }
-    
-    .input-wrapper input,
-    .input-wrapper select {
-        width: 100%;
-        padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 3rem;
-        border: 2px solid rgba(0, 0, 0, 0.1);
-        border-radius: var(--border-radius-md);
-        font-size: var(--font-size-base);
-        transition: border-color var(--transition-normal);
-        background: var(--bg-card);
-    }
-    
-    .input-wrapper input:focus,
-    .input-wrapper select:focus {
-        outline: none;
-        border-color: var(--primary-color);
-    }
-    
-    .input-wrapper input:invalid {
-        border-color: #e74c3c;
-    }
-    
-    .toggle-password {
-        position: absolute;
-        right: var(--spacing-md);
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: var(--font-size-lg);
-        opacity: 0.7;
-        transition: opacity var(--transition-normal);
-    }
-    
-    .toggle-password:hover {
-        opacity: 1;
-    }
-    
-    .field-help {
-        font-size: var(--font-size-sm);
-        color: var(--text-secondary);
-        margin-top: var(--spacing-xs);
-    }
-    
-    .password-strength {
-        margin-bottom: var(--spacing-lg);
-    }
-    
-    .strength-bar {
-        width: 100%;
-        height: 4px;
-        background: rgba(0, 0, 0, 0.1);
-        border-radius: 2px;
-        overflow: hidden;
-        margin-bottom: var(--spacing-xs);
-    }
-    
-    .strength-fill {
-        height: 100%;
-        transition: all var(--transition-normal);
-        border-radius: 2px;
-    }
-    
-    .strength-text {
-        font-size: var(--font-size-sm);
-        font-weight: 600;
-    }
-    
-    .form-agreement {
-        margin-bottom: var(--spacing-lg);
-    }
-    
-    .checkbox-wrapper {
-        display: flex;
-        align-items: flex-start;
-        cursor: pointer;
-        user-select: none;
-        line-height: 1.5;
-    }
-    
-    .checkbox-wrapper input[type="checkbox"] {
-        display: none;
-    }
-    
-    .checkmark {
-        width: 20px;
-        height: 20px;
-        border: 2px solid rgba(0, 0, 0, 0.3);
-        border-radius: var(--border-radius-sm);
-        margin-right: var(--spacing-sm);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all var(--transition-normal);
-        flex-shrink: 0;
-        margin-top: 2px;
-    }
-    
-    .checkbox-wrapper input[type="checkbox"]:checked + .checkmark {
-        background: var(--primary-color);
-        border-color: var(--primary-color);
-    }
-    
-    .checkbox-wrapper input[type="checkbox"]:checked + .checkmark::after {
-        content: '✓';
-        color: white;
-        font-size: var(--font-size-sm);
-        font-weight: bold;
-    }
-    
-    .checkbox-text {
-        color: var(--text-secondary);
-        font-size: var(--font-size-sm);
-    }
-    
-    .auth-link {
-        color: var(--primary-color);
-        text-decoration: none;
-        font-weight: 600;
-        transition: color var(--transition-normal);
-    }
-    
-    .auth-link:hover {
-        color: var(--primary-dark);
-        text-decoration: underline;
-    }
-    
-    .btn-auth {
-        width: 100%;
-        padding: var(--spacing-md);
-        font-size: var(--font-size-base);
-        font-weight: 600;
-        margin-bottom: var(--spacing-lg);
-    }
-    
-    .auth-divider {
-        text-align: center;
-        margin: var(--spacing-lg) 0;
-        position: relative;
-    }
-    
-    .auth-divider::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: rgba(0, 0, 0, 0.1);
-    }
-    
-    .auth-divider span {
-        background: var(--bg-card);
-        padding: 0 var(--spacing-md);
-        color: var(--text-secondary);
-        font-size: var(--font-size-sm);
-    }
-    
-    .social-login {
-        margin-bottom: var(--spacing-lg);
-    }
-    
-    .btn-social {
-        width: 100%;
-        padding: var(--spacing-md);
-        border: 2px solid rgba(0, 0, 0, 0.1);
-        background: var(--bg-card);
-        color: var(--text-primary);
-        border-radius: var(--border-radius-md);
-        cursor: pointer;
-        transition: all var(--transition-normal);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: var(--spacing-sm);
-        font-weight: 500;
-    }
-    
-    .btn-social:hover {
-        border-color: var(--primary-color);
-        background: var(--bg-secondary);
-    }
-    
-    .social-icon {
-        font-size: var(--font-size-lg);
-    }
-    
-    .auth-footer {
-        text-align: center;
-        color: var(--text-secondary);
-        font-size: var(--font-size-sm);
-    }
-    
-    .sidebar-content h3 {
-        font-size: var(--font-size-xl);
-        margin-bottom: var(--spacing-lg);
-        text-align: center;
-    }
-    
-    .benefit-list {
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing-lg);
-    }
-    
-    .benefit-item {
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-md);
-        padding: var(--spacing-md);
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: var(--border-radius-lg);
-        backdrop-filter: blur(10px);
-    }
-    
-    .benefit-icon {
-        font-size: 2rem;
-        flex-shrink: 0;
-    }
-    
-    .benefit-text h4 {
-        font-size: var(--font-size-base);
-        margin-bottom: var(--spacing-xs);
-    }
-    
-    .benefit-text p {
-        font-size: var(--font-size-sm);
-        opacity: 0.9;
-    }
-    
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 1000;
-        align-items: center;
-        justify-content: center;
-        padding: var(--spacing-lg);
-    }
-    
-    .modal.show {
-        display: flex;
-    }
-    
-    .modal-content {
-        background: var(--bg-card);
-        border-radius: var(--border-radius-xl);
-        width: 100%;
-        max-width: 600px;
-        max-height: 90vh;
-        overflow-y: auto;
-        box-shadow: var(--shadow-xl);
-    }
-    
-    .modal-large {
-        max-width: 800px;
-    }
-    
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: var(--spacing-lg);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    }
-    
-    .modal-header h3 {
-        font-size: var(--font-size-xl);
-        color: var(--text-primary);
-    }
-    
-    .modal-close {
-        background: none;
-        border: none;
-        font-size: 2rem;
-        cursor: pointer;
-        color: var(--text-secondary);
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        transition: background var(--transition-normal);
-    }
-    
-    .modal-close:hover {
-        background: var(--bg-secondary);
-    }
-    
-    .modal-body {
-        padding: var(--spacing-lg);
-    }
-    
-    .terms-content h4,
-    .privacy-content h4 {
-        color: var(--text-primary);
-        margin-bottom: var(--spacing-md);
-        margin-top: var(--spacing-lg);
-    }
-    
-    .terms-content h4:first-child,
-    .privacy-content h4:first-child {
-        margin-top: 0;
-    }
-    
-    .terms-content p,
-    .privacy-content p {
-        color: var(--text-primary);
-        line-height: 1.6;
-        margin-bottom: var(--spacing-md);
-    }
-    
-    .privacy-content ul {
-        margin: var(--spacing-md) 0;
-        padding-left: var(--spacing-lg);
-    }
-    
-    .privacy-content li {
-        color: var(--text-primary);
-        margin-bottom: var(--spacing-sm);
-    }
-    
-    .modal-actions {
-        display: flex;
-        gap: var(--spacing-md);
-        justify-content: flex-end;
-        padding: var(--spacing-lg);
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
-    }
-    
-    @media (max-width: 768px) {
-        .auth-container {
-            grid-template-columns: 1fr;
-        }
-        
-        .auth-sidebar {
-            order: -1;
-        }
-        
-        .auth-card,
-        .auth-sidebar {
-            padding: var(--spacing-lg);
-        }
-        
-        .form-row {
-            grid-template-columns: 1fr;
-        }
-        
-        .modal-content {
-            margin: var(--spacing-md);
-            max-width: none;
-        }
-        
-        .modal-actions {
-            flex-direction: column;
-        }
-        
-        .modal-actions .btn {
-            width: 100%;
-        }
-    }
-    
-    @media (max-width: 480px) {
-        .auth-section {
-            padding: var(--spacing-md) 0;
-        }
-        
-        .auth-container {
-            margin: var(--spacing-md);
-            border-radius: var(--border-radius-lg);
-        }
-    }
-</style>
-{% endblock %}
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Wardi - Warisan Digital Indonesia. Dibuat dengan ❤️ untuk Indonesia</p>
+        </div>
+    </footer>
 
-{% block extra_js %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        setupPasswordStrength();
-        setupFormValidation();
-        
-        // Focus on first name field
-        document.getElementById('firstName').focus();
-    });
-    
-    function setupPasswordStrength() {
-        const passwordInput = document.getElementById('password');
-        const strengthContainer = document.getElementById('passwordStrength');
-        const strengthFill = document.getElementById('strengthFill');
-        const strengthText = document.getElementById('strengthText');
-        
-        passwordInput.addEventListener('input', function() {
-            const password = this.value;
-            const strength = calculatePasswordStrength(password);
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Focus on first name field
+            document.getElementById('firstName').focus();
             
-            if (password.length > 0) {
-                strengthContainer.style.display = 'block';
-                updateStrengthDisplay(strength, strengthFill, strengthText);
-            } else {
-                strengthContainer.style.display = 'none';
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (mobileMenuBtn && navMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    const isOpen = navMenu.classList.contains('open');
+                    
+                    if (isOpen) {
+                        navMenu.classList.remove('open');
+                        mobileMenuBtn.classList.remove('active');
+                    } else {
+                        navMenu.classList.add('open');
+                        mobileMenuBtn.classList.add('active');
+                    }
+                });
             }
-        });
-    }
-    
-    function calculatePasswordStrength(password) {
-        let score = 0;
-        
-        if (password.length >= 8) score += 1;
-        if (password.length >= 12) score += 1;
-        if (/[a-z]/.test(password)) score += 1;
-        if (/[A-Z]/.test(password)) score += 1;
-        if (/[0-9]/.test(password)) score += 1;
-        if (/[^A-Za-z0-9]/.test(password)) score += 1;
-        
-        return Math.min(score, 4);
-    }
-    
-    function updateStrengthDisplay(strength, strengthFill, strengthText) {
-        const colors = ['#e74c3c', '#e67e22', '#f39c12', '#27ae60'];
-        const texts = ['Sangat Lemah', 'Lemah', 'Sedang', 'Kuat'];
-        const widths = ['25%', '50%', '75%', '100%'];
-        
-        strengthFill.style.backgroundColor = colors[strength - 1] || colors[0];
-        strengthFill.style.width = widths[strength - 1] || widths[0];
-        strengthText.textContent = texts[strength - 1] || texts[0];
-        strengthText.style.color = colors[strength - 1] || colors[0];
-    }
-    
-    function setupFormValidation() {
-        const passwordInput = document.getElementById('password');
-        const confirmPasswordInput = document.getElementById('password_confirm');
-        
-        function validatePasswordMatch() {
-            if (confirmPasswordInput.value && passwordInput.value !== confirmPasswordInput.value) {
-                confirmPasswordInput.setCustomValidity('Password tidak cocok');
-            } else {
-                confirmPasswordInput.setCustomValidity('');
-            }
-        }
-        
-        passwordInput.addEventListener('input', validatePasswordMatch);
-        confirmPasswordInput.addEventListener('input', validatePasswordMatch);
-        
-        // Username validation
-        const usernameInput = document.getElementById('username');
-        usernameInput.addEventListener('input', function() {
-            const username = this.value;
-            if (username && !/^[a-zA-Z0-9_]+$/.test(username)) {
-                this.setCustomValidity('Username hanya boleh mengandung huruf, angka, dan underscore');
-            } else {
-                this.setCustomValidity('');
-            }
-        });
-    }
-    
-    function togglePassword(inputId) {
-        const input = document.getElementById(inputId);
-        const button = input.nextElementSibling;
-        
-        if (input.type === 'password') {
-            input.type = 'text';
-            button.textContent = '🙈';
-        } else {
-            input.type = 'password';
-            button.textContent = '👁️';
-        }
-    }
-    
-    async function handleRegister(event) {
-        event.preventDefault();
-        
-        // Validate form
-        const form = event.target;
-        if (!form.checkValidity()) {
-            form.reportValidity();
-            return;
-        }
-        
-        const formData = {
-            firstName: document.getElementById('firstName').value,
-            lastName: document.getElementById('lastName').value,
-            username: document.getElementById('username').value,
-            email: document.getElementById('email').value,
-            password: document.getElementById('password').value,
-            password_confirm: document.getElementById('password_confirm').value,
-            region: document.getElementById('region').value,
-            agreement: document.getElementById('agreement').checked,
-            newsletter: document.getElementById('newsletter').checked
-        };
-        
-        // Final validation
-        if (formData.password !== formData.password_confirm) {
-            WardiApp.showNotification('Password dan konfirmasi password tidak cocok', 'error');
-            return;
-        }
-        
-        if (!formData.agreement) {
-            WardiApp.showNotification('Anda harus menyetujui syarat dan ketentuan', 'error');
-            return;
-        }
-        
-        const registerBtn = document.getElementById('registerBtn');
-        const originalText = registerBtn.textContent;
-        registerBtn.disabled = true;
-        registerBtn.innerHTML = '<div class="loading"></div> Mendaftar...';
-        
-        try {
-            const response = await fetch('/api/auth/register/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                },
-                body: JSON.stringify(formData)
+            
+            // Navbar scroll effect
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
             });
             
-            const data = await response.json();
+            // Password visibility toggle
+            const passwordInput = document.getElementById('password');
+            const passwordConfirm = document.getElementById('password_confirm');
+            const togglePasswordBtns = document.querySelectorAll('.toggle-password');
             
-            if (data.success) {
-                WardiApp.showNotification('Registrasi berhasil! Silakan periksa email untuk verifikasi.', 'success');
+            togglePasswordBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const input = this.previousElementSibling;
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                    } else {
+                        input.type = 'password';
+                        this.innerHTML = '<i class="fas fa-eye"></i>';
+                    }
+                });
+            });
+            
+            // Password strength indicator
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                const strengthContainer = document.getElementById('passwordStrength');
+                const strengthFill = document.getElementById('strengthFill');
+                const strengthText = document.getElementById('strengthText');
+                
+                if (password.length > 0) {
+                    strengthContainer.style.display = 'block';
+                    const strength = calculatePasswordStrength(password);
+                    updateStrengthDisplay(strength, strengthFill, strengthText);
+                } else {
+                    strengthContainer.style.display = 'none';
+                }
+            });
+            
+            // Form validation
+            const registerForm = document.getElementById('registerForm');
+            registerForm.addEventListener('submit', handleRegister);
+            
+            // Password match validation
+            passwordConfirm.addEventListener('input', function() {
+                if (this.value !== passwordInput.value) {
+                    this.setCustomValidity('Password tidak cocok');
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+            
+            // Username validation
+            const usernameInput = document.getElementById('username');
+            usernameInput.addEventListener('input', function() {
+                if (!/^[a-zA-Z0-9_]+$/.test(this.value)) {
+                    this.setCustomValidity('Username hanya boleh mengandung huruf, angka, dan underscore');
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+        });
+        
+        function calculatePasswordStrength(password) {
+            let score = 0;
+            
+            if (password.length >= 8) score += 1;
+            if (password.length >= 12) score += 1;
+            if (/[a-z]/.test(password)) score += 1;
+            if (/[A-Z]/.test(password)) score += 1;
+            if (/[0-9]/.test(password)) score += 1;
+            if (/[^A-Za-z0-9]/.test(password)) score += 1;
+            
+            return Math.min(score, 4);
+        }
+        
+        function updateStrengthDisplay(strength, strengthFill, strengthText) {
+            const colors = ['#e74c3c', '#e67e22', '#f39c12', '#27ae60'];
+            const texts = ['Sangat Lemah', 'Lemah', 'Sedang', 'Kuat'];
+            const widths = ['25%', '50%', '75%', '100%'];
+            
+            strengthFill.style.backgroundColor = colors[strength - 1] || colors[0];
+            strengthFill.style.width = widths[strength - 1] || widths[0];
+            strengthText.textContent = texts[strength - 1] || texts[0];
+            strengthText.style.color = colors[strength - 1] || colors[0];
+        }
+        
+        function handleRegister(event) {
+            event.preventDefault();
+            
+            // Validate form
+            const form = event.target;
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // Get form values
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                password_confirm: document.getElementById('password_confirm').value,
+                region: document.getElementById('region').value,
+                agreement: document.getElementById('agreement').checked,
+                newsletter: document.getElementById('newsletter').checked
+            };
+            
+            // Final validation
+            if (formData.password !== formData.password_confirm) {
+                alert('Password dan konfirmasi password tidak cocok');
+                return;
+            }
+            
+            if (!formData.agreement) {
+                alert('Anda harus menyetujui syarat dan ketentuan');
+                return;
+            }
+            
+            const registerBtn = document.getElementById('registerBtn');
+            const originalText = registerBtn.innerHTML;
+            registerBtn.disabled = true;
+            registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mendaftar...';
+            
+            // Simulate registration process
+            setTimeout(function() {
+                // Reset button state
+                registerBtn.disabled = false;
+                registerBtn.innerHTML = originalText;
+                
+                // Show success message
+                alert(`Registrasi berhasil! Selamat datang, ${formData.firstName}.`);
                 
                 // Redirect to login page
-                setTimeout(() => {
-                    window.location.href = '/login/?registered=true';
-                }, 2000);
-            } else {
-                WardiApp.showNotification(data.error || 'Registrasi gagal. Silakan coba lagi.', 'error');
-            }
-        } catch (error) {
-            console.error('Registration error:', error);
-            WardiApp.showNotification('Terjadi kesalahan saat registrasi. Silakan coba lagi.', 'error');
-        } finally {
-            registerBtn.disabled = false;
-            registerBtn.textContent = originalText;
+                window.location.href = "{% url 'login_view' %}";
+            }, 1500);
         }
-    }
-    
-    function registerWithGoogle() {
-        WardiApp.showNotification('Fitur registrasi dengan Google akan segera tersedia.', 'info');
-        // TODO: Implement Google OAuth
-    }
-    
-    function showTerms() {
-        document.getElementById('termsModal').classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
-    
-    function hideTerms() {
-        document.getElementById('termsModal').classList.remove('show');
-        document.body.style.overflow = 'auto';
-    }
-    
-    function showPrivacy() {
-        document.getElementById('privacyModal').classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
-    
-    function hidePrivacy() {
-        document.getElementById('privacyModal').classList.remove('show');
-        document.body.style.overflow = 'auto';
-    }
-    
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
+        
+        function registerWithGoogle() {
+            alert('Fitur registrasi dengan Google akan segera tersedia!');
+        }
+        
+        function showTerms() {
+            document.getElementById('termsModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function hideTerms() {
+            document.getElementById('termsModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function showPrivacy() {
+            document.getElementById('privacyModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function hidePrivacy() {
+            document.getElementById('privacyModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modals when clicking outside
+        document.addEventListener('click', function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.classList.remove('show');
+                    document.body.style.overflow = 'auto';
                 }
-            }
-        }
-        return cookieValue;
-    }
-    
-    // Close modals when clicking outside
-    document.addEventListener('click', function(event) {
-        const modals = document.querySelectorAll('.modal');
-        modals.forEach(modal => {
-            if (event.target === modal) {
-                modal.classList.remove('show');
-                document.body.style.overflow = 'auto';
-            }
-        });
-    });
-    
-    // Enter key handling
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            const activeElement = document.activeElement;
-            
-            if (activeElement.closest('#registerForm')) {
-                event.preventDefault();
-                handleRegister(event);
-            }
-        }
-    });
-</script>
-{% endblock %}
-                alert('Password tidak sama!');
-            }
+            });
         });
     </script>
 </body>

@@ -1,0 +1,9 @@
+<div class="input-wrapper">
+    <span class="input-icon"><i class="fas {{ widget.icon_class }}"></i></span>
+    <input type="{{ widget.type }}" name="{{ widget.name }}" {% if widget.value != None %}value="{{ widget.value|stringformat:'s' }}"{% endif %}{% include "django/forms/widgets/attrs.html" %}>
+    {% if widget.type == 'password' %}
+    <button type="button" class="toggle-password" aria-label="Show password">
+        <i class="fas fa-eye"></i>
+    </button>
+    {% endif %}
+</div>

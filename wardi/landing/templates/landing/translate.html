@@ -1017,8 +1017,8 @@
                     <li><a href="#" class="nav-link">Hi, {{ user.username }}</a></li>
                     <li><a href="{% url 'logout_view' %}" class="btn btn-secondary">Logout</a></li>
                 {% else %}
-                    <li><a href="{% url 'login_page' %}" class="nav-link nav-auth">Login</a></li>
-                    <li><a href="{% url 'register_page' %}" class="nav-link nav-auth nav-register">Daftar</a></li>
+                    <li><a href="/login" class="nav-link nav-auth">Login</a></li>
+                    <li><a href="/register" class="nav-link nav-auth nav-register">Daftar</a></li>
                 {% endif %}
             </ul>
         </div>
