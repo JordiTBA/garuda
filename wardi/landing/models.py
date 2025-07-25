@@ -54,21 +54,26 @@ class PlaceRating(models.Model):
 
 class ForumPost(models.Model):
     CATEGORY_CHOICES = [
-        ('Diskusi', 'Diskusi'),
-        ('Pertanyaan', 'Pertanyaan'),
-        ('Berbagi Info', 'Berbagi Info'),
-        ('Event', 'Event'),
-        ('Penelitian', 'Penelitian'),
+        ('tradisi', 'Tradisi'),
+        ('makanan', 'Makanan'),
+        ('seni', 'Seni & Budaya'),
+        ('bahasa', 'Bahasa'),
+        ('sejarah', 'Sejarah'),
+        ('umum', 'Umum'),
     ]
     
     title = models.CharField(max_length=200)
     content = models.TextField()
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    tags = models.CharField(max_length=200, blank=True)
+    views = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
     
+    class Meta:
+        ordering = ['-created_at']
     
     def __str__(self):
         return self.title

@@ -371,6 +371,8 @@ def get_forum_posts(request):
                 'author': post.author.username,
                 'date': post.created_at.strftime('%Y-%m-%d %H:%M'),
                 'category': post.category,
+                'tags': post.tags,
+                'views': post.views,
                 'likes': post.like_count(),
                 'comments': post.comment_count()
             })
@@ -394,11 +396,13 @@ def create_forum_post(request):
             title = data.get('title')
             content = data.get('content')
             category = data.get('category')
+            tags = data.get('tags', '')  # Default to empty string if not provided
             
             post = ForumPost.objects.create(
                 title=title,
                 content=content,
                 category=category,
+                tags=tags,
                 author=request.user
             )
             
@@ -524,6 +528,8 @@ def get_forum_post_detail(request, post_id):
             'author': post.author.username,
             'created_at': post.created_at.strftime('%Y-%m-%d %H:%M'),
             'category': post.category,
+            'tags': post.tags,
+            'views': post.views,
             'likes': post.like_count(),
             'comments': comments_data,
             'comment_count': len(comments_data)
