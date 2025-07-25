@@ -1,0 +1,776 @@
+{% extends 'landing/base.html' %}
+{% load static %}
+
+{% block title %}Login - Wardi{% endblock %}
+
+{% block meta_description %}Masuk ke akun Wardi untuk mengakses fitur lengkap platform budaya digital Indonesia.{% endblock %}
+
+{% block body_class %}auth-page{% endblock %}
+
+{% block content %}
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <div class="auth-logo">
+                            <span class="logo-icon">🏛️</span>
+                            <h1>Wardi</h1>
+                        </div>
+                        <h2>Selamat Datang Kembali</h2>
+                        <p>Masuk ke akun Anda untuk melanjutkan menjelajahi warisan budaya Indonesia</p>
+                    </div>
+
+                    <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label for="username">Username atau Email</label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">👤</span>
+                                <input 
+                                    type="text" 
+                                    id="username" 
+                                    name="username" 
+                                    required
+                                    placeholder="Masukkan username atau email"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="input-wrapper">
+                                <span class="input-icon">🔒</span>
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    name="password" 
+                                    required
+                                    placeholder="Masukkan password"
+                                >
+                                <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                                    👁️
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-options">
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="remember" name="remember">
+                                <span class="checkmark"></span>
+                                <span class="checkbox-text">Ingat saya</span>
+                            </label>
+                            <a href="#" class="forgot-password" onclick="showForgotPassword()">
+                                Lupa password?
+                            </a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-auth" id="loginBtn">
+                            🚀 Masuk
+                        </button>
+
+                        <div class="auth-divider">
+                            <span>atau</span>
+                        </div>
+
+                        <div class="social-login">
+                            <button type="button" class="btn btn-social btn-google" onclick="loginWithGoogle()">
+                                <span class="social-icon">🌐</span>
+                                Masuk dengan Google
+                            </button>
+                        </div>
+
+                        <div class="auth-footer">
+                            <p>Belum memiliki akun? 
+                                <a href="{% url 'register_page' %}" class="auth-link">
+                                    Daftar sekarang
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="auth-sidebar">
+                    <div class="sidebar-content">
+                        <h3>🌟 Fitur Terbaru</h3>
+                        <div class="feature-list">
+                            <div class="feature-item">
+                                <span class="feature-icon">🤖</span>
+                                <div class="feature-text">
+                                    <h4>AI Analysis</h4>
+                                    <p>Analisis gambar dengan teknologi AI</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">💬</span>
+                                <div class="feature-text">
+                                    <h4>Forum Budaya</h4>
+                                    <p>Diskusi dan berbagi pengalaman</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">🗣️</span>
+                                <div class="feature-text">
+                                    <h4>Penerjemah</h4>
+                                    <p>Terjemahan bahasa daerah real-time</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">⭐</span>
+                                <div class="feature-text">
+                                    <h4>Rating Wisata</h4>
+                                    <p>Review tempat wisata budaya</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal" id="forgotPasswordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Reset Password</h3>
+                <button class="modal-close" onclick="hideForgotPassword()">×</button>
+            </div>
+            
+            <form id="forgotPasswordForm" onsubmit="handleForgotPassword(event)">
+                <div class="modal-body">
+                    <p class="modal-description">
+                        Masukkan email Anda dan kami akan mengirimkan link untuk reset password.
+                    </p>
+                    
+                    <div class="form-group">
+                        <label for="resetEmail">Email</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">📧</span>
+                            <input 
+                                type="email" 
+                                id="resetEmail" 
+                                required
+                                placeholder="Masukkan alamat email"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="hideForgotPassword()">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="resetBtn">
+                        📧 Kirim Link Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-section {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        padding: var(--spacing-xl) 0;
+    }
+    
+    .auth-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-xl);
+        max-width: 1000px;
+        margin: 0 auto;
+        background: var(--bg-card);
+        border-radius: var(--border-radius-xl);
+        overflow: hidden;
+        box-shadow: var(--shadow-xl);
+    }
+    
+    .auth-card {
+        padding: var(--spacing-xl);
+    }
+    
+    .auth-sidebar {
+        background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        color: white;
+        padding: var(--spacing-xl);
+        display: flex;
+        align-items: center;
+    }
+    
+    .auth-header {
+        text-align: center;
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .auth-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .logo-icon {
+        font-size: 2.5rem;
+    }
+    
+    .auth-logo h1 {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin: 0;
+    }
+    
+    .auth-header h2 {
+        font-size: var(--font-size-xl);
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .auth-header p {
+        color: var(--text-secondary);
+        font-size: var(--font-size-base);
+    }
+    
+    .auth-form {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    .form-group {
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: var(--spacing-sm);
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+    
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    
+    .input-icon {
+        position: absolute;
+        left: var(--spacing-md);
+        z-index: 1;
+        font-size: var(--font-size-lg);
+        opacity: 0.7;
+    }
+    
+    .input-wrapper input {
+        width: 100%;
+        padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 3rem;
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius-md);
+        font-size: var(--font-size-base);
+        transition: border-color var(--transition-normal);
+        background: var(--bg-card);
+    }
+    
+    .input-wrapper input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+    }
+    
+    .toggle-password {
+        position: absolute;
+        right: var(--spacing-md);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: var(--font-size-lg);
+        opacity: 0.7;
+        transition: opacity var(--transition-normal);
+    }
+    
+    .toggle-password:hover {
+        opacity: 1;
+    }
+    
+    .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+    }
+    
+    .checkbox-wrapper input[type="checkbox"] {
+        display: none;
+    }
+    
+    .checkmark {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(0, 0, 0, 0.3);
+        border-radius: var(--border-radius-sm);
+        margin-right: var(--spacing-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all var(--transition-normal);
+    }
+    
+    .checkbox-wrapper input[type="checkbox"]:checked + .checkmark {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+    
+    .checkbox-wrapper input[type="checkbox"]:checked + .checkmark::after {
+        content: '✓';
+        color: white;
+        font-size: var(--font-size-sm);
+        font-weight: bold;
+    }
+    
+    .checkbox-text {
+        color: var(--text-secondary);
+        font-size: var(--font-size-sm);
+    }
+    
+    .forgot-password {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-size: var(--font-size-sm);
+        transition: color var(--transition-normal);
+    }
+    
+    .forgot-password:hover {
+        color: var(--primary-dark);
+        text-decoration: underline;
+    }
+    
+    .btn-auth {
+        width: 100%;
+        padding: var(--spacing-md);
+        font-size: var(--font-size-base);
+        font-weight: 600;
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .auth-divider {
+        text-align: center;
+        margin: var(--spacing-lg) 0;
+        position: relative;
+    }
+    
+    .auth-divider::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: rgba(0, 0, 0, 0.1);
+    }
+    
+    .auth-divider span {
+        background: var(--bg-card);
+        padding: 0 var(--spacing-md);
+        color: var(--text-secondary);
+        font-size: var(--font-size-sm);
+    }
+    
+    .social-login {
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .btn-social {
+        width: 100%;
+        padding: var(--spacing-md);
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        background: var(--bg-card);
+        color: var(--text-primary);
+        border-radius: var(--border-radius-md);
+        cursor: pointer;
+        transition: all var(--transition-normal);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-sm);
+        font-weight: 500;
+    }
+    
+    .btn-social:hover {
+        border-color: var(--primary-color);
+        background: var(--bg-secondary);
+    }
+    
+    .social-icon {
+        font-size: var(--font-size-lg);
+    }
+    
+    .auth-footer {
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: var(--font-size-sm);
+    }
+    
+    .auth-link {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color var(--transition-normal);
+    }
+    
+    .auth-link:hover {
+        color: var(--primary-dark);
+        text-decoration: underline;
+    }
+    
+    .sidebar-content h3 {
+        font-size: var(--font-size-xl);
+        margin-bottom: var(--spacing-lg);
+        text-align: center;
+    }
+    
+    .feature-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-lg);
+    }
+    
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        padding: var(--spacing-md);
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: var(--border-radius-lg);
+        backdrop-filter: blur(10px);
+    }
+    
+    .feature-icon {
+        font-size: 2rem;
+        flex-shrink: 0;
+    }
+    
+    .feature-text h4 {
+        font-size: var(--font-size-base);
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .feature-text p {
+        font-size: var(--font-size-sm);
+        opacity: 0.9;
+    }
+    
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: var(--spacing-lg);
+    }
+    
+    .modal.show {
+        display: flex;
+    }
+    
+    .modal-content {
+        background: var(--bg-card);
+        border-radius: var(--border-radius-xl);
+        width: 100%;
+        max-width: 500px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: var(--shadow-xl);
+    }
+    
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-lg);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .modal-header h3 {
+        font-size: var(--font-size-xl);
+        color: var(--text-primary);
+    }
+    
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: var(--text-secondary);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background var(--transition-normal);
+    }
+    
+    .modal-close:hover {
+        background: var(--bg-secondary);
+    }
+    
+    .modal-body {
+        padding: var(--spacing-lg);
+    }
+    
+    .modal-description {
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-lg);
+        line-height: 1.6;
+    }
+    
+    .modal-actions {
+        display: flex;
+        gap: var(--spacing-md);
+        justify-content: flex-end;
+        padding: var(--spacing-lg);
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    @media (max-width: 768px) {
+        .auth-container {
+            grid-template-columns: 1fr;
+        }
+        
+        .auth-sidebar {
+            order: -1;
+        }
+        
+        .auth-card,
+        .auth-sidebar {
+            padding: var(--spacing-lg);
+        }
+        
+        .form-options {
+            flex-direction: column;
+            gap: var(--spacing-md);
+            align-items: flex-start;
+        }
+        
+        .modal-content {
+            margin: var(--spacing-md);
+            max-width: none;
+        }
+        
+        .modal-actions {
+            flex-direction: column;
+        }
+        
+        .modal-actions .btn {
+            width: 100%;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .auth-section {
+            padding: var(--spacing-md) 0;
+        }
+        
+        .auth-container {
+            margin: var(--spacing-md);
+            border-radius: var(--border-radius-lg);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Focus on username field
+        document.getElementById('username').focus();
+        
+        // Check for URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('registered') === 'true') {
+            WardiApp.showNotification('Registrasi berhasil! Silakan login dengan akun Anda.', 'success');
+        }
+        if (urlParams.get('reset') === 'true') {
+            WardiApp.showNotification('Password berhasil direset! Silakan login dengan password baru.', 'success');
+        }
+    });
+    
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const button = input.nextElementSibling;
+        
+        if (input.type === 'password') {
+            input.type = 'text';
+            button.textContent = '🙈';
+        } else {
+            input.type = 'password';
+            button.textContent = '👁️';
+        }
+    }
+    
+    async function handleLogin(event) {
+        event.preventDefault();
+        
+        const formData = {
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value,
+            remember: document.getElementById('remember').checked
+        };
+        
+        const loginBtn = document.getElementById('loginBtn');
+        const originalText = loginBtn.textContent;
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<div class="loading"></div> Masuk...';
+        
+        try {
+            const response = await fetch('/api/auth/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify(formData)
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                WardiApp.showNotification('Login berhasil! Selamat datang kembali.', 'success');
+                
+                // Redirect to dashboard or intended page
+                const redirectUrl = new URLSearchParams(window.location.search).get('next') || '/';
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 1000);
+            } else {
+                WardiApp.showNotification(data.error || 'Login gagal. Periksa username dan password Anda.', 'error');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            WardiApp.showNotification('Terjadi kesalahan saat login. Silakan coba lagi.', 'error');
+        } finally {
+            loginBtn.disabled = false;
+            loginBtn.textContent = originalText;
+        }
+    }
+    
+    function loginWithGoogle() {
+        WardiApp.showNotification('Fitur login dengan Google akan segera tersedia.', 'info');
+        // TODO: Implement Google OAuth
+    }
+    
+    function showForgotPassword() {
+        document.getElementById('forgotPasswordModal').classList.add('show');
+        document.body.style.overflow = 'hidden';
+        document.getElementById('resetEmail').focus();
+    }
+    
+    function hideForgotPassword() {
+        document.getElementById('forgotPasswordModal').classList.remove('show');
+        document.body.style.overflow = 'auto';
+        document.getElementById('forgotPasswordForm').reset();
+    }
+    
+    async function handleForgotPassword(event) {
+        event.preventDefault();
+        
+        const email = document.getElementById('resetEmail').value;
+        
+        const resetBtn = document.getElementById('resetBtn');
+        const originalText = resetBtn.textContent;
+        resetBtn.disabled = true;
+        resetBtn.innerHTML = '<div class="loading"></div> Mengirim...';
+        
+        try {
+            const response = await fetch('/api/auth/forgot-password/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ email: email })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                WardiApp.showNotification('Link reset password telah dikirim ke email Anda.', 'success');
+                hideForgotPassword();
+            } else {
+                WardiApp.showNotification(data.error || 'Gagal mengirim link reset password.', 'error');
+            }
+        } catch (error) {
+            console.error('Forgot password error:', error);
+            WardiApp.showNotification('Terjadi kesalahan. Silakan coba lagi.', 'error');
+        } finally {
+            resetBtn.disabled = false;
+            resetBtn.textContent = originalText;
+        }
+    }
+    
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    // Close modal when clicking outside
+    document.addEventListener('click', function(event) {
+        const modal = document.getElementById('forgotPasswordModal');
+        if (event.target === modal) {
+            hideForgotPassword();
+        }
+    });
+    
+    // Enter key handling
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            const activeElement = document.activeElement;
+            
+            if (activeElement.closest('#loginForm')) {
+                event.preventDefault();
+                handleLogin(event);
+            } else if (activeElement.closest('#forgotPasswordForm')) {
+                event.preventDefault();
+                handleForgotPassword(event);
+            }
+        }
+    });
+</script>
+{% endblock %}
+
+            <button type="submit" class="login-btn">Masuk</button>
+        </form>
+
+        <div class="form-links">
+            <p>Belum punya akun? <a href="{% url 'register_page' %}">Daftar di sini</a></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,3140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Temukan dan berikan rating untuk tempat wisata budaya Indonesia. Jelajahi destinasi terbaik berdasarkan ulasan pengunjung.">
+    <meta name="keywords" content="wisata budaya indonesia, rating tempat wisata, destinasi budaya, wisata tradisional">
+    <title>Rating Tempat Wisata - WARDI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ==========================================================================
+           WARDI - CSS VARIABLES & RESET (Same as index.html)
+           ========================================================================== */
+        :root {
+            /* Colors */
+            --primary-color: #8B4513; /* Rich brown for tradition */
+            --primary-dark: #5D2E0F;
+            --primary-light: #A86A3D;
+            --secondary-color: #2c3e50;
+            --secondary-light: #34495e;
+            --accent-color: #DAA520; /* Gold accent */
+            --accent-secondary: #5F9EA0; /* Cultural blue-green */
+            
+            /* Text Colors */
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --text-light: #bdc3c7;
+            --text-white: #ffffff;
+            
+            /* Background Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-dark: #2c3e50;
+            --bg-card: #ffffff;
+            --bg-overlay: rgba(44, 62, 80, 0.9);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            --gradient-secondary: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            
+            /* Spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            --spacing-3xl: 4rem;
+            
+            /* Typography */
+            --font-family-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-family-secondary: 'Georgia', serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-size-4xl: 2.25rem;
+            --font-size-5xl: 3rem;
+            
+            /* Borders */
+            --border-radius-sm: 0.25rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            --border-radius-full: 9999px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+            --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+            
+            /* Z-index */
+            --z-dropdown: 1000;
+            --z-sticky: 1020;
+            --z-fixed: 1030;
+            --z-modal-backdrop: 1040;
+            --z-modal: 1050;
+            --z-popover: 1060;
+            --z-tooltip: 1070;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================================
+           UTILITY CLASSES
+           ========================================================================== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            text-decoration: none;
+            border: 2px solid transparent;
+            border-radius: var(--border-radius-full);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .btn:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--text-white);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: var(--text-white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-lg {
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: var(--font-size-lg);
+        }
+
+        .btn-sm {
+            padding: var(--spacing-xs) var(--spacing-md);
+            font-size: var(--font-size-sm);
+        }
+
+        /* Text Utilities */
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+
+        .text-primary { color: var(--primary-color); }
+        .text-secondary { color: var(--text-secondary); }
+        .text-white { color: var(--text-white); }
+        .text-accent { color: var(--accent-color); }
+
+        /* Display Utilities */
+        .d-none { display: none; }
+        .d-block { display: block; }
+        .d-flex { display: flex; }
+        .d-grid { display: grid; }
+
+        /* ==========================================================================
+           NAVIGATION (Same as index.html)
+           ========================================================================== */
+        .navbar {
+            background: var(--secondary-color);
+            padding: var(--spacing-md) 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: var(--z-fixed);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+
+        .navbar.scrolled {
+            padding: var(--spacing-sm) 0;
+            background: var(--bg-overlay);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--accent-color);
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            text-decoration: none;
+            transition: all var(--transition-normal);
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            color: var(--text-white);
+            font-weight: bold;
+            font-size: var(--font-size-xl);
+        }
+
+        .logo-text {
+            font-family: var(--font-family-secondary);
+            position: relative;
+        }
+
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-sm);
+        }
+
+        .hamburger {
+            width: 24px;
+            height: 3px;
+            background: var(--text-white);
+            border-radius: 2px;
+            transition: all var(--transition-normal);
+        }
+
+        .mobile-menu-btn.active .hamburger:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .mobile-menu-btn.active .hamburger:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active .hamburger:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: var(--spacing-lg);
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-white);
+            text-decoration: none;
+            font-weight: 500;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            transition: all var(--transition-normal);
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: all var(--transition-normal);
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 80%;
+        }
+
+        .nav-auth {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-register {
+            background: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .nav-register:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        /* ==========================================================================
+           MAIN CONTENT
+           ========================================================================== */
+        .main-content {
+            margin-top: 80px; /* Height of fixed navbar */
+            min-height: calc(100vh - 80px);
+        }
+
+        /* ==========================================================================
+           HERO SECTION (Places specific)
+           ========================================================================== */
+        .hero {
+            background: var(--gradient-secondary);
+            color: var(--text-white);
+            text-align: center;
+            padding: var(--spacing-3xl) var(--spacing-md);
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 Q50,100 100,0 L100,100 L0,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 100% 100%;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: var(--font-size-4xl);
+            margin-bottom: var(--spacing-lg);
+            animation: fadeInUp 1s ease-out;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: var(--font-size-2xl);
+            margin-bottom: var(--spacing-md);
+            animation: fadeInUp 1s ease-out 0.2s both;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+
+        .hero .description {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-xl);
+            animation: fadeInUp 1s ease-out 0.4s both;
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        /* ==========================================================================
+           SECTIONS
+           ========================================================================== */
+        .section {
+            padding: var(--spacing-2xl) 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .section-title {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* ==========================================================================
+           SEARCH AND FILTER SECTION
+           ========================================================================== */
+        .search-filter-container {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .search-section {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .search-bar {
+            display: flex;
+            gap: var(--spacing-sm);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: var(--spacing-md);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius-full);
+            font-size: var(--font-size-base);
+            transition: border-color var(--transition-normal);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .search-btn {
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-full);
+            cursor: pointer;
+            font-size: var(--font-size-base);
+            transition: background var(--transition-normal);
+        }
+
+        .search-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-controls select {
+            padding: var(--spacing-md);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-base);
+            background: var(--bg-card);
+            min-width: 150px;
+            cursor: pointer;
+        }
+
+        .filter-controls select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        /* ==========================================================================
+           PLACES GRID
+           ========================================================================== */
+        .places-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: var(--spacing-xl);
+            min-height: 400px;
+        }
+
+        .loading-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: var(--spacing-3xl);
+            color: var(--text-secondary);
+        }
+
+        .loading {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto var(--spacing-md);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .place-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .place-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .place-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: var(--font-size-2xl);
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .place-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .place-info {
+            padding: var(--spacing-lg);
+        }
+
+        .place-title {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        .place-location {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .place-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--spacing-md);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .place-rating {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .stars {
+            color: var(--accent-color);
+        }
+
+        .rating-text {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+
+        .place-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .place-actions .btn {
+            flex: 1;
+            text-align: center;
+        }
+
+        /* ==========================================================================
+           MODAL STYLES
+           ========================================================================== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: var(--z-modal);
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-lg);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-xl);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header h3 {
+            font-size: var(--font-size-xl);
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background var(--transition-normal);
+        }
+
+        .modal-close:hover {
+            background: var(--bg-secondary);
+        }
+
+        .modal-body {
+            padding: var(--spacing-lg);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-base);
+            font-family: inherit;
+            transition: border-color var(--transition-normal);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .file-upload {
+            border: 2px dashed rgba(0, 0, 0, 0.2);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-xl);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-color);
+            background: rgba(139, 69, 19, 0.05);
+        }
+
+        .file-upload input {
+            display: none;
+        }
+
+        .file-upload-icon {
+            font-size: var(--font-size-3xl);
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: flex-end;
+            padding: var(--spacing-lg);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* ==========================================================================
+           EMPTY STATE
+           ========================================================================== */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: var(--spacing-3xl);
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* ==========================================================================
+           ANIMATIONS
+           ========================================================================== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN
+           ========================================================================== */
+        /* Tablet */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 var(--spacing-lg);
+            }
+            
+            .hero h1 {
+                font-size: var(--font-size-3xl);
+            }
+            
+            .places-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            :root {
+                --font-size-4xl: 2rem;
+                --font-size-3xl: 1.75rem;
+                --spacing-3xl: 2rem;
+            }
+            
+            .container {
+                padding: 0 var(--spacing-md);
+            }
+            
+            /* Mobile Navigation */
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--secondary-color);
+                flex-direction: column;
+                gap: 0;
+                padding: var(--spacing-lg);
+                box-shadow: var(--shadow-lg);
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-20px);
+                transition: all var(--transition-normal);
+            }
+            
+            .nav-menu.open {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+            
+            .nav-link {
+                padding: var(--spacing-md);
+                border-radius: var(--border-radius-md);
+                width: 100%;
+                text-align: center;
+            }
+            
+            /* Mobile Hero */
+            .hero {
+                padding: var(--spacing-2xl) var(--spacing-md);
+                min-height: 50vh;
+            }
+            
+            .hero h1 {
+                font-size: var(--font-size-2xl);
+            }
+            
+            .hero .subtitle {
+                font-size: var(--font-size-xl);
+            }
+            
+            /* Mobile Filters */
+            .filter-controls {
+                flex-direction: column;
+            }
+            
+            .filter-controls select {
+                min-width: auto;
+            }
+            
+            .places-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Mobile Modal */
+            .modal-content {
+                margin: var(--spacing-md);
+                max-width: none;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+            
+            .modal-actions .btn {
+                width: 100%;
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 var(--spacing-sm);
+            }
+            
+            .hero {
+                padding: var(--spacing-xl) var(--spacing-sm);
+            }
+            
+            .search-filter-container {
+                padding: var(--spacing-md);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <div class="logo-icon">W</div>
+                <span class="logo-text">WARDI</span>
+            </a>
+            
+            <!-- Mobile menu button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+            
+            <!-- Navigation menu -->
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/" class="nav-link">Beranda</a></li>
+                <li><a href="/analyze" class="nav-link">Analisis Budaya</a></li>
+                <li><a href="/translate" class="nav-link">Penerjemah</a></li>
+                <li><a href="/forum" class="nav-link">Forum</a></li>
+                <li><a href="/places" class="nav-link active">Tempat Wisata</a></li>
+                
+                <!-- Authentication links -->
+                <li><a href="#" class="nav-link nav-auth">Login</a></li>
+                <li><a href="#" class="nav-link nav-auth nav-register">Daftar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="main-content">
+    <!-- Hero Section -->
+    <section class="hero" style="min-height: 60vh; background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);">
+        <div class="container">
+            <div class="hero-content">
+                <h1>🏛️ Rating Tempat Wisata</h1>
+                <p class="subtitle">Destinasi Budaya Terbaik Indonesia</p>
+                <p class="description">
+                    Temukan tempat wisata budaya terbaik berdasarkan rating dan ulasan pengunjung. 
+                    Bagikan pengalaman Anda dan bantu wisatawan lain menemukan destinasi yang tepat.
+                </p>
+                <button class="btn btn-primary btn-lg" onclick="showAddPlaceModal()">
+                    ➕ Tambah Tempat Wisata
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search and Filter Section -->
+    <section class="section">
+        <div class="container">
+            <div class="search-filter-container">
+                <div class="search-section">
+                    <div class="search-bar">
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="Cari tempat wisata berdasarkan nama atau lokasi..."
+                            onkeyup="searchPlaces()"
+                        >
+                        <button class="search-btn" onclick="searchPlaces()">
+                            🔍
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-controls">
+                        <select id="provinceFilter" onchange="filterPlaces()">
+                            <option value="">Semua Provinsi</option>
+                            <option value="jawa-barat">Jawa Barat</option>
+                            <option value="jawa-tengah">Jawa Tengah</option>
+                            <option value="jawa-timur">Jawa Timur</option>
+                            <option value="bali">Bali</option>
+                            <option value="yogyakarta">D.I. Yogyakarta</option>
+                            <option value="sumatra-barat">Sumatra Barat</option>
+                            <option value="sulawesi-selatan">Sulawesi Selatan</option>
+                            <option value="lombok">Nusa Tenggara Barat</option>
+                        </select>
+                        
+                        <select id="categoryFilter" onchange="filterPlaces()">
+                            <option value="">Semua Kategori</option>
+                            <option value="candi">Candi & Situs Sejarah</option>
+                            <option value="museum">Museum</option>
+                            <option value="budaya">Kampung Budaya</option>
+                            <option value="alam">Wisata Alam</option>
+                            <option value="kuliner">Kuliner Tradisional</option>
+                            <option value="festival">Festival & Acara</option>
+                        </select>
+                        
+                        <select id="ratingFilter" onchange="filterPlaces()">
+                            <option value="">Semua Rating</option>
+                            <option value="5">⭐⭐⭐⭐⭐ (5 Bintang)</option>
+                            <option value="4">⭐⭐⭐⭐ (4+ Bintang)</option>
+                            <option value="3">⭐⭐⭐ (3+ Bintang)</option>
+                            <option value="2">⭐⭐ (2+ Bintang)</option>
+                        </select>
+                        
+                        <select id="sortFilter" onchange="sortPlaces()">
+                            <option value="rating_desc">Rating Tertinggi</option>
+                            <option value="rating_asc">Rating Terendah</option>
+                            <option value="name_asc">Nama A-Z</option>
+                            <option value="name_desc">Nama Z-A</option>
+                            <option value="newest">Terbaru</option>
+                            <option value="most_reviewed">Paling Banyak Review</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Places Grid -->
+    <section class="section">
+        <div class="container">
+            <div class="places-grid" id="placesGrid">
+                <div class="loading-state">
+                    <div class="loading"></div>
+                    <p>Memuat tempat wisata...</p>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination" style="display: none;">
+                <button class="pagination-btn" onclick="loadPage(currentPage - 1)" id="prevBtn">
+                    ← Sebelumnya
+                </button>
+                <div class="page-numbers" id="pageNumbers"></div>
+                <button class="pagination-btn" onclick="loadPage(currentPage + 1)" id="nextBtn">
+                    Selanjutnya →
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="section" style="background: var(--bg-secondary);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Statistik Wisata</h2>
+                <p class="section-subtitle">
+                    Data tempat wisata budaya yang telah diulas oleh pengunjung
+                </p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-icon">🏛️</span>
+                    <div class="stat-number" id="totalPlaces">0</div>
+                    <div class="stat-label">Total Tempat Wisata</div>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-icon">⭐</span>
+                    <div class="stat-number" id="averageRating">0.0</div>
+                    <div class="stat-label">Rating Rata-rata</div>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-icon">📝</span>
+                    <div class="stat-number" id="totalReviews">0</div>
+                    <div class="stat-label">Total Review</div>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-icon">🌍</span>
+                    <div class="stat-number" id="totalProvinces">0</div>
+                    <div class="stat-label">Provinsi Terdaftar</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Place Modal -->
+    <div class="modal" id="addPlaceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Tambah Tempat Wisata Baru</h3>
+                <button class="modal-close" onclick="hideAddPlaceModal()">×</button>
+            </div>
+            
+            <form id="addPlaceForm" onsubmit="addPlace(event)">
+                <div class="form-group">
+                    <label for="placeName">Nama Tempat Wisata *</label>
+                    <input 
+                        type="text" 
+                        id="placeName" 
+                        required 
+                        maxlength="200"
+                        placeholder="Contoh: Candi Borobudur"
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="placeLocation">Lokasi *</label>
+                    <input 
+                        type="text" 
+                        id="placeLocation" 
+                        required 
+                        placeholder="Contoh: Magelang, Jawa Tengah"
+                    >
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="placeProvince">Provinsi *</label>
+                        <select id="placeProvince" required>
+                            <option value="">Pilih Provinsi</option>
+                            <option value="jawa-barat">Jawa Barat</option>
+                            <option value="jawa-tengah">Jawa Tengah</option>
+                            <option value="jawa-timur">Jawa Timur</option>
+                            <option value="bali">Bali</option>
+                            <option value="yogyakarta">D.I. Yogyakarta</option>
+                            <option value="sumatra-barat">Sumatra Barat</option>
+                            <option value="sulawesi-selatan">Sulawesi Selatan</option>
+                            <option value="lombok">Nusa Tenggara Barat</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="placeCategory">Kategori *</label>
+                        <select id="placeCategory" required>
+                            <option value="">Pilih Kategori</option>
+                            <option value="candi">Candi & Situs Sejarah</option>
+                            <option value="museum">Museum</option>
+                            <option value="budaya">Kampung Budaya</option>
+                            <option value="alam">Wisata Alam</option>
+                            <option value="kuliner">Kuliner Tradisional</option>
+                            <option value="festival">Festival & Acara</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="placeDescription">Deskripsi *</label>
+                    <textarea 
+                        id="placeDescription" 
+                        required 
+                        maxlength="1000"
+                        placeholder="Ceritakan tentang tempat wisata ini..."
+                        rows="5"
+                    ></textarea>
+                    <div class="char-counter">
+                        <span id="descCharCount">0</span>/1000
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="placeImage">URL Gambar (opsional)</label>
+                    <input 
+                        type="url" 
+                        id="placeImage"
+                        placeholder="https://example.com/image.jpg"
+                    >
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="hideAddPlaceModal()">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="submitPlaceBtn">
+                        ➕ Tambah Tempat
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Place Detail Modal -->
+    <div class="modal" id="placeDetailModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="placeDetailTitle">Detail Tempat Wisata</h3>
+                <button class="modal-close" onclick="hidePlaceDetailModal()">×</button>
+            </div>
+            
+            <div class="modal-body" id="placeDetailContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div class="modal" id="reviewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Berikan Review</h3>
+                <button class="modal-close" onclick="hideReviewModal()">×</button>
+            </div>
+            
+            <form id="reviewForm" onsubmit="submitReview(event)">
+                <div class="form-group">
+                    <label>Rating *</label>
+                    <div class="rating-input" id="ratingInput">
+                        <span class="star" data-rating="1">⭐</span>
+                        <span class="star" data-rating="2">⭐</span>
+                        <span class="star" data-rating="3">⭐</span>
+                        <span class="star" data-rating="4">⭐</span>
+                        <span class="star" data-rating="5">⭐</span>
+                    </div>
+                    <input type="hidden" id="selectedRating" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reviewContent">Review Anda *</label>
+                    <textarea 
+                        id="reviewContent" 
+                        required 
+                        maxlength="500"
+                        placeholder="Bagikan pengalaman Anda mengunjungi tempat ini..."
+                        rows="4"
+                    ></textarea>
+                    <div class="char-counter">
+                        <span id="reviewCharCount">0</span>/500
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="hideReviewModal()">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="submitReviewBtn">
+                        ⭐ Kirim Review
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% comment %} {% endblock %} {% endcomment %}
+
+{% comment %} {% block extra_css %} {% endcomment %}
+<style>
+    .search-filter-container {
+        background: var(--bg-card);
+        border-radius: var(--border-radius-xl);
+        padding: var(--spacing-xl);
+        box-shadow: var(--shadow-xl);
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .search-section {
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .search-bar {
+        display: flex;
+        gap: var(--spacing-sm);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .search-bar input {
+        flex: 1;
+        padding: var(--spacing-md);
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius-md);
+        font-size: var(--font-size-base);
+    }
+    
+    .search-bar input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+    }
+    
+    .search-btn {
+        padding: var(--spacing-md) var(--spacing-lg);
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius-md);
+        cursor: pointer;
+        font-size: var(--font-size-base);
+        transition: background var(--transition-normal);
+    }
+    
+    .search-btn:hover {
+        background: var(--primary-dark);
+    }
+    
+    .filter-controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-md);
+    }
+    
+    .filter-controls select {
+        padding: var(--spacing-md);
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius-md);
+        font-size: var(--font-size-base);
+        background: var(--bg-card);
+    }
+    
+    .filter-controls select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+    }
+    
+    .places-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: var(--spacing-xl);
+        min-height: 400px;
+    }
+    
+    .loading-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: var(--spacing-xl);
+        color: var(--text-secondary);
+    }
+    
+    .loading-state .loading {
+        width: 40px;
+        height: 40px;
+        margin: 0 auto var(--spacing-md);
+    }
+    
+    .place-card {
+        background: var(--bg-card);
+        border-radius: var(--border-radius-xl);
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        transition: transform var(--transition-normal);
+        cursor: pointer;
+    }
+    
+    .place-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .place-image {
+        width: 100%;
+        height: 200px;
+        background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .place-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .place-info {
+        padding: var(--spacing-lg);
+    }
+    
+    .place-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .place-title {
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-xs);
+        line-height: 1.3;
+    }
+    
+    .place-location {
+        color: var(--text-secondary);
+        font-size: var(--font-size-sm);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+    
+    .place-category {
+        background: var(--primary-color);
+        color: white;
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--border-radius-sm);
+        font-size: var(--font-size-sm);
+        font-weight: 500;
+        align-self: flex-start;
+    }
+    
+    .place-description {
+        color: var(--text-primary);
+        line-height: 1.6;
+        margin-bottom: var(--spacing-md);
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+    
+    .place-rating {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .rating-stars {
+        color: #ffd700;
+        font-size: var(--font-size-lg);
+    }
+    
+    .rating-value {
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+    
+    .rating-count {
+        color: var(--text-secondary);
+        font-size: var(--font-size-sm);
+    }
+    
+    .place-actions {
+        display: flex;
+        gap: var(--spacing-sm);
+    }
+    
+    .action-btn {
+        flex: 1;
+        padding: var(--spacing-md);
+        border: 2px solid var(--primary-color);
+        border-radius: var(--border-radius-md);
+        cursor: pointer;
+        font-size: var(--font-size-sm);
+        font-weight: 500;
+        transition: all var(--transition-normal);
+        text-align: center;
+    }
+    
+    .action-btn.primary {
+        background: var(--primary-color);
+        color: white;
+    }
+    
+    .action-btn.primary:hover {
+        background: var(--primary-dark);
+    }
+    
+    .action-btn.secondary {
+        background: var(--bg-card);
+        color: var(--primary-color);
+    }
+    
+    .action-btn.secondary:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--spacing-lg);
+    }
+    
+    .stat-card {
+        background: var(--bg-card);
+        padding: var(--spacing-xl);
+        border-radius: var(--border-radius-lg);
+        text-align: center;
+        box-shadow: var(--shadow-md);
+        border-left: 4px solid var(--primary-color);
+    }
+    
+    .stat-icon {
+        font-size: 3rem;
+        display: block;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--primary-color);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .stat-label {
+        color: var(--text-secondary);
+        font-size: var(--font-size-base);
+    }
+    
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-xl);
+    }
+    
+    .pagination-btn {
+        padding: var(--spacing-md) var(--spacing-lg);
+        background: var(--bg-card);
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius-md);
+        cursor: pointer;
+        transition: all var(--transition-normal);
+    }
+    
+    .pagination-btn:hover {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+    
+    .pagination-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .page-numbers {
+        display: flex;
+        gap: var(--spacing-sm);
+    }
+    
+    .page-number {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius-md);
+        cursor: pointer;
+        transition: all var(--transition-normal);
+    }
+    
+    .page-number.active {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+    
+    .page-number:hover {
+        border-color: var(--primary-color);
+    }
+    
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: var(--spacing-lg);
+    }
+    
+    .modal.show {
+        display: flex;
+    }
+    
+    .modal-content {
+        background: var(--bg-card);
+        border-radius: var(--border-radius-xl);
+        width: 100%;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: var(--shadow-xl);
+    }
+    
+    .modal-large {
+        max-width: 900px;
+    }
+    
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-lg);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .modal-header h3 {
+        font-size: var(--font-size-xl);
+        color: var(--text-primary);
+    }
+    
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: var(--text-secondary);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background var(--transition-normal);
+    }
+    
+    .modal-close:hover {
+        background: var(--bg-secondary);
+    }
+    
+    .modal-body {
+        padding: var(--spacing-lg);
+    }
+    
+    .form-group {
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: var(--spacing-sm);
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: var(--spacing-md);
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius-md);
+        font-size: var(--font-size-base);
+        font-family: inherit;
+        transition: border-color var(--transition-normal);
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+    }
+    
+    .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+    
+    .char-counter {
+        text-align: right;
+        margin-top: var(--spacing-xs);
+        font-size: var(--font-size-sm);
+        color: var(--text-secondary);
+    }
+    
+    .rating-input {
+        display: flex;
+        gap: var(--spacing-xs);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .rating-input .star {
+        font-size: 2rem;
+        cursor: pointer;
+        transition: transform var(--transition-normal);
+        opacity: 0.3;
+    }
+    
+    .rating-input .star:hover {
+        transform: scale(1.1);
+    }
+    
+    .rating-input .star.active {
+        opacity: 1;
+    }
+    
+    .modal-actions {
+        display: flex;
+        gap: var(--spacing-md);
+        justify-content: flex-end;
+        padding: var(--spacing-lg);
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: var(--spacing-xl);
+        color: var(--text-secondary);
+    }
+    
+    .empty-icon {
+        font-size: 4rem;
+        display: block;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    @media (max-width: 768px) {
+        .places-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .filter-controls {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+        
+        .modal-content {
+            margin: var(--spacing-md);
+            max-width: none;
+        }
+        
+        .modal-actions {
+            flex-direction: column;
+        }
+        
+        .modal-actions .btn {
+            width: 100%;
+        }
+        
+        .place-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+{% comment %} {% endblock %} {% endcomment %}
+
+{% comment %} {% block extra_js %} {% endcomment %}
+<script>
+    let currentPage = 1;
+    let totalPages = 1;
+    let places = [];
+    let filteredPlaces = [];
+    let currentPlaceId = null;
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        loadPlacesData();
+        setupFormHandlers();
+        setupRatingInput();
+    });
+    
+    function setupFormHandlers() {
+        const descTextarea = document.getElementById('placeDescription');
+        const descCharCount = document.getElementById('descCharCount');
+        
+        if (descTextarea) {
+            descTextarea.addEventListener('input', function() {
+                const count = this.value.length;
+                descCharCount.textContent = count;
+                
+                if (count >= 900) {
+                    descCharCount.style.color = 'var(--primary-color)';
+                } else {
+                    descCharCount.style.color = 'var(--text-secondary)';
+                }
+            });
+        }
+        
+        const reviewTextarea = document.getElementById('reviewContent');
+        const reviewCharCount = document.getElementById('reviewCharCount');
+        
+        if (reviewTextarea) {
+            reviewTextarea.addEventListener('input', function() {
+                const count = this.value.length;
+                reviewCharCount.textContent = count;
+                
+                if (count >= 450) {
+                    reviewCharCount.style.color = 'var(--primary-color)';
+                } else {
+                    reviewCharCount.style.color = 'var(--text-secondary)';
+                }
+            });
+        }
+    }
+    
+    function setupRatingInput() {
+        const stars = document.querySelectorAll('.rating-input .star');
+        const selectedRating = document.getElementById('selectedRating');
+        
+        stars.forEach((star, index) => {
+            star.addEventListener('click', function() {
+                const rating = index + 1;
+                selectedRating.value = rating;
+                
+                stars.forEach((s, i) => {
+                    if (i < rating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+            
+            star.addEventListener('mouseenter', function() {
+                const rating = index + 1;
+                
+                stars.forEach((s, i) => {
+                    if (i < rating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+        });
+        
+        document.querySelector('.rating-input').addEventListener('mouseleave', function() {
+            const currentRating = selectedRating.value || 0;
+            
+            stars.forEach((s, i) => {
+                if (i < currentRating) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+        });
+    }
+    
+    async function loadPlacesData() {
+        try {
+            const response = await fetch('/api/places/');
+            const data = await response.json();
+            
+            if (data.success) {
+                places = data.places;
+                filteredPlaces = [...places];
+                updateStats(data.stats);
+                displayPlaces();
+            } else {
+                showError('Gagal memuat data tempat wisata');
+            }
+        } catch (error) {
+            console.error('Error loading places data:', error);
+            showError('Terjadi kesalahan saat memuat data');
+        }
+    }
+    
+    function updateStats(stats) {
+        document.getElementById('totalPlaces').textContent = stats.total_places || 0;
+        document.getElementById('averageRating').textContent = (stats.average_rating || 0).toFixed(1);
+        document.getElementById('totalReviews').textContent = stats.total_reviews || 0;
+        document.getElementById('totalProvinces').textContent = stats.total_provinces || 0;
+    }
+    
+    function displayPlaces() {
+        const container = document.getElementById('placesGrid');
+        
+        if (filteredPlaces.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <span class="empty-icon">🏛️</span>
+                    <h3>Belum Ada Tempat Wisata</h3>
+                    <p>Jadilah yang pertama menambahkan tempat wisata budaya!</p>
+                    <button class="btn btn-primary" onclick="showAddPlaceModal()">
+                        ➕ Tambah Tempat Wisata
+                    </button>
+                </div>
+            `;
+            return;
+        }
+        
+        const startIndex = (currentPage - 1) * 12;
+        const endIndex = startIndex + 12;
+        const pagePlaces = filteredPlaces.slice(startIndex, endIndex);
+        
+        container.innerHTML = pagePlaces.map(place => `
+            <div class="place-card" onclick="showPlaceDetail(${place.id})">
+                <div class="place-image">
+                    ${place.image ? 
+                        `<img src="${place.image}" alt="${WardiApp.escapeHtml(place.name)}" onerror="this.style.display='none'">` :
+                        getCategoryIcon(place.category)
+                    }
+                </div>
+                
+                <div class="place-info">
+                    <div class="place-header">
+                        <div>
+                            <h3 class="place-title">${WardiApp.escapeHtml(place.name)}</h3>
+                            <div class="place-location">
+                                📍 ${WardiApp.escapeHtml(place.location)}
+                            </div>
+                        </div>
+                        <div class="place-category">${getCategoryName(place.category)}</div>
+                    </div>
+                    
+                    <div class="place-description">
+                        ${WardiApp.escapeHtml(place.description)}
+                    </div>
+                    
+                    <div class="place-rating">
+                        <div class="rating-stars">${getStarRating(place.rating)}</div>
+                        <div class="rating-value">${(place.rating || 0).toFixed(1)}</div>
+                        <div class="rating-count">(${place.review_count || 0} review)</div>
+                    </div>
+                    
+                    <div class="place-actions">
+                        <button class="action-btn primary" onclick="event.stopPropagation(); showPlaceDetail(${place.id})">
+                            👁️ Lihat Detail
+                        </button>
+                        <button class="action-btn secondary" onclick="event.stopPropagation(); showReviewModal(${place.id})">
+                            ⭐ Beri Rating
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+        updatePagination();
+    }
+    
+    function updatePagination() {
+        totalPages = Math.ceil(filteredPlaces.length / 12);
+        const pagination = document.getElementById('pagination');
+        
+        if (totalPages <= 1) {
+            pagination.style.display = 'none';
+            return;
+        }
+        
+        pagination.style.display = 'flex';
+        
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageNumbers = document.getElementById('pageNumbers');
+        
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages;
+        
+        let pagesHtml = '';
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                pagesHtml += `
+                    <div class="page-number ${i === currentPage ? 'active' : ''}" 
+                         onclick="loadPage(${i})">
+                        ${i}
+                    </div>
+                `;
+            } else if (i === currentPage - 3 || i === currentPage + 3) {
+                pagesHtml += '<div class="page-number">...</div>';
+            }
+        }
+        
+        pageNumbers.innerHTML = pagesHtml;
+    }
+    
+    function loadPage(page) {
+        if (page >= 1 && page <= totalPages) {
+            currentPage = page;
+            displayPlaces();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+    
+    function searchPlaces() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        
+        if (!searchTerm) {
+            filteredPlaces = [...places];
+        } else {
+            filteredPlaces = places.filter(place => 
+                place.name.toLowerCase().includes(searchTerm) ||
+                place.location.toLowerCase().includes(searchTerm) ||
+                place.description.toLowerCase().includes(searchTerm)
+            );
+        }
+        
+        currentPage = 1;
+        displayPlaces();
+    }
+    
+    function filterPlaces() {
+        const province = document.getElementById('provinceFilter').value;
+        const category = document.getElementById('categoryFilter').value;
+        const minRating = document.getElementById('ratingFilter').value;
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        
+        filteredPlaces = places.filter(place => {
+            const matchesProvince = !province || place.province === province;
+            const matchesCategory = !category || place.category === category;
+            const matchesRating = !minRating || (place.rating || 0) >= parseFloat(minRating);
+            const matchesSearch = !searchTerm || 
+                place.name.toLowerCase().includes(searchTerm) ||
+                place.location.toLowerCase().includes(searchTerm) ||
+                place.description.toLowerCase().includes(searchTerm);
+            
+            return matchesProvince && matchesCategory && matchesRating && matchesSearch;
+        });
+        
+        currentPage = 1;
+        displayPlaces();
+    }
+    
+    function sortPlaces() {
+        const sortBy = document.getElementById('sortFilter').value;
+        
+        switch (sortBy) {
+            case 'rating_desc':
+                filteredPlaces.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+                break;
+            case 'rating_asc':
+                filteredPlaces.sort((a, b) => (a.rating || 0) - (b.rating || 0));
+                break;
+            case 'name_asc':
+                filteredPlaces.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+            case 'name_desc':
+                filteredPlaces.sort((a, b) => b.name.localeCompare(a.name));
+                break;
+            case 'newest':
+                filteredPlaces.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                break;
+            case 'most_reviewed':
+                filteredPlaces.sort((a, b) => (b.review_count || 0) - (a.review_count || 0));
+                break;
+        }
+        
+        currentPage = 1;
+        displayPlaces();
+    }
+    
+    function showAddPlaceModal() {
+        document.getElementById('addPlaceModal').classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function hideAddPlaceModal() {
+        document.getElementById('addPlaceModal').classList.remove('show');
+        document.body.style.overflow = 'auto';
+        document.getElementById('addPlaceForm').reset();
+        document.getElementById('descCharCount').textContent = '0';
+    }
+    
+    function showReviewModal(placeId) {
+        currentPlaceId = placeId;
+        document.getElementById('reviewModal').classList.add('show');
+        document.body.style.overflow = 'hidden';
+        
+        // Reset rating
+        const stars = document.querySelectorAll('.rating-input .star');
+        const selectedRating = document.getElementById('selectedRating');
+        
+        stars.forEach(star => star.classList.remove('active'));
+        selectedRating.value = '';
+    }
+    
+    function hideReviewModal() {
+        document.getElementById('reviewModal').classList.remove('show');
+        document.body.style.overflow = 'auto';
+        document.getElementById('reviewForm').reset();
+        document.getElementById('reviewCharCount').textContent = '0';
+        currentPlaceId = null;
+    }
+    
+    async function addPlace(event) {
+        event.preventDefault();
+        
+        const formData = {
+            name: document.getElementById('placeName').value,
+            location: document.getElementById('placeLocation').value,
+            province: document.getElementById('placeProvince').value,
+            category: document.getElementById('placeCategory').value,
+            description: document.getElementById('placeDescription').value,
+            image: document.getElementById('placeImage').value
+        };
+        
+        const submitBtn = document.getElementById('submitPlaceBtn');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<div class="loading"></div> Menambahkan...';
+        
+        try {
+            const response = await fetch('/api/places/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify(formData)
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                WardiApp.showNotification('Tempat wisata berhasil ditambahkan!', 'success');
+                hideAddPlaceModal();
+                loadPlacesData(); // Reload places data
+            } else {
+                WardiApp.showNotification(data.error || 'Gagal menambahkan tempat wisata', 'error');
+            }
+        } catch (error) {
+            console.error('Error adding place:', error);
+            WardiApp.showNotification('Terjadi kesalahan saat menambahkan tempat wisata', 'error');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }
+    }
+    
+    async function submitReview(event) {
+        event.preventDefault();
+        
+        if (!currentPlaceId) return;
+        
+        const formData = {
+            place_id: currentPlaceId,
+            rating: document.getElementById('selectedRating').value,
+            content: document.getElementById('reviewContent').value
+        };
+        
+        const submitBtn = document.getElementById('submitReviewBtn');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<div class="loading"></div> Mengirim...';
+        
+        try {
+            const response = await fetch('/api/places/reviews/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify(formData)
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                WardiApp.showNotification('Review berhasil dikirim!', 'success');
+                hideReviewModal();
+                loadPlacesData(); // Reload to update ratings
+            } else {
+                WardiApp.showNotification(data.error || 'Gagal mengirim review', 'error');
+            }
+        } catch (error) {
+            console.error('Error submitting review:', error);
+            WardiApp.showNotification('Terjadi kesalahan saat mengirim review', 'error');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }
+    }
+    
+    async function showPlaceDetail(placeId) {
+        const modal = document.getElementById('placeDetailModal');
+        const content = document.getElementById('placeDetailContent');
+        
+        content.innerHTML = `
+            <div class="loading-state">
+                <div class="loading"></div>
+                <p>Memuat detail tempat wisata...</p>
+            </div>
+        `;
+        
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+        
+        try {
+            const response = await fetch(`/api/places/${placeId}/`);
+            const data = await response.json();
+            
+            if (data.success) {
+                const place = data.place;
+                content.innerHTML = `
+                    <div class="place-detail">
+                        <div class="place-detail-header">
+                            ${place.image ? 
+                                `<img src="${place.image}" alt="${WardiApp.escapeHtml(place.name)}" style="width: 100%; height: 300px; object-fit: cover; border-radius: var(--border-radius-lg); margin-bottom: var(--spacing-lg);">` :
+                                `<div style="width: 100%; height: 300px; background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); border-radius: var(--border-radius-lg); display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white; margin-bottom: var(--spacing-lg);">${getCategoryIcon(place.category)}</div>`
+                            }
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-lg);">
+                                <div>
+                                    <h2 style="font-size: var(--font-size-xxl); margin-bottom: var(--spacing-sm);">${WardiApp.escapeHtml(place.name)}</h2>
+                                    <div style="color: var(--text-secondary); margin-bottom: var(--spacing-sm);">📍 ${WardiApp.escapeHtml(place.location)}</div>
+                                    <div style="color: var(--text-secondary);">🗺️ ${getProvinceName(place.province)}</div>
+                                </div>
+                                <div class="place-category">${getCategoryName(place.category)}</div>
+                            </div>
+                            
+                            <div class="place-rating" style="margin-bottom: var(--spacing-lg);">
+                                <div class="rating-stars">${getStarRating(place.rating)}</div>
+                                <div class="rating-value">${(place.rating || 0).toFixed(1)}</div>
+                                <div class="rating-count">(${place.review_count || 0} review)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="place-description" style="margin-bottom: var(--spacing-xl); line-height: 1.8;">
+                            ${WardiApp.escapeHtml(place.description).replace(/\n/g, '<br>')}
+                        </div>
+                        
+                        <div class="place-actions-detail" style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
+                            <button class="btn btn-primary" onclick="showReviewModal(${place.id})">
+                                ⭐ Beri Review
+                            </button>
+                            <button class="btn btn-secondary" onclick="sharePlace(${place.id})">
+                                📤 Bagikan
+                            </button>
+                        </div>
+                        
+                        <div class="reviews-section">
+                            <h3 style="margin-bottom: var(--spacing-lg);">Review Pengunjung</h3>
+                            <div class="reviews-list">
+                                ${place.reviews && place.reviews.length > 0 ? 
+                                    place.reviews.map(review => `
+                                        <div class="review-item" style="background: var(--bg-secondary); padding: var(--spacing-lg); border-radius: var(--border-radius-lg); margin-bottom: var(--spacing-md);">
+                                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                                                <div>
+                                                    <div style="font-weight: 600; margin-bottom: var(--spacing-xs);">👤 ${WardiApp.escapeHtml(review.author)}</div>
+                                                    <div style="color: #ffd700; margin-bottom: var(--spacing-xs);">${getStarRating(review.rating)}</div>
+                                                </div>
+                                                <div style="color: var(--text-secondary); font-size: var(--font-size-sm);">${formatDate(review.created_at)}</div>
+                                            </div>
+                                            <div style="line-height: 1.6;">${WardiApp.escapeHtml(review.content)}</div>
+                                        </div>
+                                    `).join('') :
+                                    '<div style="text-align: center; padding: var(--spacing-xl); color: var(--text-secondary);">Belum ada review. Jadilah yang pertama memberikan review!</div>'
+                                }
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">❌</span>
+                        <p>Gagal memuat detail tempat wisata</p>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            console.error('Error loading place detail:', error);
+            content.innerHTML = `
+                <div class="empty-state">
+                    <span class="empty-icon">❌</span>
+                    <p>Terjadi kesalahan saat memuat detail</p>
+                </div>
+            `;
+        }
+    }
+    
+    function hidePlaceDetailModal() {
+        document.getElementById('placeDetailModal').classList.remove('show');
+        document.body.style.overflow = 'auto';
+    }
+    
+    function sharePlace(placeId) {
+        const url = `${window.location.origin}/places/${placeId}/`;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: 'Tempat Wisata Budaya',
+                url: url
+            });
+        } else {
+            navigator.clipboard.writeText(url).then(() => {
+                WardiApp.showNotification('Link tempat wisata berhasil disalin!', 'success');
+            });
+        }
+    }
+    
+    function getCategoryName(category) {
+        const categories = {
+            'candi': 'Candi & Situs',
+            'museum': 'Museum',
+            'budaya': 'Kampung Budaya',
+            'alam': 'Wisata Alam',
+            'kuliner': 'Kuliner',
+            'festival': 'Festival'
+        };
+        return categories[category] || category;
+    }
+    
+    function getCategoryIcon(category) {
+        const icons = {
+            'candi': '🏛️',
+            'museum': '🏛️',
+            'budaya': '🏘️',
+            'alam': '🌄',
+            'kuliner': '🍽️',
+            'festival': '🎭'
+        };
+        return icons[category] || '🏛️';
+    }
+    
+    function getProvinceName(province) {
+        const provinces = {
+            'jawa-barat': 'Jawa Barat',
+            'jawa-tengah': 'Jawa Tengah',
+            'jawa-timur': 'Jawa Timur',
+            'bali': 'Bali',
+            'yogyakarta': 'D.I. Yogyakarta',
+            'sumatra-barat': 'Sumatra Barat',
+            'sulawesi-selatan': 'Sulawesi Selatan',
+            'lombok': 'Nusa Tenggara Barat'
+        };
+        return provinces[province] || province;
+    }
+    
+    function getStarRating(rating) {
+        const fullStars = Math.floor(rating || 0);
+        const hasHalfStar = (rating || 0) % 1 >= 0.5;
+        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+        
+        return '⭐'.repeat(fullStars) + 
+               (hasHalfStar ? '⭐' : '') + 
+               '☆'.repeat(emptyStars);
+    }
+    
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('id-ID', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+    
+    function showError(message) {
+        const container = document.getElementById('placesGrid');
+        container.innerHTML = `
+            <div class="empty-state">
+                <span class="empty-icon">❌</span>
+                <h3>Terjadi Kesalahan</h3>
+                <p>${message}</p>
+                <button class="btn btn-primary" onclick="loadPlacesData()">
+                    🔄 Coba Lagi
+                </button>
+            </div>
+        `;
+    }
+    
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    // Close modals when clicking outside
+    document.addEventListener('click', function(event) {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    });
+</script>
+{% comment %} {% endblock %} {% endcomment %}
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-menu a:hover, .nav-menu a.active {
+            color: #e74c3c;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            color: white;
+        }
+        
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .filter-bar {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 40px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .filter-item label {
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .filter-select {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 25px;
+            background: white;
+            color: #333;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        
+        .places-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .place-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .place-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+        
+        .place-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            position: relative;
+        }
+        
+        .place-category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .place-content {
+            padding: 25px;
+        }
+        
+        .place-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .place-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+        
+        .place-location {
+            color: #666;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .rating-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .stars {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .rating-number {
+            font-weight: bold;
+            color: #e74c3c;
+            font-size: 1.1rem;
+        }
+        
+        .rating-count {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .place-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .place-tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: #f8f9fa;
+            color: #666;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid #e9ecef;
+        }
+        
+        .place-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn.primary {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        .action-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+        }
+        
+        .action-btn.secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .action-btn.secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+        
+        .close:hover {
+            color: #e74c3c;
+        }
+        
+        .rating-modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .rating-modal-header h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .rating-modal-header .place-name {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0;
+        }
+        
+        .star {
+            font-size: 2.5rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .star:hover,
+        .star.active {
+            color: #ffd700;
+            transform: scale(1.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+        }
+        
+        .add-place-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(231, 76, 60, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .add-place-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 35px rgba(231, 76, 60, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .places-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">🇮🇩 WARDI</a>
+            <ul class="nav-menu">
+                <li><a href="/">Beranda</a></li>
+                <li><a href="/analyze/">Analisis Budaya</a></li>
+                <li><a href="/translate/">Penerjemah</a></li>
+                <li><a href="/forum/">Forum</a></li>
+                <li><a href="/places/" class="active">Tempat Wisata</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>⭐ Rating Tempat Wisata Budaya</h1>
+            <p>Berikan rating dan review untuk destinasi wisata budaya Indonesia</p>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="filter-item">
+                <label>Provinsi</label>
+                <select class="filter-select" id="provinceFilter">
+                    <option value="">Semua Provinsi</option>
+                    <option value="DI Yogyakarta">DI Yogyakarta</option>
+                    <option value="Jawa Tengah">Jawa Tengah</option>
+                    <option value="Jawa Barat">Jawa Barat</option>
+                    <option value="Bali">Bali</option>
+                    <option value="Jawa Timur">Jawa Timur</option>
+                    <option value="Jakarta">DKI Jakarta</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label>Kategori</label>
+                <select class="filter-select" id="categoryFilter">
+                    <option value="">Semua Kategori</option>
+                    <option value="Museum">Museum</option>
+                    <option value="Candi">Candi</option>
+                    <option value="Istana">Istana</option>
+                    <option value="Desa Wisata">Desa Wisata</option>
+                    <option value="Galeri">Galeri</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label>Rating</label>
+                <select class="filter-select" id="ratingFilter">
+                    <option value="">Semua Rating</option>
+                    <option value="5">⭐⭐⭐⭐⭐</option>
+                    <option value="4">⭐⭐⭐⭐ ke atas</option>
+                    <option value="3">⭐⭐⭐ ke atas</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Places Grid -->
+        <div class="places-grid" id="placesGrid">
+            {% for place in places %}
+            <div class="place-card" data-category="{{ place.category }}" data-province="{{ place.province }}">
+                <div class="place-image">
+                    {% if place.category == 'Museum' %}🏛️
+                    {% elif place.category == 'Candi' %}🏛️
+                    {% elif place.category == 'Istana' %}🏰
+                    {% elif place.category == 'Desa Wisata' %}🏘️
+                    {% elif place.category == 'Galeri' %}🎨
+                    {% else %}🏛️{% endif %}
+                    <div class="place-category">{{ place.category }}</div>
+                </div>
+                <div class="place-content">
+                    <div class="place-header">
+                        <div>
+                            <h3 class="place-title">{{ place.name }}</h3>
+                            <div class="place-location">📍 {{ place.location }}, {{ place.province }}</div>
+                        </div>
+                        <div class="rating-display">
+                            <div class="stars">
+                                {% with rating=place.average_rating %}
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= rating %}⭐{% else %}☆{% endif %}
+                                    {% endfor %}
+                                {% endwith %}
+                            </div>
+                            <div class="rating-number">{{ place.average_rating|floatformat:1 }}</div>
+                            <div class="rating-count">({{ place.rating_count }} review)</div>
+                        </div>
+                    </div>
+                    <p class="place-description">
+                        {{ place.description|truncatewords:20 }}
+                    </p>
+                    <div class="place-tags">
+                        <span class="tag">{{ place.category }}</span>
+                        <span class="tag">{{ place.province }}</span>
+                        <span class="tag">Budaya</span>
+                    </div>
+                    <div class="place-actions">
+                        {% if user.is_authenticated %}
+                            <button class="action-btn primary" onclick="openRatingModal('{{ place.name }}', '{{ place.id }}')">
+                                ⭐ Beri Rating
+                            </button>
+                        {% else %}
+                            <button class="action-btn primary" onclick="showLoginRequired()">
+                                ⭐ Beri Rating
+                            </button>
+                        {% endif %}
+                        <button class="action-btn secondary" onclick="viewPlaceDetails('{{ place.id }}')">
+                            👁️ Lihat Detail
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #666;">
+                <h3>Belum ada tempat wisata yang terdaftar</h3>
+                <p>Data tempat wisata akan segera ditambahkan.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Add Place Button (for admin/staff) -->
+    {% if user.is_staff %}
+    <button class="add-place-btn" onclick="openAddPlaceModal()" title="Tambah Tempat Baru">
+        ➕
+    </button>
+    {% endif %}
+
+    <!-- Rating Modal -->
+    <div id="ratingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeRatingModal()">&times;</span>
+            <div class="rating-modal-header">
+                <h2>⭐ Beri Rating & Review</h2>
+                <div class="place-name" id="modalPlaceName">Nama Tempat</div>
+            </div>
+            
+            <div class="star-rating" id="starRating">
+                <span class="star" data-rating="1">⭐</span>
+                <span class="star" data-rating="2">⭐</span>
+                <span class="star" data-rating="3">⭐</span>
+                <span class="star" data-rating="4">⭐</span>
+                <span class="star" data-rating="5">⭐</span>
+            </div>
+            
+            <form id="ratingForm">
+                <div class="form-group">
+                    <label for="reviewText">Review Anda</label>
+                    <textarea id="reviewText" name="review" placeholder="Ceritakan pengalaman Anda mengunjungi tempat ini..."></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">🚀 Kirim Rating</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentRating = 0;
+        let currentPlaceId = '';
+
+        // Star rating functionality
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', function() {
+                currentRating = parseInt(this.dataset.rating);
+                updateStarDisplay();
+            });
+
+            star.addEventListener('mouseenter', function() {
+                const rating = parseInt(this.dataset.rating);
+                highlightStars(rating);
+            });
+        });
+
+        document.getElementById('starRating').addEventListener('mouseleave', function() {
+            updateStarDisplay();
+        });
+
+        function updateStarDisplay() {
+            document.querySelectorAll('.star').forEach((star, index) => {
+                if (index < currentRating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function highlightStars(rating) {
+            document.querySelectorAll('.star').forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function openRatingModal(placeName, placeId) {
+            document.getElementById('modalPlaceName').textContent = placeName;
+            currentPlaceId = placeId;
+            currentRating = 0;
+            updateStarDisplay();
+            document.getElementById('ratingModal').style.display = 'block';
+        }
+
+        function closeRatingModal() {
+            document.getElementById('ratingModal').style.display = 'none';
+            document.getElementById('ratingForm').reset();
+            currentRating = 0;
+            updateStarDisplay();
+        }
+
+        function openAddPlaceModal() {
+            alert('Fitur tambah tempat baru akan segera tersedia!');
+        }
+
+        function viewDetails(placeId) {
+            alert(`Melihat detail untuk ${placeId}. Fitur ini akan segera tersedia!`);
+        }
+
+        // Handle rating form submission
+        document.getElementById('ratingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (currentRating === 0) {
+                alert('Silakan pilih rating terlebih dahulu!');
+                return;
+            }
+
+            const formData = new FormData(this);
+            
+            // Send rating to server
+            fetch('/api/places/rate/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `place_id=${currentPlaceId}&rating=${currentRating}&comment=${encodeURIComponent(formData.get('review'))}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Rating berhasil dikirim! Terima kasih atas review Anda.');
+                    closeRatingModal();
+                } else {
+                    alert('Gagal mengirim rating: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat mengirim rating');
+            });
+        });
+
+        // Filter functionality
+        document.getElementById('provinceFilter').addEventListener('change', filterPlaces);
+        document.getElementById('categoryFilter').addEventListener('change', filterPlaces);
+        document.getElementById('ratingFilter').addEventListener('change', filterPlaces);
+
+        function filterPlaces() {
+            const provinceFilter = document.getElementById('provinceFilter').value;
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const ratingFilter = document.getElementById('ratingFilter').value;
+            
+            const places = document.querySelectorAll('.place-card');
+            
+            places.forEach(place => {
+                let show = true;
+                
+                // Check province filter
+                if (provinceFilter) {
+                    const location = place.querySelector('.place-location').textContent;
+                    if (!location.includes(provinceFilter)) {
+                        show = false;
+                    }
+                }
+                
+                // Check category filter
+                if (categoryFilter) {
+                    const category = place.querySelector('.place-category').textContent;
+                    if (category !== categoryFilter) {
+                        show = false;
+                    }
+                }
+                
+                // Check rating filter
+                if (ratingFilter) {
+                    const rating = parseFloat(place.querySelector('.rating-number').textContent);
+                    if (rating < parseFloat(ratingFilter)) {
+                        show = false;
+                    }
+                }
+                
+                place.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        // Show login required message
+        function showLoginRequired() {
+            if (confirm('Anda harus login untuk memberikan rating. Pergi ke halaman login?')) {
+                window.location.href = '/login/?next=/places/';
+            }
+        }
+
+        // View place details
+        function viewPlaceDetails(placeId) {
+            // Load place details (could open modal or navigate to detail page)
+            fetch(`/api/places/ratings/${placeId}/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show place details with ratings
+                    alert('Detail tempat: ' + data.ratings.length + ' review ditemukan');
+                } else {
+                    alert('Gagal memuat detail tempat');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat memuat detail');
+            });
+        }
+
+        // Add place modal functions (for admin)
+        function openAddPlaceModal() {
+            alert('Fitur tambah tempat akan tersedia untuk admin di versi mendatang.');
+        }
+
+        // Get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('ratingModal');
+            if (e.target === modal) {
+                closeRatingModal();
+            }
+        });
+    </script>
+</body>
+</html>

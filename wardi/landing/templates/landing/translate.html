@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penerjemah Daerah - Wardi</title>
+    <meta name="description" content="Terjemahkan bahasa daerah Indonesia dengan teknologi AI. Mendukung voice-to-text dan berbagai bahasa nusantara.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ==========================================================================
+           WARDI - CSS VARIABLES & RESET (from homepage)
+           ========================================================================== */
+        :root {
+            /* Colors */
+            --primary-color: #8B4513; /* Rich brown for tradition */
+            --primary-dark: #5D2E0F;
+            --primary-light: #A86A3D;
+            --secondary-color: #2c3e50;
+            --secondary-light: #34495e;
+            --accent-color: #DAA520; /* Gold accent */
+            --accent-secondary: #5F9EA0; /* Cultural blue-green */
+            
+            /* Text Colors */
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --text-light: #bdc3c7;
+            --text-white: #ffffff;
+            
+            /* Background Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-dark: #2c3e50;
+            --bg-card: #ffffff;
+            --bg-overlay: rgba(44, 62, 80, 0.9);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            
+            /* Spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            --spacing-3xl: 4rem;
+            
+            /* Typography */
+            --font-family-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-family-secondary: 'Georgia', serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-size-4xl: 2.25rem;
+            --font-size-5xl: 3rem;
+            
+            /* Borders */
+            --border-radius-sm: 0.25rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            --border-radius-full: 9999px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+            --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+            
+            /* Z-index */
+            --z-dropdown: 1000;
+            --z-sticky: 1020;
+            --z-fixed: 1030;
+            --z-modal-backdrop: 1040;
+            --z-modal: 1050;
+            --z-popover: 1060;
+            --z-tooltip: 1070;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================================
+           UTILITY CLASSES
+           ========================================================================== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            text-decoration: none;
+            border: 2px solid transparent;
+            border-radius: var(--border-radius-full);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .btn:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--text-white);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: var(--text-white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-lg {
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: var(--font-size-lg);
+        }
+
+        .btn-sm {
+            padding: var(--spacing-xs) var(--spacing-md);
+            font-size: var(--font-size-sm);
+        }
+
+        /* Text Utilities */
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+
+        .text-primary { color: var(--primary-color); }
+        .text-secondary { color: var(--text-secondary); }
+        .text-white { color: var(--text-white); }
+        .text-accent { color: var(--accent-color); }
+
+        /* Display Utilities */
+        .d-none { display: none; }
+        .d-block { display: block; }
+        .d-flex { display: flex; }
+        .d-grid { display: grid; }
+
+        /* ==========================================================================
+           NAVIGATION (from homepage)
+           ========================================================================== */
+        .navbar {
+            background: var(--secondary-color);
+            padding: var(--spacing-md) 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: var(--z-fixed);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+
+        .navbar.scrolled {
+            padding: var(--spacing-sm) 0;
+            background: var(--bg-overlay);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--accent-color);
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            text-decoration: none;
+            transition: all var(--transition-normal);
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            color: var(--text-white);
+            font-weight: bold;
+            font-size: var(--font-size-xl);
+        }
+
+        .logo-text {
+            font-family: var(--font-family-secondary);
+            position: relative;
+        }
+
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-sm);
+        }
+
+        .hamburger {
+            width: 24px;
+            height: 3px;
+            background: var(--text-white);
+            border-radius: 2px;
+            transition: all var(--transition-normal);
+        }
+
+        .mobile-menu-btn.active .hamburger:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .mobile-menu-btn.active .hamburger:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active .hamburger:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: var(--spacing-lg);
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-white);
+            text-decoration: none;
+            font-weight: 500;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            transition: all var(--transition-normal);
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: all var(--transition-normal);
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 80%;
+        }
+
+        .nav-auth {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-register {
+            background: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .nav-register:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        /* ==========================================================================
+           MAIN CONTENT
+           ========================================================================== */
+        .main-content {
+            margin-top: 80px; /* Height of fixed navbar */
+            min-height: calc(100vh - 80px);
+        }
+
+        /* ==========================================================================
+           HERO SECTION (modified for translator)
+           ========================================================================== */
+        .hero {
+            background: var(--gradient-primary);
+            color: var(--text-white);
+            text-align: center;
+            padding: var(--spacing-3xl) var(--spacing-md);
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 Q50,100 100,0 L100,100 L0,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 100% 100%;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: var(--font-size-4xl);
+            margin-bottom: var(--spacing-lg);
+            animation: fadeInUp 1s ease-out;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-md);
+        }
+
+        .hero .subtitle {
+            font-size: var(--font-size-xl);
+            margin-bottom: var(--spacing-md);
+            animation: fadeInUp 1s ease-out 0.2s both;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+
+        .hero .description {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-xl);
+            animation: fadeInUp 1s ease-out 0.4s both;
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        /* ==========================================================================
+           TRANSLATOR SECTION (new design)
+           ========================================================================== */
+        .section {
+            padding: var(--spacing-3xl) 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .section-title {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            font-size: var(--font-size-lg);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: var(--spacing-md) auto 0;
+            line-height: 1.7;
+        }
+
+        .translator-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .translator-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .language-selector {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .language-select {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            min-width: 200px;
+        }
+
+        .language-select label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .language-dropdown {
+            padding: var(--spacing-md);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-base);
+            background: var(--bg-card);
+            transition: border-color var(--transition-normal);
+            width: 100%;
+        }
+
+        .language-dropdown:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .swap-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-lg);
+            margin-top: 20px;
+        }
+
+        .swap-btn:hover {
+            background: var(--primary-dark);
+            transform: rotate(180deg);
+        }
+
+        .translation-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        @media (max-width: 768px) {
+            .translation-area {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-section, .output-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-header, .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .input-label, .output-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .input-controls, .output-controls {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .control-btn {
+            background: none;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-sm);
+            cursor: pointer;
+            font-size: var(--font-size-base);
+            transition: all var(--transition-normal);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--primary-color);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #sourceText {
+            width: 100%;
+            min-height: 200px;
+            padding: var(--spacing-md);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-base);
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color var(--transition-normal);
+        }
+
+        #sourceText:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+            margin-top: var(--spacing-sm);
+        }
+
+        .translation-result {
+            min-height: 200px;
+            padding: var(--spacing-md);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius-md);
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: var(--spacing-md);
+            color: var(--accent-color);
+        }
+
+        .translation-text {
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ==========================================================================
+           FEATURES SECTION (modified to match homepage)
+           ========================================================================== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(218, 165, 32, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--spacing-md);
+            color: var(--accent-color);
+            font-size: var(--font-size-3xl);
+        }
+
+        .feature-title {
+            font-size: var(--font-size-xl);
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        /* ==========================================================================
+           FOOTER (from homepage)
+           ========================================================================== */
+        .footer {
+            background: var(--bg-dark);
+            color: var(--text-white);
+            padding: var(--spacing-3xl) 0 var(--spacing-xl);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .footer-section h4 {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-white);
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            color: var(--accent-color);
+        }
+
+        .footer-description {
+            color: var(--text-light);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.6;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-full);
+            text-decoration: none;
+            font-size: var(--font-size-lg);
+            transition: all var(--transition-normal);
+        }
+
+        .social-link:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color var(--transition-normal);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .contact-info p {
+            color: var(--text-light);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: var(--spacing-xl);
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        /* ==========================================================================
+           ANIMATIONS
+           ========================================================================== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ==========================================================================
+           NOTIFICATIONS & LOADING (from translator)
+           ========================================================================== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: #27ae60;
+        }
+
+        .notification.error {
+            background: #e74c3c;
+        }
+
+        .notification.info {
+            background: #3498db;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        .recording {
+            background: var(--primary-color) !important;
+            color: white !important;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN
+           ========================================================================== */
+        /* Tablet */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 var(--spacing-lg);
+            }
+            
+            .hero h1 {
+                font-size: var(--font-size-3xl);
+            }
+            
+            .section-title {
+                font-size: var(--font-size-2xl);
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            :root {
+                --font-size-5xl: 2.5rem;
+                --font-size-4xl: 2rem;
+                --font-size-3xl: 1.75rem;
+                --spacing-3xl: 2rem;
+            }
+            
+            .container {
+                padding: 0 var(--spacing-md);
+            }
+            
+            /* Mobile Navigation */
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--secondary-color);
+                flex-direction: column;
+                gap: 0;
+                padding: var(--spacing-lg);
+                box-shadow: var(--shadow-lg);
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-20px);
+                transition: all var(--transition-normal);
+            }
+            
+            .nav-menu.open {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+            
+            .nav-link {
+                padding: var(--spacing-md);
+                border-radius: var(--border-radius-md);
+                width: 100%;
+                text-align: center;
+            }
+            
+            /* Mobile Hero */
+            .hero {
+                padding: var(--spacing-2xl) var(--spacing-md);
+                min-height: 40vh;
+            }
+            
+            .hero h1 {
+                font-size: var(--font-size-2xl);
+            }
+            
+            .hero .subtitle {
+                font-size: var(--font-size-lg);
+            }
+            
+            .language-selector {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .language-select {
+                min-width: auto;
+            }
+            
+            .swap-btn {
+                margin: var(--spacing-md) auto;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 var(--spacing-sm);
+            }
+            
+            .hero {
+                padding: var(--spacing-xl) var(--spacing-sm);
+            }
+            
+            .feature-card {
+                padding: var(--spacing-md);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <div class="logo-icon">W</div>
+                <span class="logo-text">WARDI</span>
+            </a>
+            
+            <!-- Mobile menu button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                           <!-- Navigation menu -->
+                <li><a href="/" class="nav-link ">Beranda</a></li>
+                <li><a href="/analyze" class="nav-link ">Analisis Budaya</a></li>
+                <li><a href="/translate" class="nav-link active">Penerjemah</a></li>
+                <li><a href="/forum" class="nav-link">Forum</a></li>
+                <li><a href="/places" class="nav-link">Tempat Wisata</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="#" class="nav-link">Hi, {{ user.username }}</a></li>
+                    <li><a href="{% url 'logout_view' %}" class="btn btn-secondary">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login_page' %}" class="nav-link nav-auth">Login</a></li>
+                    <li><a href="{% url 'register_page' %}" class="nav-link nav-auth nav-register">Daftar</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <!-- Main content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1><i class="fas fa-language"></i> Penerjemah Daerah</h1>
+                <p class="subtitle">Jembatan Bahasa Nusantara</p>
+                <p class="description">
+                    Terjemahkan bahasa daerah Indonesia dengan teknologi AI canggih. 
+                    Mendukung voice-to-text dan puluhan bahasa daerah.
+                </p>
+            </div>
+        </section>
+        
+        <!-- Translation Section -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Terjemahkan Bahasa Daerah</h2>
+                    <p class="section-subtitle">
+                        Gunakan alat penerjemah untuk menjembatani komunikasi antar budaya
+                    </p>
+                </div>
+                
+                <div class="translator-container">
+                    <div class="translator-card">
+                        <!-- Language Selection -->
+                        <div class="language-selector">
+                            <div class="language-select">
+                                <label for="sourceLanguage">Dari:</label>
+                                <select id="sourceLanguage" class="language-dropdown">
+                                    <option value="auto">Deteksi Otomatis</option>
+                                    <option value="id">Bahasa Indonesia</option>
+                                    <option value="jv">Bahasa Jawa</option>
+                                    <option value="su">Bahasa Sunda</option>
+                                    <option value="ban">Bahasa Bali</option>
+                                    <option value="bug">Bahasa Bugis</option>
+                                    <option value="mad">Bahasa Madura</option>
+                                    <option value="min">Bahasa Minang</option>
+                                    <option value="btk">Bahasa Batak</option>
+                                </select>
+                            </div>
+                            
+                            <button class="swap-btn" onclick="swapLanguages()">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                            
+                            <div class="language-select">
+                                <label for="targetLanguage">Ke:</label>
+                                <select id="targetLanguage" class="language-dropdown">
+                                    <option value="id">Bahasa Indonesia</option>
+                                    <option value="jv">Bahasa Jawa</option>
+                                    <option value="su">Bahasa Sunda</option>
+                                    <option value="ban">Bahasa Bali</option>
+                                    <option value="bug">Bahasa Bugis</option>
+                                    <option value="mad">Bahasa Madura</option>
+                                    <option value="min">Bahasa Minang</option>
+                                    <option value="btk">Bahasa Batak</option>
+                                    <option value="en">English</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Translation Input/Output -->
+                        <div class="translation-area">
+                            <div class="input-section">
+                                <div class="input-header">
+                                    <span class="input-label">Teks Sumber</span>
+                                    <div class="input-controls">
+                                        <button class="control-btn" onclick="startVoiceRecording()" id="voiceBtn">
+                                            <i class="fas fa-microphone"></i>
+                                        </button>
+                                        <button class="control-btn" onclick="clearInput()">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <textarea 
+                                    id="sourceText" 
+                                    placeholder="Ketik atau gunakan mikrofon untuk memasukkan teks yang ingin diterjemahkan..."
+                                    maxlength="5000"
+                                ></textarea>
+                                <div class="char-counter">
+                                    <span id="charCount">0</span>/5000
+                                </div>
+                            </div>
+
+                            <div class="output-section">
+                                <div class="output-header">
+                                    <span class="output-label">Hasil Terjemahan</span>
+                                    <div class="output-controls">
+                                        <button class="control-btn" onclick="speakTranslation()" id="speakBtn" disabled>
+                                            <i class="fas fa-volume-up"></i>
+                                        </button>
+                                        <button class="control-btn" onclick="copyTranslation()" id="copyBtn" disabled>
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="translationResult" class="translation-result">
+                                    <div class="empty-state">
+                                        <span class="empty-icon"><i class="fas fa-comment-alt"></i></span>
+                                        <p>Hasil terjemahan akan muncul di sini</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="action-buttons">
+                            <button class="btn btn-primary btn-lg" onclick="translateText()" id="translateBtn">
+                                <i class="fas fa-globe-asia"></i> Terjemahkan
+                            </button>
+                            <button class="btn btn-secondary btn-lg" onclick="clearAll()">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="section" style="background: var(--bg-secondary);">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Fitur Penerjemah</h2>
+                    <p class="section-subtitle">
+                        Teknologi canggih untuk menjembatani komunikasi antar budaya Indonesia
+                    </p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-microphone-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Voice to Text</h3>
+                        <p class="feature-description">Berbicara langsung dalam bahasa daerah dan dapatkan teks yang siap diterjemahkan</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-globe-asia"></i>
+                        </div>
+                        <h3 class="feature-title">Multi Bahasa</h3>
+                        <p class="feature-description">Mendukung puluhan bahasa daerah Indonesia dan bahasa internasional</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="feature-title">Real Time</h3>
+                        <p class="feature-description">Terjemahan instan dengan akurasi tinggi menggunakan teknologi AI terdepan</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span>WARDI</span>
+                    </div>
+                    <p class="footer-description">
+                        Melestarikan budaya Indonesia dengan teknologi AI
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Fitur</h4>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Analisis Budaya</a></li>
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Penerjemah Daerah</a></li>
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Forum Diskusi</a></li>
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Rating Tempat</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Tentang</h4>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Tentang Kami</a></li>
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Kontak</a></li>
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Kebijakan Privasi</a></li>
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Syarat & Ketentuan</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Kontak</h4>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> info@wardi.id</p>
+                        <p><i class="fas fa-phone"></i> +62 21 1234 5678</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Jakarta, Indonesia</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Wardi - Warisan Digital Indonesia. Dibuat dengan ❤️ untuk Indonesia</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="notificationContainer"></div>
+
+    <script>
+        // Notification system
+        function showNotification(message, type = 'info', duration = 3000) {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            container.appendChild(notification);
+            
+            // Trigger reflow
+            void notification.offsetWidth;
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    container.removeChild(notification);
+                }, 300);
+            }, duration);
+        }
+        
+        // Escape HTML to prevent XSS
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+        
+        // Get CSRF token (simulated for standalone)
+        function getCookie(name) {
+            return "simulated_csrf_token";
+        }
+        
+        let isRecording = false;
+        let recognition = null;
+        let recordedText = "";
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const sourceText = document.getElementById('sourceText');
+            const charCount = document.getElementById('charCount');
+            const translateBtn = document.getElementById('translateBtn');
+            
+            // Character counter
+            sourceText.addEventListener('input', function() {
+                const count = this.value.length;
+                charCount.textContent = count;
+                
+                if (count >= 4900) {
+                    charCount.style.color = 'var(--primary-color)';
+                } else {
+                    charCount.style.color = 'var(--text-secondary)';
+                }
+                
+                // Enable/disable translate button
+                translateBtn.disabled = count === 0;
+            });
+            
+            // Initialize speech recognition
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'id-ID';
+                
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    recordedText = transcript;
+                    sourceText.value = transcript;
+                    sourceText.dispatchEvent(new Event('input'));
+                };
+                
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error:', event.error);
+                    showNotification('Gagal merekam suara: ' + event.error, 'error');
+                    stopRecording();
+                };
+                
+                recognition.onend = function() {
+                    stopRecording();
+                };
+            }
+        });
+        
+        function swapLanguages() {
+            const sourceSelect = document.getElementById('sourceLanguage');
+            const targetSelect = document.getElementById('targetLanguage');
+            
+            const sourceValue = sourceSelect.value;
+            const targetValue = targetSelect.value;
+            
+            if (sourceValue !== 'auto') {
+                sourceSelect.value = targetValue;
+                targetSelect.value = sourceValue;
+                
+                // Swap text content as well
+                const sourceText = document.getElementById('sourceText').value;
+                const resultDiv = document.getElementById('translationResult');
+                
+                if (resultDiv.querySelector('.translation-text')) {
+                    const translatedText = resultDiv.querySelector('.translation-text').textContent;
+                    document.getElementById('sourceText').value = translatedText;
+                    resultDiv.innerHTML = `<div class="translation-text">${sourceText}</div>`;
+                    
+                    // Update char counter
+                    document.getElementById('charCount').textContent = translatedText.length;
+                }
+            }
+        }
+        
+        function startVoiceRecording() {
+            if (!recognition) {
+                showNotification('Speech recognition tidak didukung di browser ini', 'error');
+                return;
+            }
+            
+            if (isRecording) {
+                stopRecording();
+                return;
+            }
+            
+            const voiceBtn = document.getElementById('voiceBtn');
+            voiceBtn.classList.add('recording');
+            voiceBtn.innerHTML = '<i class="fas fa-stop"></i>';
+            isRecording = true;
+            
+            // Set language based on selection
+            const sourceLang = document.getElementById('sourceLanguage').value;
+            if (sourceLang !== 'auto') {
+                recognition.lang = sourceLang + '-ID';
+            }
+            
+            recognition.start();
+            showNotification('Mulai berbicara...', 'info', 3000);
+        }
+        
+        function stopRecording() {
+            const voiceBtn = document.getElementById('voiceBtn');
+            voiceBtn.classList.remove('recording');
+            voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+            isRecording = false;
+            
+            if (recognition) {
+                recognition.stop();
+            }
+        }
+        
+        function clearInput() {
+            document.getElementById('sourceText').value = '';
+            document.getElementById('charCount').textContent = '0';
+            document.getElementById('translateBtn').disabled = true;
+            showNotification('Input berhasil dihapus', 'success');
+        }
+        
+        function clearAll() {
+            clearInput();
+            const resultDiv = document.getElementById('translationResult');
+            resultDiv.innerHTML = `
+                <div class="empty-state">
+                    <span class="empty-icon"><i class="fas fa-comment-alt"></i></span>
+                    <p>Hasil terjemahan akan muncul di sini</p>
+                </div>
+            `;
+            
+            document.getElementById('speakBtn').disabled = true;
+            document.getElementById('copyBtn').disabled = true;
+            showNotification('Semua konten telah direset', 'success');
+        }
+        
+        
+              async  function translateText() {
+            const inputText = document.getElementById('sourceText').value.trim();
+            const sourceLanguage = document.getElementById('sourceLanguage').value;
+            const targetLanguage = document.getElementById('targetLanguage').value;
+
+
+            const translateBtn = document.getElementById('translateBtn');
+            translateBtn.disabled = true;
+            translateBtn.textContent = '⏳ Menerjemahkan...';
+
+            // Simulate API call
+            fetch('/api/translate/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `text=${encodeURIComponent(inputText)}&source_lang=${sourceLanguage}&target_lang=${targetLanguage}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displayTranslation(data.translated_text)
+                    console.log('outputStatus', 'Terjemahan berhasil!', 'success');
+                } else {
+                    console.log('outputStatus', 'Gagal menerjemahkan: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                console.log('outputStatus', 'Terjadi kesalahan saat menerjemahkan', 'error');
+            })
+            .finally(() => {
+                translateBtn.disabled = false;
+                translateBtn.textContent = '✨ Terjemahkan';
+            });
+        }
+
+        // Simulated translation API
+        function simulateTranslationAPI(text, sourceLang, targetLang) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // Simulated translation logic
+                    let translatedText = text;
+                    
+                    if (targetLang === 'en') {
+                        translatedText = 'This is a simulated translation result. In a real implementation, this would be the translated text from the API.';
+                    } else if (sourceLang !== targetLang) {
+                        translatedText = 'Ini adalah hasil terjemahan simulasi. Dalam implementasi nyata, ini akan menjadi teks terjemahan dari API.';
+                    }
+                    
+                    resolve({
+                        success: true,
+                        translated_text: translatedText
+                    });
+                }, 1500); // Simulate API delay
+            });
+        }
+        
+        function displayTranslation(translatedText) {
+            const resultDiv = document.getElementById('translationResult');
+            resultDiv.innerHTML = `<div class="translation-text">${escapeHtml(translatedText)}</div>`;
+            
+            document.getElementById('speakBtn').disabled = false;
+            document.getElementById('copyBtn').disabled = false;
+        }
+        
+        function speakTranslation() {
+            const translationText = document.querySelector('.translation-text');
+            if (!translationText) return;
+            
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(translationText.textContent);
+                const targetLang = document.getElementById('targetLanguage').value;
+                
+                if (targetLang === 'en') {
+                    utterance.lang = 'en-US';
+                } else {
+                    utterance.lang = 'id-ID';
+                }
+                
+                speechSynthesis.speak(utterance);
+                showNotification('Memutar audio...', 'info', 2000);
+            } else {
+                showNotification('Text-to-speech tidak didukung', 'error');
+            }
+        }
+        
+        function copyTranslation() {
+            const translationText = document.querySelector('.translation-text');
+            if (!translationText) return;
+            
+            navigator.clipboard.writeText(translationText.textContent).then(() => {
+                showNotification('Teks berhasil disalin!', 'success');
+            }).catch(() => {
+                showNotification('Gagal menyalin teks', 'error');
+            });
+        }
+
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        if (mobileMenuBtn && navMenu) {
+            mobileMenuBtn.addEventListener('click', function() {
+                const isOpen = navMenu.classList.contains('open');
+                
+                if (isOpen) {
+                    navMenu.classList.remove('open');
+                    mobileMenuBtn.classList.remove('active');
+                } else {
+                    navMenu.classList.add('open');
+                    mobileMenuBtn.classList.add('active');
+                }
+            });
+        }
+        
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

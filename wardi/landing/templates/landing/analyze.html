@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Wardi - Warisan Digital Indonesia. Platform untuk melestarikan budaya Indonesia dengan teknologi AI.">
     <meta name="keywords" content="budaya indonesia, warisan digital, AI, batik, wayang, wisata budaya">
-    <title>WARDI - Warisan Digital Indonesia</title>
+    <title>Analisis Budaya - WARDI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ==========================================================================
-           WARDI - CSS VARIABLES & RESET
-           ========================================================================== */
+        /* ============ WARDI DESIGN SYSTEM ============ */
         :root {
             /* Colors */
             --primary-color: #8B4513; /* Rich brown for tradition */
@@ -112,9 +110,12 @@
             overflow-x: hidden;
         }
 
-        /* ==========================================================================
-           UTILITY CLASSES
-           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* ============ UTILITY CLASSES ============ */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -174,30 +175,49 @@
             font-size: var(--font-size-lg);
         }
 
-        .btn-sm {
-            padding: var(--spacing-xs) var(--spacing-md);
-            font-size: var(--font-size-sm);
+        .text-center {
+            text-align: center;
         }
 
-        /* Text Utilities */
-        .text-center { text-align: center; }
-        .text-left { text-align: left; }
-        .text-right { text-align: right; }
+        .section {
+            padding: var(--spacing-3xl) 0;
+        }
 
-        .text-primary { color: var(--primary-color); }
-        .text-secondary { color: var(--text-secondary); }
-        .text-white { color: var(--text-white); }
-        .text-accent { color: var(--accent-color); }
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--spacing-3xl);
+        }
 
-        /* Display Utilities */
-        .d-none { display: none; }
-        .d-block { display: block; }
-        .d-flex { display: flex; }
-        .d-grid { display: grid; }
+        .section-title {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+        }
 
-        /* ==========================================================================
-           NAVIGATION
-           ========================================================================== */
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            font-size: var(--font-size-lg);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: var(--spacing-md) auto 0;
+            line-height: 1.7;
+        }
+
+        /* ============ NAVBAR ============ */
         .navbar {
             background: var(--secondary-color);
             padding: var(--spacing-md) 0;
@@ -353,23 +373,19 @@
             border-color: var(--primary-dark);
         }
 
-        /* ==========================================================================
-           MAIN CONTENT
-           ========================================================================== */
+        /* ============ MAIN CONTENT ============ */
         .main-content {
-            margin-top: 80px; /* Height of fixed navbar */
+            margin-top: 80px;
             min-height: calc(100vh - 80px);
         }
 
-        /* ==========================================================================
-           HERO SECTION
-           ========================================================================== */
+        /* ============ HERO SECTION ============ */
         .hero {
             background: var(--gradient-primary);
             color: var(--text-white);
             text-align: center;
             padding: var(--spacing-3xl) var(--spacing-md);
-            min-height: 100vh;
+            min-height: 60vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -392,12 +408,25 @@
 
         .hero-content {
             position: relative;
-            z-index: 1;
+            z-index: 2;
             max-width: 800px;
         }
 
-        .hero h1 {
+        .hero-icon {
             font-size: var(--font-size-5xl);
+            margin-bottom: var(--spacing-md);
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .hero h1 {
+            font-size: var(--font-size-4xl);
             margin-bottom: var(--spacing-lg);
             animation: fadeInUp 1s ease-out;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
@@ -406,7 +435,7 @@
         }
 
         .hero .subtitle {
-            font-size: var(--font-size-2xl);
+            font-size: var(--font-size-xl);
             margin-bottom: var(--spacing-md);
             animation: fadeInUp 1s ease-out 0.2s both;
             font-weight: 300;
@@ -429,152 +458,252 @@
             animation: fadeInUp 1s ease-out 0.6s both;
         }
 
-        /* ==========================================================================
-           FEATURES SECTION
-           ========================================================================== */
-        .features {
-            padding: var(--spacing-3xl) 0;
-            background: var(--bg-primary);
+        /* ============ UPLOAD & RESULTS ============ */
+        .upload-container {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-xl);
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .section-header {
+        .upload-area {
+            border: 3px dashed var(--primary-color);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-3xl) var(--spacing-md);
             text-align: center;
-            margin-bottom: var(--spacing-3xl);
+            background: #fcf9f6;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            position: relative;
         }
 
-        .section-title {
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: var(--primary-dark);
+            background: #faf2e9;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .upload-icon {
             font-size: var(--font-size-4xl);
-            font-weight: 700;
-            margin-bottom: var(--spacing-lg);
-            color: var(--text-primary);
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-md);
+            transition: all var(--transition-normal);
+        }
+
+        .upload-area:hover .upload-icon {
+            transform: translateY(-5px);
+        }
+
+        .upload-area h3 {
+            margin-bottom: var(--spacing-sm);
+            color: var(--primary-color);
+        }
+
+        .upload-area p {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .preview-area,
+        .results-section {
+            display: none;
+            margin-top: var(--spacing-xl);
+        }
+
+        .image-preview {
             position: relative;
             display: inline-block;
+            max-width: 100%;
         }
 
-        .section-title::after {
-            content: '';
+        .image-preview img {
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 3px solid #f0e6d8;
+            max-width: 100%;
+            max-height: 400px;
+        }
+
+        .remove-btn {
             position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 4px;
-            background: var(--primary-color);
-            border-radius: 2px;
-        }
-
-        .section-subtitle {
+            top: -10px;
+            right: -10px;
+            width: 40px;
+            height: 40px;
+            background: #e74c3c;
+            color: var(--text-white);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
             font-size: var(--font-size-lg);
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: var(--spacing-md) auto 0;
-            line-height: 1.7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            z-index: 10;
         }
 
-        .features-grid {
+        .remove-btn:hover {
+            transform: scale(1.1);
+            background: #c0392b;
+        }
+
+        .image-info {
+            display: none;
+            margin: var(--spacing-md) 0;
+            font-size: var(--font-size-sm);
+            background: var(--bg-secondary);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-md);
+        }
+
+        .image-info p {
+            margin: var(--spacing-xs) 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            margin-top: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .result-item {
+            background: var(--bg-secondary);
+            border-left: 5px solid var(--accent-color);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            transition: all var(--transition-normal);
+        }
+
+        .result-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .result-title {
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .result-content p {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* ============ FEATURES & EXAMPLES ============ */
+        .features-grid,
+        .examples-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: var(--spacing-xl);
         }
 
-        .feature-card {
+        .feature-card,
+        .example-card {
             background: var(--bg-card);
             border-radius: var(--border-radius-xl);
             padding: var(--spacing-xl);
             box-shadow: var(--shadow-md);
             transition: all var(--transition-normal);
-            border: 1px solid rgba(0, 0, 0, 0.05);
             text-align: center;
-            position: relative;
-            overflow: hidden;
+            height: 100%;
         }
 
-        .feature-card:hover {
+        .feature-card:hover,
+        .example-card:hover {
             transform: translateY(-8px);
             box-shadow: var(--shadow-xl);
         }
 
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: rgba(218, 165, 32, 0.1);
+        .feature-icon,
+        .example-image {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto var(--spacing-md);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto var(--spacing-md);
-            color: var(--accent-color);
             font-size: var(--font-size-3xl);
+            color: var(--text-white);
+            background: rgba(218, 165, 32, 0.15);
+            color: var(--accent-color);
         }
 
-        .feature-title {
+        .example-image {
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+        }
+
+        .feature-card h3,
+        .example-card h3 {
             font-size: var(--font-size-xl);
             margin-bottom: var(--spacing-sm);
-            color: var(--text-primary);
         }
 
-        .feature-description {
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        /* ==========================================================================
-           CULTURE SPOTLIGHT
-           ========================================================================== */
-        .culture-spotlight {
-            padding: var(--spacing-3xl) 0;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 Q50,50 100,0 L100,100 L0,100 Z" fill="%23f8f9fa"/></svg>');
-            background-size: 100% auto;
-            background-repeat: no-repeat;
-            background-position: top;
-        }
-
-        .spotlight-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--spacing-xl);
-        }
-
-        .spotlight-content {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .spotlight-image {
-            flex: 1;
-            min-width: 300px;
-            border-radius: var(--border-radius-xl);
-            overflow: hidden;
-            box-shadow: var(--shadow-xl);
-            background: linear-gradient(45deg, var(--primary-dark), var(--accent-secondary));
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: var(--font-size-2xl);
-            font-weight: bold;
-            position: relative;
-        }
-
-        .spotlight-image::after {
-            content: '';
-            position: absolute;
+        /* ============ LOADING OVERLAY ============ */
+        .loading-overlay {
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><pattern id="pattern" width="0.1" height="0.1"><path d="M0,0 L100,100" stroke="rgba(0,0,0,0.1)" stroke-width="1"/></pattern><rect width="100" height="100" fill="url(%23pattern)"/></svg>');
-            opacity: 0.3;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-normal);
         }
 
-        /* ==========================================================================
-           FOOTER
-           ========================================================================== */
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-content {
+            color: var(--text-white);
+            text-align: center;
+            max-width: 380px;
+            padding: var(--spacing-xl);
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto var(--spacing-lg);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ============ FOOTER ============ */
         .footer {
             background: var(--bg-dark);
             color: var(--text-white);
             padding: var(--spacing-3xl) 0 var(--spacing-xl);
+            margin-top: var(--spacing-3xl);
         }
 
         .footer-content {
@@ -665,9 +794,7 @@
             color: var(--text-light);
         }
 
-        /* ==========================================================================
-           ANIMATIONS
-           ========================================================================== */
+        /* ============ ANIMATIONS ============ */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -679,45 +806,21 @@
             }
         }
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* ==========================================================================
-           RESPONSIVE DESIGN
-           ========================================================================== */
-        /* Tablet */
+        /* ============ RESPONSIVE DESIGN ============ */
         @media (max-width: 1024px) {
             .container {
                 padding: 0 var(--spacing-lg);
             }
             
             .hero h1 {
-                font-size: var(--font-size-4xl);
+                font-size: var(--font-size-3xl);
             }
             
             .section-title {
-                font-size: var(--font-size-3xl);
+                font-size: var(--font-size-2xl);
             }
         }
 
-        /* Mobile */
         @media (max-width: 768px) {
             :root {
                 --font-size-5xl: 2.5rem;
@@ -767,43 +870,28 @@
             /* Mobile Hero */
             .hero {
                 padding: var(--spacing-2xl) var(--spacing-md);
-                min-height: 80vh;
+                min-height: 50vh;
             }
             
             .hero h1 {
-                font-size: var(--font-size-3xl);
+                font-size: var(--font-size-2xl);
             }
             
             .hero .subtitle {
-                font-size: var(--font-size-xl);
+                font-size: var(--font-size-lg);
             }
             
-            .cta-buttons {
+            .button-group {
                 flex-direction: column;
                 align-items: center;
-                gap: var(--spacing-md);
             }
             
             .btn {
                 width: 100%;
                 max-width: 280px;
             }
-            
-            /* Mobile Cards */
-            .feature-card {
-                padding: var(--spacing-lg);
-            }
-            
-            .spotlight-container {
-                flex-direction: column;
-            }
-            
-            .spotlight-image {
-                height: 300px;
-            }
         }
 
-        /* Small Mobile */
         @media (max-width: 480px) {
             .container {
                 padding: 0 var(--spacing-sm);
@@ -815,10 +903,6 @@
             
             .feature-card {
                 padding: var(--spacing-md);
-            }
-            
-            .section {
-                padding: var(--spacing-2xl) 0;
             }
         }
     </style>
@@ -841,8 +925,8 @@
             
             <ul class="nav-menu" id="navMenu">
                            <!-- Navigation menu -->
-                <li><a href="/" class="nav-link active">Beranda</a></li>
-                <li><a href="/analyze" class="nav-link">Analisis Budaya</a></li>
+                <li><a href="/" class="nav-link ">Beranda</a></li>
+                <li><a href="/analyze" class="nav-link active">Analisis Budaya</a></li>
                 <li><a href="/translate" class="nav-link">Penerjemah</a></li>
                 <li><a href="/forum" class="nav-link">Forum</a></li>
                 <li><a href="/places" class="nav-link">Tempat Wisata</a></li>
@@ -857,98 +941,151 @@
         </div>
     </nav>
 
-    <!-- Main content -->
+    <!-- MAIN CONTENT -->
     <main class="main-content">
-        <!-- Hero Section -->
+        <!-- HERO SECTION -->
         <section class="hero">
             <div class="hero-content">
-                <h1>Warisan Budaya Indonesia dalam Genggaman</h1>
-                <p class="subtitle">Menjembatani Masa Lalu dan Masa Depan dengan Teknologi</p>
-                <p class="description">WARDI adalah platform digital yang menghubungkan generasi muda dengan warisan budaya Indonesia melalui teknologi AI. Temukan, pelajari, dan lestarikan kekayaan budaya nusantara.</p>
+                <div class="hero-icon">🔍</div>
+                <h1>Analisis Budaya AI</h1>
+                <p class="subtitle">Kenali Warisan Indonesia dengan Teknologi</p>
+                <p class="description">
+                    Upload foto budaya Indonesia dan dapatkan analisis mendalam tentang sejarah, makna, dan asal daerahnya menggunakan kecerdasan buatan.
+                </p>
                 <div class="cta-buttons">
-                    <a href="#" class="btn btn-primary btn-lg">Mulai Jelajahi</a>
-                    <a href="#" class="btn btn-secondary btn-lg">Pelajari Lebih Lanjut</a>
+                    <a href="#upload" class="btn btn-primary btn-lg">Mulai Analisis</a>
+                    <a href="#features" class="btn btn-secondary btn-lg">Pelajari Lebih Lanjut</a>
                 </div>
             </div>
         </section>
         
-        <!-- Features Section -->
-        <section class="features">
+        <!-- UPLOAD SECTION -->
+        <section class="section" id="upload">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">Fitur Unggulan</h2>
-                    <p class="section-subtitle">Temukan berbagai fitur yang membantu Anda menjelajahi dan melestarikan warisan budaya Indonesia</p>
+                    <h2 class="section-title">Analisis Budaya Anda</h2>
+                    <p class="section-subtitle">
+                        Unggah foto objek budaya untuk mendapatkan analisis mendalam dari AI kami
+                    </p>
+                </div>
+                
+                <div class="upload-container">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                        <h3>Upload Foto Budaya</h3>
+                        <p>Drag & drop foto atau klik untuk memilih</p>
+                        <p style="font-size: var(--font-size-sm); color: var(--text-light); margin-top: var(--spacing-sm);">
+                            Mendukung: JPG, PNG, WebP (Maks: 10MB)
+                        </p>
+                        <input type="file" id="imageInput" accept="image/*" hidden>
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('imageInput').click()">
+                            <i class="fas fa-camera"></i> Pilih Foto
+                        </button>
+                    </div>
+
+                    <div class="preview-area" id="previewArea">
+                        <div class="image-preview"></div>
+                        <div id="imageInfo" class="image-info">
+                            <p><strong>Nama File:</strong> <span id="fileName"></span></p>
+                            <p><strong>Ukuran:</strong> <span id="fileSize"></span></p>
+                        </div>
+                        <div class="button-group">
+                            <button class="btn btn-primary" id="analyzeBtn"><i class="fas fa-search"></i> Analisis Sekarang</button>
+                            <button class="btn btn-secondary" id="removeBtn">Hapus Gambar</button>
+                        </div>
+                    </div>
+
+                    <div class="results-section" id="resultsSection">
+                        <div class="results-header">
+                            <h2>Hasil Analisis</h2>
+                        </div>
+                        <div id="resultsContainer">
+                            <p style="text-align: center; color: var(--text-light); padding: var(--spacing-lg);">
+                                Hasil akan muncul di sini setelah analisis selesai.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES SECTION -->
+        <section class="section" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Fitur Analisis</h2>
+                    <p class="section-subtitle">
+                        Teknologi canggih untuk mengenali dan memahami budaya Indonesia
+                    </p>
                 </div>
                 
                 <div class="features-grid">
                     <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-search"></i>
-                        </div>
-                        <h3 class="feature-title">Analisis Budaya</h3>
-                        <p class="feature-description">Identifikasi dan pelajari artefak budaya menggunakan teknologi AI. Unggah gambar dan dapatkan informasi mendalam tentang warisan budaya.</p>
+                        <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                        <h3>AI Recognition</h3>
+                        <p>Teknologi machine-learning canggih untuk identifikasi objek budaya dengan akurasi tinggi.</p>
                     </div>
-                    
                     <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-language"></i>
-                        </div>
-                        <h3 class="feature-title">Penerjemah Daerah</h3>
-                        <p class="feature-description">Terjemahkan kata dan frasa antar bahasa daerah di Indonesia. Memudahkan komunikasi dan pemahaman antar budaya.</p>
+                        <div class="feature-icon"><i class="fas fa-database"></i></div>
+                        <h3>Database Lengkap</h3>
+                        <p>Ribuan data budaya Indonesia dari Sabang sampai Merauke.</p>
                     </div>
-                    
                     <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-comments"></i>
-                        </div>
-                        <h3 class="feature-title">Forum Komunitas</h3>
-                        <p class="feature-description">Bergabung dengan komunitas pecinta budaya. Diskusikan, tanya jawab, dan berbagi pengetahuan tentang warisan nusantara.</p>
+                        <div class="feature-icon"><i class="fas fa-book-open"></i></div>
+                        <h3>Analisis Detail</h3>
+                        <p>Informasi mendalam tentang sejarah, filosofi dan makna.</p>
                     </div>
-                    
                     <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-map-marked-alt"></i>
-                        </div>
-                        <h3 class="feature-title">Wisata Budaya</h3>
-                        <p class="feature-description">Temukan tempat wisata budaya di seluruh Indonesia. Dapatkan informasi lengkap dan ulasan dari pengunjung lainnya.</p>
+                        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                        <h3>Hasil Cepat</h3>
+                        <p>Dapatkan hasil dalam hitungan detik.</p>
                     </div>
                 </div>
             </div>
         </section>
-        
-        <!-- Culture Spotlight -->
-        <section class="culture-spotlight">
+
+        <!-- EXAMPLES SECTION -->
+        <section class="section">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">Sorotan Budaya</h2>
-                    <p class="section-subtitle">Temukan kekayaan budaya Indonesia yang beragam</p>
+                    <h2 class="section-title">Contoh yang Dapat Dianalisis</h2>
+                    <p class="section-subtitle">
+                        Berbagai jenis objek budaya yang dapat dikenali oleh sistem kami
+                    </p>
                 </div>
                 
-                <div class="spotlight-container">
-                    <div class="spotlight-content">
-                        <h3>Wayang Kulit - Seni Pertunjukan Tradisional</h3>
-                        <p>Wayang kulit adalah seni pertunjukan tradisional Indonesia yang berkembang pesat di Jawa dan Bali. Pertunjukan wayang kulit diiringi oleh musik gamelan dan seorang dalang yang menjadi narator dialog tokoh-tokoh wayang.</p>
-                        <p>UNESCO telah menetapkan wayang kulit sebagai Masterpiece of Oral and Intangible Heritage of Humanity pada tahun 2003. Warisan budaya ini tidak hanya menghibur tetapi juga mengandung nilai-nilai filosofis kehidupan.</p>
-                        <p>Di WARDI, Anda dapat mempelajari berbagai tokoh wayang, cerita-cerita epik Mahabharata dan Ramayana, serta menemukan pertunjukan wayang di daerah Anda.</p>
-                        <a href="#" class="btn btn-primary" style="margin-top: 20px;">Pelajari Lebih Lanjut</a>
+                <div class="examples-grid">
+                    <div class="example-card">
+                        <div class="example-image"><i class="fas fa-tshirt"></i></div>
+                        <h3>Batik</h3>
+                        <p>Identifikasi pola dan asal daerah batik</p>
                     </div>
-                    
-                    <div class="spotlight-image">
-                        WAYANG KULIT
+                    <div class="example-card">
+                        <div class="example-image"><i class="fas fa-theater-masks"></i></div>
+                        <h3>Wayang</h3>
+                        <p>Analisis karakter dan cerita wayang</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-image"><i class="fas fa-utensils"></i></div>
+                        <h3>Makanan</h3>
+                        <p>Kenali makanan tradisional Indonesia</p>
+                    </div>
+                    <div class="example-card">
+                        <div class="example-image"><i class="fas fa-landmark"></i></div>
+                        <h3>Artefak</h3>
+                        <p>Pelajari sejarah artefak kuno</p>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <div class="footer-logo">
-                        <span>WARDI</span>
-                    </div>
+                    <div class="footer-logo">WARDI</div>
                     <p class="footer-description">
                         Melestarikan budaya Indonesia dengan teknologi AI
                     </p>
@@ -961,27 +1098,27 @@
                 </div>
                 
                 <div class="footer-section">
-                    <h4 class="footer-title">Fitur</h4>
+                    <h4>Fitur</h4>
                     <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-arrow-right"></i> Analisis Budaya</a></li>
-                        <li><a href="#"><i class="fas fa-arrow-right"></i> Penerjemah Daerah</a></li>
-                        <li><a href="#"><i class="fas fa-arrow-right"></i> Forum Diskusi</a></li>
-                        <li><a href="#"><i class="fas fa-arrow-right"></i> Rating Tempat</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Analisis Budaya</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Penerjemah Daerah</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Forum Diskusi</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Rating Tempat</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-section">
-                    <h4 class="footer-title">Tentang</h4>
+                    <h4>Tentang</h4>
                     <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-arrow-right"></i> Tentang Kami</a></li>
-                        <li><a href="#"><i class="fas fa-arrow-right"></i> Kontak</a></li>
-                        <li><a href="#"><i class="fas fa-arrow-right"></i> Kebijakan Privasi</a></li>
-                        <li><a href="#"><i class="fas fa-arrow-right"></i> Syarat & Ketentuan</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Tentang Kami</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Kontak</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Kebijakan Privasi</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Syarat & Ketentuan</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-section">
-                    <h4 class="footer-title">Kontak</h4>
+                    <h4>Kontak</h4>
                     <div class="contact-info">
                         <p><i class="fas fa-envelope"></i> info@wardi.id</p>
                         <p><i class="fas fa-phone"></i> +62 21 1234 5678</p>
@@ -996,9 +1133,19 @@
         </div>
     </footer>
 
+    <!-- LOADING OVERLAY -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3>Menganalisis Budaya...</h3>
+            <p>AI kami sedang memproses gambar Anda</p>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
     <script>
+        // Mobile menu functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Mobile menu functionality
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const navMenu = document.getElementById('navMenu');
             
@@ -1026,43 +1173,148 @@
                 }
             });
             
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
+            // Upload logic
+            const uploadArea = document.getElementById('uploadArea');
+            const imageInput = document.getElementById('imageInput');
+            const previewArea = document.getElementById('previewArea');
+            const imagePreviewContainer = previewArea.querySelector('.image-preview');
+            const imageInfo = document.getElementById('imageInfo');
+            const fileNameEl = document.getElementById('fileName');
+            const fileSizeEl = document.getElementById('fileSize');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const removeBtn = document.getElementById('removeBtn');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const resultsSection = document.getElementById('resultsSection');
+            const resultsContainer = document.getElementById('resultsContainer');
+            
+            let currentFile = null;
+            
+            uploadArea.addEventListener('click', () => imageInput.click());
+            imageInput.addEventListener('change', e => handleFile(e.target.files[0]));
+            
+            // Drag and drop events
+            ['dragover', 'dragenter'].forEach(ev => {
+                uploadArea.addEventListener(ev, e => {
                     e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        const navbarHeight = navbar.offsetHeight;
-                        const targetPosition = targetElement.offsetTop - navbarHeight;
-                        
-                        window.scrollTo({
-                            top: targetPosition,
-                            behavior: 'smooth'
-                        });
-                    }
+                    uploadArea.classList.add('dragover');
                 });
             });
             
-            // Animation on scroll
-            const observerOptions = {
-                threshold: 0.1
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate-in');
-                    }
+            ['dragleave', 'dragend', 'drop'].forEach(ev => {
+                uploadArea.addEventListener(ev, e => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
                 });
-            }, observerOptions);
-            
-            document.querySelectorAll('.feature-card, .spotlight-content, .spotlight-image').forEach(element => {
-                observer.observe(element);
             });
+            
+            uploadArea.addEventListener('drop', e => {
+                handleFile(e.dataTransfer.files[0]);
+            });
+            
+            analyzeBtn.addEventListener('click', analyzeImage);
+            removeBtn.addEventListener('click', removeImage);
+            
+            function handleFile(file) {
+                if (!file) return;
+                if (!file.type.startsWith('image/')) {
+                    alert('File harus berupa gambar');
+                    return;
+                }
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('Ukuran file maksimal 10MB');
+                    return;
+                }
+                currentFile = file;
+                showPreview(file);
+            }
+            
+            function showPreview(file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    imagePreviewContainer.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                    fileNameEl.textContent = file.name;
+                    fileSizeEl.textContent = formatFileSize(file.size);
+                    uploadArea.style.display = 'none';
+                    previewArea.style.display = 'block';
+                    imageInfo.style.display = 'block';
+                    resultsSection.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            function removeImage() {
+                currentFile = null;
+                imageInput.value = '';
+                uploadArea.style.display = 'block';
+                previewArea.style.display = 'none';
+                resultsSection.style.display = 'none';
+            }
+            
+             
+            function analyzeImage() {
+            if(!currentFile){alert('Pilih gambar dulu');return;}
+                loadingOverlay.classList.add('active');
+                const form=new FormData();form.append('cultural_image',currentFile);
+                fetch('/upload/',{
+                    method:'POST',
+                    headers:{'X-CSRFToken':'{{ csrf_token }}'},
+                    body:form
+                })
+                .then(r=>r.json())
+                .then(data=>{
+                    loadingOverlay.classList.remove('active');
+                    if(data.predictions){
+                        displayResults(data.predictions);
+                    }else{
+                        alert(data.error||'Gagal analisis');
+                    }
+                })
+                .catch(err=>{
+                    loadingOverlay.classList.remove('active');
+                    alert('Koneksi gagal');
+                    console.error(err);
+                });}
+
+            
+            function displayResults(pred) {
+                const html = `
+                    <div class="result-item">
+                        <h4 class="result-title"><i class="fas fa-tag"></i> Jenis Budaya</h4>
+                        <p>${pred.item_type || '-'}</p>
+                    </div>
+                    <div class="result-item">
+                        <h4 class="result-title"><i class="fas fa-map-marker-alt"></i> Asal Daerah</h4>
+                        <p>${pred.details.origin || '-'}</p>
+                    </div>
+                    <div class="result-item">
+                        <h4 class="result-title"><i class="fas fa-book-open"></i> Deskripsi</h4>
+                        <p>${pred.details.description || '-'}</p>
+                    </div>
+                    <div class="result-item">
+                        <h4 class="result-title"><i class="fas fa-landmark"></i> Sejarah</h4>
+                        <p>${pred.details.history || '-'}</p>
+                    </div>
+                    ${pred.details.pattern ? `<div class="result-item">
+                        <h4 class="result-title"><i class="fas fa-palette"></i> Pola</h4>
+                        <p>${pred.details.pattern}</p>
+                    </div>` : ''}
+                    ${pred.details.link_video ? `<div class="result-item">
+                        <h4 class="result-title"><i class="fas fa-video"></i> Tonton Video</h4>
+                        <a href="${pred.details.link_video}" target="_blank" class="btn btn-secondary" style="margin-top:.5rem">Tonton Video Budaya</a>
+                    </div>` : ''}
+                `;
+                resultsContainer.innerHTML = html;
+                resultsSection.style.display = 'block';
+                resultsSection.scrollIntoView({behavior: 'smooth'});
+            }
+            
+            function formatFileSize(bytes, dp = 2) {
+                if (!bytes) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(dp)) + ' ' + sizes[i];
+            }
         });
     </script>
 </body>

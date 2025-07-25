@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum Budaya - WARDI</title>
+    <meta name="description" content="Bergabunglah dalam diskusi budaya Indonesia. Berbagi cerita, tradisi, dan pengalaman budaya nusantara.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ============ WARDI DESIGN SYSTEM ============ */
+        :root {
+            /* Colors */
+            --primary-color: #8B4513; /* Rich brown for tradition */
+            --primary-dark: #5D2E0F;
+            --primary-light: #A86A3D;
+            --secondary-color: #2c3e50;
+            --secondary-light: #34495e;
+            --accent-color: #DAA520; /* Gold accent */
+            --accent-secondary: #5F9EA0; /* Cultural blue-green */
+            
+            /* Text Colors */
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --text-light: #bdc3c7;
+            --text-white: #ffffff;
+            
+            /* Background Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-dark: #2c3e50;
+            --bg-card: #ffffff;
+            --bg-overlay: rgba(44, 62, 80, 0.9);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            
+            /* Spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            --spacing-3xl: 4rem;
+            
+            /* Typography */
+            --font-family-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-family-secondary: 'Georgia', serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-size-4xl: 2.25rem;
+            --font-size-5xl: 3rem;
+            
+            /* Borders */
+            --border-radius-sm: 0.25rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            --border-radius-full: 9999px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+            --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+            
+            /* Z-index */
+            --z-dropdown: 1000;
+            --z-sticky: 1020;
+            --z-fixed: 1030;
+            --z-modal-backdrop: 1040;
+            --z-modal: 1050;
+            --z-popover: 1060;
+            --z-tooltip: 1070;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* ============ UTILITY CLASSES ============ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            text-decoration: none;
+            border: 2px solid transparent;
+            border-radius: var(--border-radius-full);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .btn:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--text-white);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: var(--text-white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-lg {
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: var(--font-size-lg);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .section {
+            padding: var(--spacing-3xl) 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .section-title {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            font-size: var(--font-size-lg);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: var(--spacing-md) auto 0;
+            line-height: 1.7;
+        }
+
+        /* ============ NAVBAR ============ */
+        .navbar {
+            background: var(--secondary-color);
+            padding: var(--spacing-md) 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: var(--z-fixed);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+
+        .navbar.scrolled {
+            padding: var(--spacing-sm) 0;
+            background: var(--bg-overlay);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--accent-color);
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            text-decoration: none;
+            transition: all var(--transition-normal);
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            color: var(--text-white);
+            font-weight: bold;
+            font-size: var(--font-size-xl);
+        }
+
+        .logo-text {
+            font-family: var(--font-family-secondary);
+            position: relative;
+        }
+
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-sm);
+        }
+
+        .hamburger {
+            width: 24px;
+            height: 3px;
+            background: var(--text-white);
+            border-radius: 2px;
+            transition: all var(--transition-normal);
+        }
+
+        .mobile-menu-btn.active .hamburger:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .mobile-menu-btn.active .hamburger:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active .hamburger:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: var(--spacing-lg);
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-white);
+            text-decoration: none;
+            font-weight: 500;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            transition: all var(--transition-normal);
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: all var(--transition-normal);
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 80%;
+        }
+
+        .nav-auth {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-register {
+            background: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .nav-register:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        /* ============ MAIN CONTENT ============ */
+        .main-content {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* ============ HERO SECTION ============ */
+        .hero {
+            background: var(--gradient-primary);
+            color: var(--text-white);
+            text-align: center;
+            padding: var(--spacing-3xl) var(--spacing-md);
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 Q50,100 100,0 L100,100 L0,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 100% 100%;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .hero-icon {
+            font-size: var(--font-size-5xl);
+            margin-bottom: var(--spacing-md);
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .hero h1 {
+            font-size: var(--font-size-4xl);
+            margin-bottom: var(--spacing-lg);
+            animation: fadeInUp 1s ease-out;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: var(--font-size-xl);
+            margin-bottom: var(--spacing-md);
+            animation: fadeInUp 1s ease-out 0.2s both;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+
+        .hero .description {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-xl);
+            animation: fadeInUp 1s ease-out 0.4s both;
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: var(--spacing-lg);
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        /* ============ FORUM SECTION ============ */
+        .forum-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .forum-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .stat-number {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .forum-controls {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .search-bar {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: var(--spacing-md);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-base);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .search-btn {
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            font-size: var(--font-size-base);
+            transition: all var(--transition-normal);
+        }
+
+        .search-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .filter-controls select {
+            padding: var(--spacing-md);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-base);
+            background: var(--bg-card);
+            min-width: 150px;
+        }
+
+        .filter-controls select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .forum-posts {
+            min-height: 400px;
+        }
+
+        .post-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            cursor: pointer;
+            border-left: 4px solid transparent;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            border-left-color: var(--primary-color);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .post-title {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+            color: var(--text-primary);
+        }
+
+        .post-meta {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .post-author {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+
+        .post-date {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+
+        .post-category {
+            background: var(--primary-color);
+            color: white;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+        }
+
+        .post-content {
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .post-preview {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .post-tags {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            font-size: var(--font-size-sm);
+        }
+
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: var(--spacing-md);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .post-stats {
+            display: flex;
+            gap: var(--spacing-lg);
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+
+        .pagination {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            margin-top: var(--spacing-xl);
+        }
+
+        .pagination-btn {
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--bg-card);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .pagination-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-numbers {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .page-number {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .page-number.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .page-number:hover {
+            border-color: var(--primary-color);
+        }
+
+        /* ============ MODALS ============ */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-lg);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-xl);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-large {
+            max-width: 800px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header h3 {
+            font-size: var(--font-size-xl);
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background var(--transition-normal);
+        }
+
+        .modal-close:hover {
+            background: var(--bg-secondary);
+        }
+
+        .modal-body {
+            padding: var(--spacing-lg);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-base);
+            font-family: inherit;
+            transition: border-color var(--transition-normal);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .char-counter {
+            text-align: right;
+            margin-top: var(--spacing-xs);
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: flex-end;
+            padding: var(--spacing-lg);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-xl);
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: var(--spacing-xl);
+            color: var(--text-secondary);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            background: var(--bg-dark);
+            color: var(--text-white);
+            padding: var(--spacing-3xl) 0 var(--spacing-xl);
+            margin-top: var(--spacing-3xl);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .footer-section h4 {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-white);
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            color: var(--accent-color);
+        }
+
+        .footer-description {
+            color: var(--text-light);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.6;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius-full);
+            text-decoration: none;
+            font-size: var(--font-size-lg);
+            transition: all var(--transition-normal);
+        }
+
+        .social-link:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color var(--transition-normal);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .contact-info p {
+            color: var(--text-light);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: var(--spacing-xl);
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        /* ============ ANIMATIONS ============ */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============ RESPONSIVE DESIGN ============ */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 var(--spacing-lg);
+            }
+            
+            .hero h1 {
+                font-size: var(--font-size-3xl);
+            }
+            
+            .section-title {
+                font-size: var(--font-size-2xl);
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --font-size-5xl: 2.5rem;
+                --font-size-4xl: 2rem;
+                --font-size-3xl: 1.75rem;
+                --spacing-3xl: 2rem;
+            }
+            
+            .container {
+                padding: 0 var(--spacing-md);
+            }
+            
+            /* Mobile Navigation */
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--secondary-color);
+                flex-direction: column;
+                gap: 0;
+                padding: var(--spacing-lg);
+                box-shadow: var(--shadow-lg);
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-20px);
+                transition: all var(--transition-normal);
+            }
+            
+            .nav-menu.open {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+            
+            .nav-link {
+                padding: var(--spacing-md);
+                border-radius: var(--border-radius-md);
+                width: 100%;
+                text-align: center;
+            }
+            
+            /* Mobile Hero */
+            .hero {
+                padding: var(--spacing-2xl) var(--spacing-md);
+                min-height: 40vh;
+            }
+            
+            .hero h1 {
+                font-size: var(--font-size-2xl);
+            }
+            
+            .hero .subtitle {
+                font-size: var(--font-size-lg);
+            }
+            
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .post-header {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 var(--spacing-sm);
+            }
+            
+            .hero {
+                padding: var(--spacing-xl) var(--spacing-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <div class="logo-icon">W</div>
+                <span class="logo-text">WARDI</span>
+            </a>
+            
+            <!-- Mobile menu button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/" class="nav-link">Beranda</a></li>
+                <li><a href="/analyze" class="nav-link">Analisis Budaya</a></li>
+                <li><a href="/translate" class="nav-link">Penerjemah</a></li>
+                <li><a href="/forum" class="nav-link active">Forum</a></li>
+                <li><a href="/places" class="nav-link">Tempat Wisata</a></li>
+                <li><a href="#" class="nav-link">Hi, Budi</a></li>
+                <li><a href="#" class="btn btn-secondary">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-icon">💬</div>
+                <h1>Forum Budaya Indonesia</h1>
+                <p class="subtitle">Ruang Diskusi Warisan Nusantara</p>
+                <p class="description">
+                    Bergabunglah dalam diskusi tentang kekayaan budaya Indonesia. 
+                    Berbagi cerita, tradisi, dan pengalaman budaya dari seluruh nusantara.
+                </p>
+                <div class="cta-buttons">
+                    <button class="btn btn-primary btn-lg" onclick="showCreatePostModal()">
+                        ✍️ Buat Diskusi Baru
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FORUM SECTION -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Diskusi Budaya</h2>
+                    <p class="section-subtitle">
+                        Temukan dan ikuti diskusi menarik tentang budaya Indonesia
+                    </p>
+                </div>
+                
+                <div class="forum-container">
+                    <!-- Forum Stats -->
+                    <div class="forum-stats">
+                        <div class="stat-card">
+                            <div class="stat-number">1,245</div>
+                            <p>Diskusi Aktif</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">5,678</div>
+                            <p>Anggota</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">23,456</div>
+                            <p>Komentar</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">12</div>
+                            <p>Kategori</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Forum Controls -->
+                    <div class="forum-controls">
+                        <div class="search-bar">
+                            <input 
+                                type="text" 
+                                id="searchInput" 
+                                placeholder="Cari diskusi berdasarkan judul atau konten..."
+                            >
+                            <button class="search-btn" onclick="searchDiscussions()">
+                                <i class="fas fa-search"></i> Cari
+                            </button>
+                        </div>
+                        
+                        <div class="filter-controls">
+                            <select id="categoryFilter" onchange="filterDiscussions()">
+                                <option value="">Semua Kategori</option>
+                                <option value="tradisi">Tradisi</option>
+                                <option value="makanan">Makanan</option>
+                                <option value="seni">Seni & Budaya</option>
+                                <option value="bahasa">Bahasa</option>
+                                <option value="sejarah">Sejarah</option>
+                                <option value="umum">Umum</option>
+                            </select>
+                            
+                            <select id="sortFilter" onchange="sortDiscussions()">
+                                <option value="newest">Terbaru</option>
+                                <option value="oldest">Terlama</option>
+                                <option value="most_liked">Paling Disukai</option>
+                                <option value="most_comments">Paling Banyak Komentar</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Forum Posts -->
+                    <div class="forum-posts" id="forumPosts">
+                        <!-- Posts will be loaded here -->
+                        <div class="loading-state">
+                            <div class="loading"></div>
+                            <p>Memuat diskusi...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination" id="pagination" style="display: none;">
+                        <button class="pagination-btn" onclick="loadPage(currentPage - 1)" id="prevBtn">
+                            ← Sebelumnya
+                        </button>
+                        <div class="page-numbers" id="pageNumbers"></div>
+                        <button class="pagination-btn" onclick="loadPage(currentPage + 1)" id="nextBtn">
+                            Selanjutnya →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">WARDI</div>
+                    <p class="footer-description">
+                        Melestarikan budaya Indonesia dengan teknologi AI
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Fitur</h4>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Analisis Budaya</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Penerjemah Daerah</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Forum Diskusi</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Rating Tempat</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Tentang</h4>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Tentang Kami</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Kontak</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Kebijakan Privasi</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Syarat & Ketentuan</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Kontak</h4>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> info@wardi.id</p>
+                        <p><i class="fas fa-phone"></i> +62 21 1234 5678</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Jakarta, Indonesia</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Wardi - Warisan Digital Indonesia. Dibuat dengan ❤️ untuk Indonesia</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CREATE POST MODAL -->
+    <div class="modal" id="createPostModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Buat Diskusi Baru</h3>
+                <button class="modal-close" onclick="hideCreatePostModal()">×</button>
+            </div>
+            
+            <form id="createPostForm" onsubmit="createPost(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="postTitle">Judul Diskusi *</label>
+                        <input 
+                            type="text" 
+                            id="postTitle" 
+                            required 
+                            maxlength="200"
+                            placeholder="Masukkan judul diskusi yang menarik..."
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postCategory">Kategori *</label>
+                        <select id="postCategory" required>
+                            <option value="">Pilih Kategori</option>
+                            <option value="tradisi">Tradisi</option>
+                            <option value="makanan">Makanan</option>
+                            <option value="seni">Seni & Budaya</option>
+                            <option value="bahasa">Bahasa</option>
+                            <option value="sejarah">Sejarah</option>
+                            <option value="umum">Umum</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postContent">Konten Diskusi *</label>
+                        <textarea 
+                            id="postContent" 
+                            required 
+                            maxlength="5000"
+                            placeholder="Tulis konten diskusi Anda di sini. Ceritakan tentang topik budaya yang ingin Anda diskusikan..."
+                            rows="8"
+                        ></textarea>
+                        <div class="char-counter">
+                            <span id="contentCharCount">0</span>/5000
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postTags">Tags (opsional)</label>
+                        <input 
+                            type="text" 
+                            id="postTags"
+                            placeholder="Pisahkan dengan koma: jawa, batik, tradisi"
+                        >
+                        <small>Gunakan tags untuk memudahkan pencarian diskusi</small>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="hideCreatePostModal()">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="submitPostBtn">
+                        📝 Publikasikan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- POST DETAIL MODAL -->
+    <div class="modal" id="postDetailModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="postDetailTitle">Detail Diskusi</h3>
+                <button class="modal-close" onclick="hidePostDetailModal()">×</button>
+            </div>
+            
+            <div class="modal-body" id="postDetailContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (mobileMenuBtn && navMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    const isOpen = navMenu.classList.contains('open');
+                    
+                    if (isOpen) {
+                        navMenu.classList.remove('open');
+                        mobileMenuBtn.classList.remove('active');
+                    } else {
+                        navMenu.classList.add('open');
+                        mobileMenuBtn.classList.add('active');
+                    }
+                });
+            }
+            
+            // Navbar scroll effect
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+            
+            // Load forum data
+            loadForumData();
+            
+            // Setup form handlers
+            setupFormHandlers();
+        });
+        
+        let currentPage = 1;
+        let totalPages = 1;
+        let discussions = [];
+        let filteredDiscussions = [];
+        
+        function setupFormHandlers() {
+            const postContent = document.getElementById('postContent');
+            const charCount = document.getElementById('contentCharCount');
+            
+            postContent.addEventListener('input', function() {
+                const count = this.value.length;
+                charCount.textContent = count;
+                
+                if (count >= 4900) {
+                    charCount.style.color = 'var(--primary-color)';
+                } else {
+                    charCount.style.color = 'var(--text-secondary)';
+                }
+            });
+        }
+        
+        async function loadForumData() {
+        try {
+            const response = await fetch('/api/forum/discussions/');
+            const data = await response.json();
+            
+            if (data.success) {
+                discussions = data.posts; // Changed from data.discussions to data.posts
+                filteredDiscussions = [...discussions];
+                displayDiscussions();
+            } else {
+                showError('Gagal memuat diskusi forum');
+            }
+        } catch (error) {
+            console.error('Error loading forum data:', error);
+            showError('Terjadi kesalahan saat memuat forum');
+        }
+    }
+        
+        function displayDiscussions() {
+            const container = document.getElementById('forumPosts');
+            
+            if (filteredDiscussions.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">💬</span>
+                        <h3>Belum Ada Diskusi</h3>
+                        <p>Jadilah yang pertama memulai diskusi budaya!</p>
+                        <button class="btn btn-primary" onclick="showCreatePostModal()" style="margin-top: 20px;">
+                            ✍️ Buat Diskusi Baru
+                        </button>
+                    </div>
+                `;
+                document.getElementById('pagination').style.display = 'none';
+                return;
+            }
+            
+            const startIndex = (currentPage - 1) * 5;
+            const endIndex = startIndex + 5;
+            const pageDiscussions = filteredDiscussions.slice(startIndex, endIndex);
+            
+            container.innerHTML = pageDiscussions.map(discussion => `
+                <div class="post-card" onclick="showPostDetail(${discussion.id})">
+                    <div class="post-header">
+                        <div class="post-meta">
+                            <h3 class="post-title">${escapeHtml(discussion.title)}</h3>
+                            <div class="post-author">👤 ${escapeHtml(discussion.author)}</div>
+                            <div class="post-date">📅 ${formatDate(discussion.date)}</div>
+                        </div>
+                        <div class="post-category">${getCategoryName(discussion.category)}</div>
+                    </div>
+                    
+                    <div class="post-content">
+                        <div class="post-preview">${escapeHtml(discussion.content)}</div>
+                    </div>
+                    
+                    <div class="post-tags">
+                        ${discussion.tags.split(',').map(tag => 
+                            `<span class="tag">#${tag.trim()}</span>`
+                        ).join('')}
+                    </div>
+                    
+                    <div class="post-footer">
+                        <div class="post-stats">
+                            <div class="stat">
+                                <span>👍</span>
+                                <span>${discussion.likes || 0}</span>
+                            </div>
+                            <div class="stat">
+                                <span>💬</span>
+                                <span>${discussion.comments || 0}</span>
+                            </div>
+                            <div class="stat">
+                                <span>👁️</span>
+                                <span>${discussion.views || 0}</span>
+                            </div>
+                        </div>
+                        <div class="post-actions">
+                            <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); likePost(${discussion.id})">
+                                👍 Suka
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            updatePagination();
+        }
+        
+        function updatePagination() {
+            totalPages = Math.ceil(filteredDiscussions.length / 5);
+            const pagination = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                pagination.style.display = 'none';
+                return;
+            }
+            
+            pagination.style.display = 'flex';
+            
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageNumbers = document.getElementById('pageNumbers');
+            
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+            
+            let pagesHtml = '';
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    pagesHtml += `
+                        <div class="page-number ${i === currentPage ? 'active' : ''}" 
+                             onclick="loadPage(${i})">
+                            ${i}
+                        </div>
+                    `;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    pagesHtml += '<div class="page-number">...</div>';
+                }
+            }
+            
+            pageNumbers.innerHTML = pagesHtml;
+        }
+        
+        function loadPage(page) {
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                displayDiscussions();
+            }
+        }
+        
+        function searchDiscussions() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (!searchTerm) {
+                filteredDiscussions = [...discussions];
+            } else {
+                filteredDiscussions = discussions.filter(discussion => 
+                    discussion.title.toLowerCase().includes(searchTerm) ||
+                    discussion.content.toLowerCase().includes(searchTerm) ||
+                    discussion.author.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            currentPage = 1;
+            displayDiscussions();
+        }
+        
+        function filterDiscussions() {
+            const category = document.getElementById('categoryFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredDiscussions = discussions.filter(discussion => {
+                const matchesCategory = !category || discussion.category === category;
+                const matchesSearch = !searchTerm || 
+                    discussion.title.toLowerCase().includes(searchTerm) ||
+                    discussion.content.toLowerCase().includes(searchTerm) ||
+                    discussion.author.toLowerCase().includes(searchTerm);
+                
+                return matchesCategory && matchesSearch;
+            });
+            
+            currentPage = 1;
+            displayDiscussions();
+        }
+        
+        function sortDiscussions() {
+            const sortBy = document.getElementById('sortFilter').value;
+            
+            switch (sortBy) {
+                case 'newest':
+                    filteredDiscussions.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    break;
+                case 'oldest':
+                    filteredDiscussions.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    break;
+                case 'most_liked':
+                    filteredDiscussions.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+                    break;
+                case 'most_comments':
+                    filteredDiscussions.sort((a, b) => (b.comments || 0) - (a.comments || 0));
+                    break;
+            }
+            
+            currentPage = 1;
+            displayDiscussions();
+        }
+        
+        function showCreatePostModal() {
+            document.getElementById('createPostModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function hideCreatePostModal() {
+            document.getElementById('createPostModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+            document.getElementById('createPostForm').reset();
+            document.getElementById('contentCharCount').textContent = '0';
+        }
+        
+        function createPost(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('postTitle').value;
+            const category = document.getElementById('postCategory').value;
+            const content = document.getElementById('postContent').value;
+            const tags = document.getElementById('postTags').value;
+            
+            // Create new discussion object
+            const newDiscussion = {
+                id: discussions.length + 1,
+                title: title,
+                author: "Anda",
+                date: new Date().toISOString(),
+                category: category,
+                content: content,
+                tags: tags,
+                likes: 0,
+                comments: 0,
+                views: 0
+            };
+            
+            // Add to beginning of discussions array
+            discussions.unshift(newDiscussion);
+            filteredDiscussions = [...discussions];
+            
+            // Reset form and hide modal
+            hideCreatePostModal();
+            
+            // Show success notification
+            showNotification('Diskusi berhasil dipublikasikan!', 'success');
+            
+            // Reload discussions
+            currentPage = 1;
+            displayDiscussions();
+        }
+        
+        function showPostDetail(discussionId) {
+            const modal = document.getElementById('postDetailModal');
+            const content = document.getElementById('postDetailContent');
+            
+            // Find the discussion
+            const discussion = discussions.find(d => d.id === discussionId);
+            
+            if (!discussion) {
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">❌</span>
+                        <p>Diskusi tidak ditemukan</p>
+                    </div>
+                `;
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                return;
+            }
+            
+            // Simulate loading
+            content.innerHTML = `
+                <div class="loading-state">
+                    <div class="loading"></div>
+                    <p>Memuat detail diskusi...</p>
+                </div>
+            `;
+            
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            // Simulate API delay
+            setTimeout(() => {
+                content.innerHTML = `
+                    <div class="post-detail">
+                        <div class="post-header">
+                            <h3>${escapeHtml(discussion.title)}</h3>
+                            <div class="post-meta">
+                                <span class="post-category">${getCategoryName(discussion.category)}</span>
+                                <span class="post-author">👤 ${escapeHtml(discussion.author)}</span>
+                                <span class="post-date">📅 ${formatDate(discussion.date)}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            ${escapeHtml(discussion.content).replace(/\n/g, '<br>')}
+                        </div>
+                        
+                        <div class="post-tags">
+                            ${discussion.tags.split(',').map(tag => 
+                                `<span class="tag">#${tag.trim()}</span>`
+                            ).join('')}
+                        </div>
+                        
+                        <div class="post-actions" style="margin-top: 20px;">
+                            <button class="btn btn-primary" onclick="likePost(${discussion.id})">
+                                👍 Suka (${discussion.likes || 0})
+                            </button>
+                        </div>
+                        
+                        <div class="comments-section" style="margin-top: 30px;">
+                            <h3 style="margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--primary-color);">
+                                Komentar (${discussion.comments || 0})
+                            </h3>
+                            
+                            <div class="comment-form" style="background: var(--bg-secondary); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                                <textarea 
+                                    id="commentInput" 
+                                    placeholder="Tulis komentar Anda..." 
+                                    rows="3"
+                                    style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd; margin-bottom: 10px;"
+                                ></textarea>
+                                <button class="btn btn-primary" onclick="addComment(${discussion.id})">
+                                    Kirim Komentar
+                                </button>
+                            </div>
+                            
+                            <div class="comments-list">
+                                ${discussion.comments > 0 ? `
+                                    <div class="comment-item" style="background: var(--bg-secondary); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                                        <div class="comment-header" style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                            <span class="comment-author">👤 Budi Setiawan</span>
+                                            <span class="comment-date">📅 ${formatDate(new Date().toISOString())}</span>
+                                        </div>
+                                        <div class="comment-content">
+                                            Terima kasih sudah berbagi! Saya sangat tertarik dengan filosofi batik ini. Apakah ada referensi buku yang bisa saya pelajari lebih lanjut?
+                                        </div>
+                                    </div>
+                                ` : `
+                                    <p style="text-align: center; color: var(--text-secondary); padding: 20px;">
+                                        Belum ada komentar. Jadilah yang pertama berkomentar!
+                                    </p>
+                                `}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }, 1000);
+        }
+        
+        function hidePostDetailModal() {
+            document.getElementById('postDetailModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function likePost(discussionId) {
+            const discussion = discussions.find(d => d.id === discussionId);
+            if (discussion) {
+                discussion.likes = (discussion.likes || 0) + 1;
+                showNotification('Anda menyukai diskusi ini', 'success');
+                displayDiscussions();
+            }
+        }
+        
+        function addComment(discussionId) {
+            const commentInput = document.getElementById('commentInput');
+            const comment = commentInput.value.trim();
+            
+            if (!comment) {
+                showNotification('Silakan tulis komentar terlebih dahulu', 'warning');
+                return;
+            }
+            
+            const discussion = discussions.find(d => d.id === discussionId);
+            if (discussion) {
+                discussion.comments = (discussion.comments || 0) + 1;
+                commentInput.value = '';
+                showNotification('Komentar berhasil ditambahkan', 'success');
+            }
+        }
+        
+        function getCategoryName(category) {
+            const categories = {
+                'tradisi': 'Tradisi',
+                'makanan': 'Makanan',
+                'seni': 'Seni & Budaya',
+                'bahasa': 'Bahasa',
+                'sejarah': 'Sejarah',
+                'umum': 'Umum'
+            };
+            return categories[category] || category;
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('id-ID', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+        
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            notification.style = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 1000;
+                box-shadow: var(--shadow-lg);
+                background: ${type === 'success' ? '#27ae60' : type === 'error' ? '#e74c3c' : '#3498db'};
+                transform: translateX(120%);
+                transition: transform 0.3s ease;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Trigger reflow
+            void notification.offsetWidth;
+            
+            notification.style.transform = 'translateX(0)';
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(120%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        function showError(message) {
+            const container = document.getElementById('forumPosts');
+            container.innerHTML = `
+                <div class="empty-state">
+                    <span class="empty-icon">❌</span>
+                    <h3>Terjadi Kesalahan</h3>
+                    <p>${message}</p>
+                    <button class="btn btn-primary" onclick="loadForumData()" style="margin-top: 20px;">
+                        🔄 Coba Lagi
+                    </button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
