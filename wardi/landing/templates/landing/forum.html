@@ -863,68 +863,34 @@
             to { transform: rotate(360deg); }
         }
 
-        /* ============ FOOTER ============ */
+        /* ==========================================================================
+           FOOTER STYLES
+           ========================================================================== */
         .footer {
             background: var(--bg-dark);
             color: var(--text-white);
-            padding: var(--spacing-3xl) 0 var(--spacing-xl);
+            padding: var(--spacing-2xl) 0;
             margin-top: var(--spacing-3xl);
         }
 
         .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: var(--spacing-2xl);
-            margin-bottom: var(--spacing-2xl);
+            gap: var(--spacing-xl);
         }
 
         .footer-section h4 {
-            font-size: var(--font-size-lg);
-            margin-bottom: var(--spacing-lg);
-            color: var(--text-white);
-        }
-
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-            font-size: var(--font-size-xl);
-            font-weight: 700;
             margin-bottom: var(--spacing-md);
             color: var(--accent-color);
-        }
-
-        .footer-description {
-            color: var(--text-light);
-            margin-bottom: var(--spacing-lg);
-            line-height: 1.6;
-        }
-
-        .footer-social {
-            display: flex;
-            gap: var(--spacing-md);
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: var(--border-radius-full);
-            text-decoration: none;
             font-size: var(--font-size-lg);
-            transition: all var(--transition-normal);
-        }
-
-        .social-link:hover {
-            background: var(--accent-color);
-            transform: translateY(-2px);
         }
 
         .footer-links {
             list-style: none;
+            padding: 0;
         }
 
         .footer-links li {
@@ -935,26 +901,40 @@
             color: var(--text-light);
             text-decoration: none;
             transition: color var(--transition-normal);
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
         }
 
         .footer-links a:hover {
             color: var(--accent-color);
         }
 
-        .contact-info p {
-            color: var(--text-light);
-            margin-bottom: var(--spacing-sm);
+        .footer-social {
             display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+
+        .footer-social a {
+            display: inline-flex;
             align-items: center;
-            gap: var(--spacing-sm);
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            color: var(--text-white);
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all var(--transition-normal);
+        }
+
+        .footer-social a:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-2px);
         }
 
         .footer-bottom {
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-lg);
             text-align: center;
             color: var(--text-light);
         }
@@ -1210,7 +1190,9 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <div class="footer-logo">WARDI</div>
+                    <div class="footer-logo">
+                        <span>WARDI</span>
+                    </div>
                     <p class="footer-description">
                         Melestarikan budaya Indonesia dengan teknologi AI
                     </p>
@@ -1223,27 +1205,27 @@
                 </div>
                 
                 <div class="footer-section">
-                    <h4>Fitur</h4>
+                    <h4 class="footer-title">Fitur</h4>
                     <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Analisis Budaya</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Penerjemah Daerah</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Forum Diskusi</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Rating Tempat</a></li>
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Analisis Budaya</a></li>
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Penerjemah Daerah</a></li>
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Forum Diskusi</a></li>
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Rating Tempat</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-section">
-                    <h4>Tentang</h4>
+                    <h4 class="footer-title">Tentang</h4>
                     <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Tentang Kami</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Kontak</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Kebijakan Privasi</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Syarat & Ketentuan</a></li>
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Tentang Kami</a></li>
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Kontak</a></li>
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Kebijakan Privasi</a></li>
+                        <li><a href="#"><i class="fas fa-arrow-right"></i> Syarat & Ketentuan</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-section">
-                    <h4>Kontak</h4>
+                    <h4 class="footer-title">Kontak</h4>
                     <div class="contact-info">
                         <p><i class="fas fa-envelope"></i> info@wardi.id</p>
                         <p><i class="fas fa-phone"></i> +62 21 1234 5678</p>
@@ -1638,7 +1620,7 @@
                                 <div class="post-meta">
                                     <span class="post-category">${getCategoryName(post.category)}</span>
                                     <span class="post-author">👤 ${escapeHtml(post.author)}</span>
-                                    <span class="post-date">📅 ${post.date}</span>
+                                    <span class="post-date">📅 ${formatDate(post.created_at)}</span>
                                 </div>
                             </div>
                             

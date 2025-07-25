@@ -104,7 +104,6 @@ def login_view(request):
 def register_page(request):
     if request.method == 'POST':
         form = CustomRegisterForm(request.POST)
-        print(form.is_valid())
         if form.is_valid():
             user = form.save()
             # Optional: Log the user in directly after registration
@@ -176,7 +175,6 @@ def api_register(request):
                     'success': False,
                     'error': 'Username, email, and password are required'
                 })
-            print(password, password_confirm)
             if password != password_confirm:
                 return JsonResponse({
                     'success': False,
@@ -251,7 +249,6 @@ def validate_file(file):
             }
             }''', Image.open(file)]
         )
-        print(response.text)
         json_start = response.text.find('{')
         json_end = response.text.rfind('}') + 1
         clean_json_str = response.text[json_start:json_end]
@@ -276,7 +273,6 @@ def validate_file(file):
 
 @csrf_exempt
 def upload_cultural_item(request):
-    print(request.FILES)
     if request.method == 'POST' and request.FILES.get('cultural_image'):
         uploaded_file = request.FILES['cultural_image']
         predictions = validate_file(uploaded_file)
@@ -295,7 +291,6 @@ def translate_audio(request):
             api_key = getattr(settings, 'GOOGLE_AI_API_KEY', None)
             if not api_key:
                 raise ValueError("Google AI API key not configured")
-            print(request)
             text = request.POST.get('text', '')
             source_lang = request.POST.get('source_lang', 'id')
             target_lang = request.POST.get('target_lang', 'en')
@@ -717,6 +712,7 @@ def get_places_api(request):
                     Q(description__icontains=search) |
                     Q(location__icontains=search)
                 )
+                print(f"Search filter applied: {places}")
             if category:
                 places = places.filter(category=category)
             if province:
@@ -764,7 +760,35 @@ def get_places_api(request):
             
         elif request.method == "POST":
             # Create new place (admin only - you might want to add permission checks)
+            print(f"DEBUG: Raw request body: {request.body}")
+            print(f"DEBUG: Request content type: {request.content_type}")
+            print(f"DEBUG: Request headers: {dict(request.headers)}")
+            
             data = json.loads(request.body)
+            
+            print(f"DEBUG: get_places_api POST data: {data}")  # Debug log
+            print(f"DEBUG: Data type: {type(data)}")
+            print(f"DEBUG: Data keys: {list(data.keys()) if isinstance(data, dict) else 'Not a dict'}")
+            
+            image_url = data.get("image_url", "")
+            print(f"DEBUG: Original image_url from data: '{image_url}' (type: {type(image_url)})")
+            
+            if image_url and image_url.strip():
+                image_url = image_url.strip()
+                print(f"DEBUG: Cleaned image_url: '{image_url}'")
+                # Basic URL validation
+                if not (image_url.startswith('http://') or image_url.startswith('https://')):
+                    print(f"DEBUG: URL validation failed for: '{image_url}'")
+                    return JsonResponse({
+                        "success": False, 
+                        "error": "URL gambar harus dimulai dengan http:// atau https://"
+                    })
+                print(f"DEBUG: URL validation passed for: '{image_url}'")
+            else:
+                image_url = None
+                print(f"DEBUG: image_url set to None (was empty or None)")
+            
+            print(f"DEBUG: Final image_url value before creating place: '{image_url}'")
             
             place = Place.objects.create(
                 name=data.get("name"),
@@ -772,13 +796,19 @@ def get_places_api(request):
                 location=data.get("location"),
                 province=data.get("province"),
                 category=data.get("category"),
-                image_url=data.get("image_url", "")
+                image_url=image_url
             )
+            
+            print(f"DEBUG: Place created with ID: {place.id}")
+            print(f"DEBUG: Place.image_url in database: '{place.image_url}'")
+            print(f"DEBUG: Place.get_image_url() result: '{place.get_image_url()}'")
             
             return JsonResponse({
                 "success": True,
                 "message": "Place created successfully!",
-                "place_id": place.id
+                "place_id": place.id,
+                "debug_image_url": place.image_url,
+                "debug_get_image_url": place.get_image_url()
             })
             
     except Exception as e:
@@ -799,7 +829,6 @@ def get_place_detail(request, place_id):
     """API endpoint to get a specific place by ID"""
     try:
         place = get_object_or_404(Place, id=place_id)
-        
         # Get reviews for this place
         reviews = PlaceRating.objects.filter(place=place).order_by('-created_at')
         reviews_data = []
@@ -811,7 +840,6 @@ def get_place_detail(request, place_id):
                 'content': review.comment,
                 'created_at': review.created_at.strftime('%Y-%m-%d %H:%M')
             })
-        
         place_data = {
             "id": place.id,
             "name": place.name,
@@ -839,7 +867,7 @@ def create_place(request):
     """API endpoint to create a new place with image upload"""
     if request.method != 'POST':
         return JsonResponse({"success": False, "error": "Invalid request method"})
-    
+    # print(f"DEBUG: create_place request body: {request.body}")  # Debug log
     try:
         # Handle both form data (with file) and JSON data
         if request.content_type and 'multipart/form-data' in request.content_type:
@@ -869,6 +897,14 @@ def create_place(request):
                 "success": False, 
                 "error": "Semua field wajib harus diisi"
             })
+        
+        # Clean up image_url - set to None if empty string
+        if image_url and image_url.strip():
+            image_url = image_url.strip()
+        else:
+            image_url = None
+            
+        print(f"DEBUG: Creating place with image_url: '{image_url}'")  # Debug log
         
         # Create the place
         place = Place.objects.create(

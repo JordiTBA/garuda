@@ -663,11 +663,188 @@
         .place-actions {
             display: flex;
             gap: var(--spacing-sm);
+            margin-top: auto;
         }
 
         .place-actions .btn {
             flex: 1;
             text-align: center;
+        }
+
+        /* Action Button Styles */
+        .action-btn {
+            border: none;
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-sm) var(--spacing-md);
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xs);
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            outline: none;
+        }
+
+        .action-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .action-btn:hover:before {
+            left: 100%;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(116, 185, 255, 0.3);
+        }
+
+        .action-btn.primary:hover {
+            background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(116, 185, 255, 0.4);
+        }
+
+        .action-btn.primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(116, 185, 255, 0.3);
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(253, 121, 168, 0.3);
+        }
+
+        .action-btn.secondary:hover {
+            background: linear-gradient(135deg, #e84393 0%, #fd79a8 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(253, 121, 168, 0.4);
+        }
+
+        .action-btn.secondary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(253, 121, 168, 0.3);
+        }
+
+        .action-btn:disabled {
+            background: #ddd;
+            color: #999;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.6;
+        }
+
+        .action-btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .action-btn:disabled:before {
+            display: none;
+        }
+
+        /* Loading state for buttons */
+        .action-btn.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .action-btn.loading:after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: -8px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .action-btn.loading .icon,
+        .action-btn.loading span:not(.icon) {
+            opacity: 0;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Success state animation */
+        .action-btn.success {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%) !important;
+            animation: successPulse 0.6s ease;
+        }
+
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Enhanced icon styling */
+        .action-btn .icon {
+            font-size: 1.1em;
+            transition: transform 0.3s ease;
+        }
+
+        .action-btn:hover .icon {
+            transform: scale(1.1);
+        }
+
+        /* Responsive design for action buttons */
+        @media (max-width: 768px) {
+            .action-btn {
+                padding: var(--spacing-xs) var(--spacing-sm);
+                font-size: var(--font-size-xs);
+                gap: var(--spacing-xxs);
+            }
+            
+            .action-btn span:not(.icon) {
+                display: none;
+            }
+            
+            .action-btn .icon {
+                font-size: 1.2em;
+            }
+            
+            .place-actions {
+                gap: var(--spacing-xs);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .place-actions-detail {
+                flex-direction: column;
+                gap: var(--spacing-sm) !important;
+            }
+            
+            .place-actions-detail .action-btn {
+                justify-content: center;
+            }
+            
+            .place-actions-detail .action-btn span:not(.icon) {
+                display: inline !important;
+            }
         }
 
         /* ==========================================================================
@@ -1593,15 +1770,24 @@
     
     async function loadPlacesData() {
         try {
+            console.log('DEBUG: loadPlacesData() called');
             const response = await fetch('/api/places/');
+            console.log('DEBUG: loadPlacesData response status:', response.status);
+            
             const data = await response.json();
+            console.log('DEBUG: loadPlacesData response data:', data);
+            console.log('DEBUG: Places count:', data.places ? data.places.length : 'No places');
             
             if (data.success) {
                 places = data.places;
                 filteredPlaces = [...places];
+                console.log('DEBUG: Updated places array:', places);
+                console.log('DEBUG: Updated filteredPlaces array:', filteredPlaces);
                 updateStats(data.stats);
                 displayPlaces();
+                console.log('DEBUG: displayPlaces() called');
             } else {
+                console.error('DEBUG: loadPlacesData failed:', data.error);
                 showError('Gagal memuat data tempat wisata');
             }
         } catch (error) {
@@ -1642,7 +1828,7 @@
         
         // Display all places without pagination
         const placesToShow = filteredPlaces;
-        
+        console.log(placesToShow)
         container.innerHTML = placesToShow.map(place => `
             <div class="place-card" onclick="showPlaceDetail(${place.id})">
                 <div class="place-image">
@@ -1674,16 +1860,19 @@
                     </div>
                     
                     <div class="place-actions">
-                        <button class="action-btn primary" onclick="event.stopPropagation(); showPlaceDetail(${place.id})">
-                            👁️ Lihat Detail
+                        <button class="action-btn primary" onclick="event.stopPropagation(); showPlaceDetail(${place.id})" title="Lihat detail tempat wisata">
+                            <span class="icon">👁️</span>
+                            <span>Lihat Detail</span>
                         </button>
                         ${USER_IS_AUTHENTICATED ? 
-                            `<button class="action-btn secondary" onclick="event.stopPropagation(); showReviewModal(${place.id})">
-                                ⭐ Beri Rating
+                            `<button class="action-btn secondary" onclick="event.stopPropagation(); showReviewModal(${place.id})" title="Berikan rating dan ulasan">
+                                <span class="icon">⭐</span>
+                                <span>Beri Rating</span>
                             </button>`
                             :
-                            `<button class="action-btn secondary" onclick="event.stopPropagation(); showLoginRequired()">
-                                ⭐ Beri Rating
+                            `<button class="action-btn secondary" onclick="event.stopPropagation(); showLoginRequired()" title="Login untuk memberikan rating">
+                                <span class="icon">🔒</span>
+                                <span>Login untuk Rating</span>
                             </button>`
                         }
                     </div>
@@ -1781,6 +1970,31 @@
         document.getElementById('addPlaceForm').reset();
         document.getElementById('descCharCount').textContent = '0';
     }
+
+    // Utility functions for button states
+    function setButtonLoading(button, isLoading = true) {
+        if (isLoading) {
+            button.classList.add('loading');
+            button.disabled = true;
+        } else {
+            button.classList.remove('loading');
+            button.disabled = false;
+        }
+    }
+
+    function setButtonSuccess(button, duration = 2000) {
+        button.classList.add('success');
+        setTimeout(() => {
+            button.classList.remove('success');
+        }, duration);
+    }
+
+    function setButtonError(button, duration = 3000) {
+        button.style.background = 'linear-gradient(135deg, #e17055 0%, #d63031 100%)';
+        setTimeout(() => {
+            button.style.background = '';
+        }, duration);
+    }
     
     function showReviewModal(placeId) {
         if (!USER_IS_AUTHENTICATED) {
@@ -1819,14 +2033,32 @@
             return;
         }
         
+        const nameValue = document.getElementById('placeName').value;
+        const locationValue = document.getElementById('placeLocation').value;
+        const provinceValue = document.getElementById('placeProvince').value;
+        const categoryValue = document.getElementById('placeCategory').value;
+        const descriptionValue = document.getElementById('placeDescription').value;
+        const imageValue = document.getElementById('placeImage').value;
+        
+        console.log('DEBUG: Individual form values:');
+        console.log('  - placeName:', `'${nameValue}'`);
+        console.log('  - placeLocation:', `'${locationValue}'`);
+        console.log('  - placeProvince:', `'${provinceValue}'`);
+        console.log('  - placeCategory:', `'${categoryValue}'`);
+        console.log('  - placeDescription:', `'${descriptionValue}'`);
+        console.log('  - placeImage (image_url):', `'${imageValue}'`);
+        
         const formData = {
-            name: document.getElementById('placeName').value,
-            location: document.getElementById('placeLocation').value,
-            province: document.getElementById('placeProvince').value,
-            category: document.getElementById('placeCategory').value,
-            description: document.getElementById('placeDescription').value,
-            image: document.getElementById('placeImage').value
+            name: nameValue,
+            location: locationValue,
+            province: provinceValue,
+            category: categoryValue,
+            description: descriptionValue,
+            image_url: imageValue
         };
+        
+        console.log('DEBUG: Sending place data:', formData);
+        console.log('DEBUG: JSON.stringify(formData):', JSON.stringify(formData));
         
         const submitBtn = document.getElementById('submitPlaceBtn');
         const originalText = submitBtn.textContent;
@@ -1834,6 +2066,7 @@
         submitBtn.innerHTML = '<div class="loading"></div> Menambahkan...';
         
         try {
+            console.log('DEBUG: About to send POST request to /api/places/');
             const response = await fetch('/api/places/', {
                 method: 'POST',
                 headers: {
@@ -1843,7 +2076,11 @@
                 body: JSON.stringify(formData)
             });
             
+            console.log('DEBUG: Response status:', response.status);
+            console.log('DEBUG: Response headers:', response.headers);
+            
             const data = await response.json();
+            console.log('DEBUG: Response data:', data);
             
             if (data.success) {
                 showNotification('Tempat wisata berhasil ditambahkan!', 'success');
@@ -1974,7 +2211,7 @@
             
             if (data.success) {
                 const place = data.place;
-                console.log('Place reviews:', place.reviews); // Debug log
+                console.log('Place reviews:', place.image_url); // Debug log
                 content.innerHTML = `
                     <div class="place-detail">
                         <div class="place-detail-header">
@@ -2005,16 +2242,19 @@
                         
                         <div class="place-actions-detail" style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
                             ${USER_IS_AUTHENTICATED ? 
-                                `<button class="btn btn-primary" onclick="showReviewModal(${place.id})">
-                                    ⭐ Beri Review
+                                `<button class="action-btn secondary" onclick="showReviewModal(${place.id})" title="Berikan review dan rating untuk tempat ini">
+                                    <span class="icon">⭐</span>
+                                    <span>Beri Review</span>
                                 </button>`
                                 :
-                                `<button class="btn btn-primary" onclick="showLoginRequired()">
-                                    ⭐ Beri Review
+                                `<button class="action-btn secondary" onclick="showLoginRequired()" title="Login untuk memberikan review">
+                                    <span class="icon">🔒</span>
+                                    <span>Login untuk Review</span>
                                 </button>`
                             }
-                            <button class="btn btn-secondary" onclick="sharePlace(${place.id})">
-                                📤 Bagikan
+                            <button class="action-btn primary" onclick="sharePlace(${place.id})" title="Bagikan tempat wisata ini">
+                                <span class="icon">📤</span>
+                                <span>Bagikan Tempat</span>
                             </button>
                         </div>
                         

@@ -1208,7 +1208,7 @@
                 registerBtn.innerHTML = originalText;
                 
                 // Show success message
-                alert(`Registrasi berhasil! Selamat datang, ${formData.firstName}.`);
+                {% comment %} alert(`Registrasi berhasil! Selamat datang, ${formData.firstName}.`); {% endcomment %}
                 
                 // Redirect to login page
                 window.location.href = "{% url 'login_view' %}";
